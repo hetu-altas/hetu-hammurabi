@@ -1,93 +1,99 @@
 # hetu-hammurabi
 
+> *河出图，洛出书，圣人则之。*
+>
+> 上古伏羲氏时，龙马负图出于黄河，是为**河图**——宇宙秩序的原始图谱，万物规律的终极抽象。它不是律法本身，却是律法得以成文的元秩序。
+>
+> 而在幼发拉底河畔，**汉谟拉比**（Hammurabi）将散落的习俗与裁决铭刻于玄武岩石柱，颁布了人类历史上第一部成文法典——《汉谟拉比法典》。法律自此不再寄居于君王的记忆，而是立于石上，人人可见，人人可循。他立法，亦执法：法度之内，万物有序；法度之外，寸步难行。
+>
+> 当东方的秩序图谱遇见西方的立法者，便有了 **河图·汉谟拉比**——宪章编程的驭具模块。
+>
+> 它将散落的宪章铸成法典，为模型的每一次行为划定边界；把研发流程镌刻为七道工序，令每个节点有据可依；以硬门禁执法，不容侥幸，不随心意。它不写业务代码，却让每一行业务代码都行于法度之内；它不产出数据，却让每一次研发沉淀为可循的成卷之律。
+>
+> 不作预测，不言涨跌，只做模型最忠实的立法者。
 
+---
 
-## Getting started
+hetu 系列「宪章编程」harness 模块。通过 opencode 的 Commands / Agents / Skills / Plugins 将研发流程固化为可自动执行的节点流水线：输入任务书，自动完成分析 → 编码 → 单元测试（硬门禁）→ 代码评审 → 研发日志 → 资产沉淀 → 钉钉通知。
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+> **先立法，后编码。宪法高于对话。约束是资产，不是负担。**
+> —— 详见[《宪章编程宣言》](宪章编程宣言.md)，本项目是宪章编程范式的执行机构。
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+## 目录结构
 
 ```
-cd existing_repo
-git remote add origin http://192.168.124.101/hetu-altas/hetu-hammurabi.git
-git branch -M main
-git push -uf origin main
+.
+├── .opencode/
+│   ├── commands/
+│   │   └── dev.md                     # /dev <任务书> 入口命令
+│   ├── agents/
+│   │   ├── charter-orchestrator.md    # 主编排代理（primary）
+│   │   ├── charter-analyst.md         # 节点1 分析 → 实施计划
+│   │   ├── charter-coder.md           # 节点2 编码
+│   │   ├── charter-tester.md          # 节点3 单元测试（门禁）
+│   │   ├── charter-reviewer.md        # 节点4 代码评审（APPROVE/REVISE）
+│   │   ├── charter-logger.md          # 节点5 研发日志
+│   │   ├── charter-assetter.md        # 节点6 资产沉淀（docs 新增/更新）
+│   │   └── charter-notifier.md        # 节点7 钉钉通知
+│   └── skills/
+│       ├── charter-coding/SKILL.md    # 编码宪章（引用 coding.md）
+│       ├── charter-testing/SKILL.md   # 单测宪章（引用 unit_test.md）
+│       ├── charter-logging/SKILL.md   # 研发日志规范
+│       └── charter-assets/SKILL.md    # 资产沉淀（新增/更新判定）
+│   └── plugin/
+│       └── charter-gate.ts            # 硬约束插件（测试门禁/数据安全/密钥脱敏/资产登记）
+├── constitution/                      # 通用宪章规范（唯一权威，各项目不再各自维护）
+├── docs/hetu-aether|mercury|thoth/    # 归集自各项目的文档
+├── scripts/
+│   └── install_harness.sh             # 软链 harness 到同级 hetu-* 项目
+├── templates/
+│   └── task_book.md                   # 任务书模板
 ```
 
-## Integrate with your tools
+## 快速开始
 
-* [Set up project integrations](http://192.168.124.101/hetu-altas/hetu-hammurabi/-/settings/integrations)
+体系完整说明文档见 [docs/harness/](docs/harness/README.md)（总览 / 工作流编排 / 代理与技能 / 门禁与硬约束 / 资产体系 / 扩展维护）。
 
-## Collaborate with your team
+1. 安装 harness 到各业务项目：
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+```bash
+bash scripts/install_harness.sh
+```
 
-## Test and Deploy
+2. 按 `templates/task_book.md` 编写任务书，放入业务项目（如 `hetu-thoth`）的 `opencode_schedule/YYYYMMDD/` 下。
 
-Use the built-in continuous integration in GitLab.
+3. 在业务项目目录启动 opencode，执行：
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+```
+/dev <任务书路径>
+```
 
-***
+编排代理会自动按节点执行并在 `opencode_schedule/<YYYYMMDD>/研发流程状态.md` 固化每个节点的状态。
 
-# Editing this README
+## 流程节点
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+| 节点 | 代理 | 产出 | 门禁 |
+|------|------|------|------|
+| 0 校验 | charter-orchestrator | 任务书/宪章/输出目录确认 | - |
+| 1 分析 | charter-analyst | `实施计划.md` | - |
+| 2 编码 | charter-coder | 源码/脚本/依赖 | - |
+| 3 单元测试 | charter-tester | `unit_test/test_*_result.txt` + `.gate.json` | 硬门禁：必须全部通过并写入 `.gate.json`，失败回节点2，最多3轮 |
+| 4 代码评审 | charter-reviewer | `评审报告.md` | APPROVE 才放行，REVISE 回节点2，最多2轮 |
+| 5 研发日志 | charter-logger | `任务N研发日志.md` | 仅当节点3、4通过（charter-gate 硬拦截） |
+| 6 资产沉淀 | charter-assetter | `docs/hetu-<项目>/**` 新增/更新 | 仅当节点3、4通过 |
+| 7 通知 | charter-notifier | 钉钉完成通知 | 仅当节点3、4通过（charter-gate 硬拦截） |
 
-## Suggestions for a good README
+## 硬约束（charter-gate 插件）
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+`.opencode/plugin/charter-gate.ts` 提供 4 项硬约束：
 
-## Name
-Choose a self-explaining name for your project.
+1. **测试门禁**：`.gate.json` 缺失或 `test_passed=false` 时，写入研发日志/流程状态、钉钉通知的 bash 调用一律被阻断
+2. **数据安全**：`rm -rf` / `DROP` / `DELETE FROM` / `TRUNCATE` / `drop_collection` 必须显式带 backup/备份
+3. **密钥脱敏**：用户消息中的明文凭据（sk-、Bearer、token/password 等）自动脱敏并告警
+4. **资产登记一致性**：`docs/hetu-*/` 新增/修改未登记到 `docs/资源地图.md` 时告警
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+## 维护
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+- 宪章内容修改后，对应 Skill 直接引用 `constitution/` 下的源文件，无需改动。
+- 新增流程节点：在 `.opencode/agents/` 新增子代理并更新 `charter-orchestrator.md` 的流程定义。
+- 修改硬约束：编辑 `.opencode/plugin/charter-gate.ts`（hook 里 `throw` 即硬阻断）。
