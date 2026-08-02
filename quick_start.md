@@ -76,7 +76,7 @@ opencode_schedule/<YYYYMMDD>/<YYYYMMDD>任务N<名称>/
 
 - **Full system docs** (Chinese): [docs/harness/](docs/harness/README.md) (overview / workflow / agents & skills / gates / assets / extending)
 - **Charters**: `constitution/` (top-level 13 chapters + 7 sub-specs: coding / unit-test / logging / project / TDengine / Milvus / task splitting)
-- **Core philosophy**: [Charter Programming Manifesto](宪章编程宣言.en.md)
+- **Core philosophy**: [Charter Programming Manifesto](manifesto.md)
 - **Task granularity**: assess before writing a task book per `constitution/task_split/task_split.md`; split oversized tasks first
 
 ---
