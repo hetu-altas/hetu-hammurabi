@@ -30,7 +30,7 @@
 > **Legislate first, code later.**
 > Constrain with the charter, not with prompt patches — fix a class of bugs, not one bug; eliminate a class of violations, not one violation.
 
-> — Excerpts from the [Charter Programming Manifesto](宪章编程宣言.md) (Chinese)
+> — Excerpts from the [Charter Programming Manifesto](宪章编程宣言.en.md)
 
 > The vibe programmer asks: "AI, what can you do?"
 > The charter programmer says: "AI, within my rules, this is all you may do."
@@ -44,7 +44,7 @@
 - **Harness**: built on an open-source agent harness, currently adapted to [opencode](https://opencode.ai) (≥ 1.16); **more domestic harnesses will be supported** — migrating the config layer (`.opencode/`) is all it takes
 - **Models**: compatible with domestic LLMs (DeepSeek, Qwen, GLM, Kimi, ...) via the harness's provider configuration — no charter changes needed
 - **Decoupling**: the charters (`constitution/`) are fully decoupled from the model and the harness — switching harness migrates only the orchestration layer; switching models only changes provider config; **the charter stays untouched**
-- Echoing Tenet IV of the [Manifesto](宪章编程宣言.md): "Tools may change, models may change; the constitution never dies, and the system lives forever."
+- Echoing Tenet IV of the [Manifesto](宪章编程宣言.en.md): "Tools may change, models may change; the constitution never dies, and the system lives forever."
 
 ---
 
@@ -95,7 +95,7 @@ All paths in this repository follow **relative-path conventions** — adjust the
 │   └── install_harness.sh             # Symlink the harness into sibling hetu-* projects
 ├── templates/
 │   └── task_book.md                   # Task book template
-├── 宪章编程宣言.md                    # Charter Programming Manifesto (Chinese)
+├── 宪章编程宣言.md                    # Charter Programming Manifesto (Chinese) — see 宪章编程宣言.en.md
 └── 快速上手指南.md                    # Quickstart (Chinese) — see quick_start.md
 ```
 
