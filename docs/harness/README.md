@@ -5,7 +5,7 @@
 | 文档 | 内容 |
 |------|------|
 | [README.md](README.md) | 体系总览：定位、架构、组件清单、设计理念（本文） |
-| [workflow.md](workflow.md) | 工作流编排：7 节点流水线、门禁链、回退机制、状态固化 |
+| [workflow.md](workflow.md) | 工作流编排：节点流水线（含任务书生成）、门禁链、回退机制、状态固化 |
 | [agents-skills.md](agents-skills.md) | 代理与技能体系：编排代理、节点子代理、Skill 按需加载 |
 | [gates.md](gates.md) | 门禁与硬约束：软/硬约束矩阵、charter-gate 插件 |
 | [assets.md](assets.md) | 宪章与资产体系：通用宪章、资源地图、资产沉淀 |
@@ -26,7 +26,7 @@
 ```
                         ┌──────────────────────────────┐
   用户输入任务书          │   charter-orchestrator        │
-  /dev <任务书> ────────▶ │   （主编排代理，7 节点调度）     │
+  /dev <任务书> ────────▶ │   （主编排代理，节点 -1~7 调度）     │
                         └───┬──┬──┬──┬──┬──┬──┬──┬───┘
                             │  │  │  │  │  │  │  │
             ┌───────────────┘  │  │  │  │  │  │  └──────────┐
@@ -42,7 +42,7 @@
 | 层 | 载体 | 作用 |
 |----|------|------|
 | **宪章层（软约束）** | `constitution/` + Skills | 约束模型"怎么做"：编码、单测、日志、TDengine、Milvus 等规范 |
-| **流程层（编排）** | `charter-orchestrator` + 节点子代理 | 约束"按什么顺序做"：7 节点流水线与门禁链 |
+| **流程层（编排）** | `charter-orchestrator` + 节点子代理 | 约束"按什么顺序做"：节点 -1~7 流水线与门禁链 |
 | **插件层（硬约束）** | `charter-gate` 插件 | 约束"不能做什么"：确定性拦截，不依赖模型自觉 |
 
 ## 三、组件清单
@@ -50,7 +50,7 @@
 | 组件 | 位置 | 说明 |
 |------|------|------|
 | 入口命令 | `.opencode/commands/dev.md` | `/dev <任务书>` 触发编排 |
-| 主编排代理 | `.opencode/agents/charter-orchestrator.md` | 7 节点调度 + 状态固化 |
+| 主编排代理 | `.opencode/agents/charter-orchestrator.md` | 节点 -1~7 调度 + 状态固化 |
 | 节点子代理 ×7 | `.opencode/agents/charter-{analyst,coder,tester,reviewer,logger,assetter,notifier}.md` | 每节点一个专职代理 |
 | 技能 ×5 | `.opencode/skills/charter-{analysis,coding,testing,logging,assets}/SKILL.md` | 宪章按节点按需加载 |
 | 硬约束插件 | `.opencode/plugin/charter-gate.ts` | 测试门禁/数据安全/密钥脱敏/资产登记 |
@@ -60,17 +60,23 @@
 | 任务书模板 | `templates/task_book.md` | 标准化任务书输入 |
 | 安装脚本 | `scripts/install_harness.sh` | 软链分发到各业务项目 |
 
-## 四、研发流水线（7 节点）
+## 四、研发流水线
+
+输入支持**任务书路径**或**一句话需求**（自动生成任务书）：
 
 ```
-节点1 分析 ──▶ 节点2 编码 ──▶ 节点3 单测(硬门禁) ──▶ 节点4 评审 ──▶ 节点5 研发日志
-                                                                          │
-节点7 通知 ◀── 节点6 资产沉淀 ◀──────────────────────────────────────────┘
+输入: /dev <任务书路径 或 一句话需求>
+          │
+          ▼
+节点-1 任务书生成 ──▶ 节点0 校验 ──▶ 节点1 分析 ──▶ 节点2 编码
+（仅一句话需求时）                                        │
+                                                         ▼
+节点7 通知 ◀── 节点6 资产沉淀 ◀── 节点5 研发日志 ◀── 节点4 评审 ◀── 节点3 单测(硬门禁)
 ```
 
 - 单测：**硬门禁**，全部通过并写 `.gate.json` 才放行（插件拦截）
 - 评审：**软门禁**，REVISE 回退编码，最多 2 轮
-- 产出统一归档到 `opencode_schedule/<YYYYMMDD>/`，节点状态固化在 `研发流程状态.md`
+- 产出统一归档到任务目录 `opencode_schedule/<YYYYMMDD>/<任务目录>/`，节点状态固化在 `研发流程状态.md`
 
 ## 五、设计理念
 

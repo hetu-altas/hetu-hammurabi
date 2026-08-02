@@ -16,15 +16,24 @@ import * as path from "node:path"
 
 const GATE_FILE = ".gate.json"
 
-function latestGateFile(directory: string): string | null {
+function findAllGateFiles(directory: string): string[] {
   const base = path.join(directory, "opencode_schedule")
-  if (!existsSync(base)) return null
-  const dates = readdirSync(base).sort()
-  for (let i = dates.length - 1; i >= 0; i--) {
-    const p = path.join(base, dates[i], GATE_FILE)
-    if (existsSync(p)) return p
+  if (!existsSync(base)) return []
+  const found: string[] = []
+  const walk = (dir: string): void => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const p = path.join(dir, entry.name)
+      if (entry.isDirectory()) walk(p)
+      else if (entry.name === GATE_FILE) found.push(p)
+    }
   }
-  return null
+  walk(base)
+  return found
+}
+
+function latestGateFile(directory: string): string | null {
+  const files = findAllGateFiles(directory).sort()
+  return files.length > 0 ? files[files.length - 1] : null
 }
 
 function gateOpen(directory: string): boolean {
@@ -68,12 +77,16 @@ export const CharterGate: Plugin = async ({ client, directory }) => {
       const args = output.args ?? {}
       const cmd = typeof args.command === "string" ? args.command : ""
       const filePath = String(args.filePath ?? args.path ?? "")
-      const target = `${cmd} ${filePath}`
 
-      // ---- 门禁：测试通过前禁止 研发日志/流程状态 与 钉钉通知 ----
-      const isLogWrite = /研发日志\.md|研发流程状态\.md/.test(target)
+      // ---- 门禁：测试通过前禁止 研发日志/流程状态 写入 与 钉钉通知 ----
+      // 只拦截写入，不误伤读取（cat/grep 等读命令放行）
+      const isLogWrite =
+        (tool === "write" || tool === "edit" || tool === "apply_patch") &&
+        /研发日志\.md|研发流程状态\.md/.test(filePath)
+      const isLogWriteByBash =
+        tool === "bash" && /(?:>\s*|>>\s*|tee\s+)[^;|&]*研发(?:日志|流程状态)\.md/.test(cmd)
       const isNotify = /util_dingtalk|send_markdown|send_text/.test(cmd)
-      if ((isLogWrite || isNotify) && !gateOpen(directory)) {
+      if ((isLogWrite || isLogWriteByBash || isNotify) && !gateOpen(directory)) {
         throw new Error(
           "[charter-gate] 测试门禁未通过（.gate.json 缺失或 test_passed=false）：禁止写入研发日志/流程状态、禁止发送钉钉通知。请先让 charter-tester 运行测试并生成 .gate.json。",
         )

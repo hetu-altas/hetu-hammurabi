@@ -109,6 +109,22 @@ bash scripts/finalize_batch_tasks.sh -s news
 5 * * * * bash /path/to/scripts/finalize_batch_tasks.sh >> /mnt/e/logs/finalize.log 2>&1
 ```
 
+### 3.5 embedding 多数据源每日 23:30 自动流水线（2026-08-01 新增；任务2 泛化改造）
+
+news / major_news / cctv_news / irm_qa_sh / irm_qa_sz 五种数据源已编排为「生成 JSONL → 提交 Batch → 轮询下载 → 入库 Milvus」的每日自动流水线（逐源独立执行、独立记录，某源失败不影响其余源），通过以下 cron 条目每天 23:30 执行（由 `scripts/embedding_cron_install.sh` 自动管理，勿手改；安装/卸载/状态查询见 [embedding 定时流水线指南](../cron/embedding_pipeline_guide.md)；旧版 major_news 标记条目会在安装时自动迁移）：
+
+```cron
+# hetu-thoth embedding 每日向量化入库（自动管理，勿手改）
+30 23 * * * bash /mnt/d/workspace/hetu-altas/hetu-thoth/scripts/embedding_pipeline.sh >> /mnt/e/logs/embedding_pipeline/cron_$(date +\%Y\%m\%d).log 2>&1
+```
+
+要点：
+
+- 默认处理全部 5 源，可用 `-s/--sources <列表>` 过滤（非法源退出码 2）；流水线按「各源状态文件 last_run.<source>.date + 1 天 ~ 当天」增量生成 JSONL，某源首次运行（状态文件缺失）自动退化为当天单日，避免全量提交造成 Batch 拥堵与费用风险；
+- Batch 为异步，当日 23:30 提交的新任务通常次日完成；轮询/下载/入库步骤天然跨天续跑历史遗留任务，无需专门补数；
+- 失败时（默认）发送钉钉告警（含失败源明细），成功不打扰；dry-run 演练无副作用；
+- 与本节 3.1~3.3 的手工调用方式完全兼容，可按需混合使用。
+
 ---
 
 ## 四、核心方法
@@ -168,11 +184,13 @@ results = submit_all_pending_tasks(source="npr")
 
 ## 五、重复检查
 
-提交前查询 `embedding_batch_task` 表，若同一 `source` 在目标日期范围内已存在 `completed` 状态的记录则跳过，避免重复提交和重复计费。
+提交前查询 `embedding_batch_task` 表，判定语义为**完全包含**：仅当已有任务区间完全包含请求区间（已有任务 `data_start_date <= 请求start` 且 `data_end_date >= 请求end`，含区间相等）时，才视为已覆盖/重复并跳过，避免重复提交和重复计费；部分相交、不相交、请求区间包含历史任务等其余情况一律放行（支持滞后补数）。
 
-| 检查条件 | SQL |
+| 检查条件 | SQL（占位符参数序：source, 请求start_date, 请求end_date[, status]） |
 |---------|-----|
 | 覆盖检查 | `source = ? AND data_start_date <= ? AND data_end_date >= ? AND status = 'completed'` |
+
+> 2026-08-02 任务1 修复：覆盖/重复判定语义由「区间相交」改为「完全包含」。修复前条件为 `data_start_date <= 请求end AND data_end_date >= 请求start`（两区间相交即跳过），导致滞后同步数据（trade_date 早于同步日）的补数请求被整体拦截——例如请求补数 `2026-05-20~2026-06-13`、历史任务仅覆盖 `2026-06-01~2026-06-13`，因区间相交即被误判"已覆盖"而拒绝生成/提交，补数永远无法执行、数据漏向量化入库。修复后仅「已有任务区间 ⊇ 请求区间」（含同区间）才跳过：同区间重复请求仍跳过（幂等不变）；部分相交、反向相交（请求区间包含历史任务）、不相交均放行。SQL 文本形态（代码侧 `%s`）`data_start_date <= %s AND data_end_date >= %s` 不变，占位符绑定随参数序**成对互换**（build 侧 `(_SOURCE, start_date, end_date) + 活跃状态`、submit 侧 `(source, data_start_date, data_end_date, STATUS_COMPLETED)`）；9 个 `build_*.py` 的 `_check_existing_coverage` 与 `submit_batch_embedding.py` 的 `_check_duplicate` 语义同步修订（门禁 535/535，评审 REVIEW:APPROVE）。
 
 ---
 

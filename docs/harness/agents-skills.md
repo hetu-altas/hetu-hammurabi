@@ -7,7 +7,8 @@
 
 | 代理 | 模式 | 职责 | 关键权限 |
 |------|------|------|---------|
-| charter-orchestrator | primary | 7 节点调度、回退、状态固化 | edit/bash 允许；task 限定 `charter-*` |
+| charter-orchestrator | primary | 节点 -1~7 调度、输入判别、回退、状态固化 | edit/bash 允许；task 限定 `charter-*` |
+| charter-taskwriter | subagent | 一句话需求 → 生成任务书（节点 -1） | edit 允许（仅任务书文件） |
 | charter-analyst | subagent | 解析任务书 → 实施计划 + 资源匹配清单 | edit 允许（仅产出文件） |
 | charter-coder | subagent | 按宪章实现源码/脚本/依赖 | edit/bash 允许 |
 | charter-tester | subagent | 编写并运行单测 → 写结果 + `.gate.json` | edit/bash 允许 |
@@ -40,6 +41,7 @@ Skill 是"宪章的可加载封装"：模型只在对应节点调用 `skill` 工
 
 | Skill | 加载节点 | 引用宪章源文件 |
 |-------|---------|---------------|
+| charter-taskbook | 节点 -1 任务书生成 | `templates/task_book.md`、`docs/资源地图.md` |
 | charter-analysis | 节点1 分析 | `docs/资源地图.md`（匹配流程） |
 | charter-coding | 节点2 编码 / 节点4 评审 | `constitution/constitution.md`、`coding/coding.md`、`project/project.md` |
 | charter-testing | 节点3 单测 | `constitution/unit_test/unit_test.md` |

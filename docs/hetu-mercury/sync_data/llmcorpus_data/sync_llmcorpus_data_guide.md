@@ -1,6 +1,6 @@
 # 大模型语料专题数据同步指南
 
-> 更新日期：2026-05-18 | 同步模块：`src/data_sync/full_sync/sync_llmcorpus_data_bydate.py`
+> 更新日期：2026-05-18（20260802 任务2 更新：自然日区间 + 状态文件驱动、唯一键幂等修订） | 同步模块：`src/data_sync/full_sync/sync_llmcorpus_data_bydate.py`
 
 ---
 
@@ -47,6 +47,21 @@ bash scripts/sync_llmcorpus_data.sh                            # 全量 (2005-01
 bash scripts/sync_llmcorpus_data.sh 20260501                   # 从指定日期至今
 bash scripts/sync_llmcorpus_data.sh 20260501 20260514          # 指定日期范围
 ```
+
+> **20260802 任务2 更新**：日常增量实际由 `scripts/sync_by_day/daily_llmcorpus_sync.sh` 驱动（crontab `40 21 * * *`，每日含周末）。2026-08-02 任务2 修复缺陷 B：原脚本按 `get_latest_trade_day('CN')`（最近交易日）同步**单日**，周六/周日运行时仍取周五，导致周末产生的 news/major_news/cctv_news 等自然日数据永不同步；现改为「**自然日区间 + 状态文件驱动**」：
+
+| 调用形态 | 同步区间 | 说明 |
+|---------|---------|------|
+| 无参（crontab 默认） | 上次成功同步日+1 ~ 今天 | 状态文件驱动，连续运行区间无缝衔接（不重不漏） |
+| 无参 + 状态文件缺失/内容非法 | 昨天 ~ 今天 | 首次部署/文件损坏退化，避免全量拉取 |
+| 1 参 `20260801` | `20260801 ~ 20260801` | 手动单日补数（兼容旧单参形态），**不写状态文件** |
+| 2 参 `20260720 20260801` | `20260720 ~ 20260801` | 手动区间补数，**不写状态文件**（补数不改增量进度） |
+
+- **状态文件路径**：`/mnt/e/logs/hetu-altas/hetu-mercury/llmcorpus_last_sync.date`（内容 `YYYYMMDD`，即上次成功同步日）。
+- **写时机**：仅当「非手动 且 8 源全部成功」才原子写入（tmp+mv）`今天`；任一源失败 → 不写、退出码非 0，下次运行自动从原 last+1 重试；状态文件超前/同天 → 输出「已是最新」空跑退出 0（幂等）。
+- **幂等**：8 个 sync 函数均经 `insert_dataframe(..., ignore_duplicates=True)`（INSERT IGNORE）写入，配合 8 表 `uk_*` 唯一键（见第十节），同日/同区间重复同步自动跳过重复行。
+- **环境变量注入点**（测试/运维用）：`LLMCORPUS_STATE_FILE`（状态文件路径）、`LLMCORPUS_TODAY`（桩今天，默认 `date +%Y%m%d`）、`LLMCORPUS_SYNC_BIN`（桩同步执行器）。
+- 日期统一 `YYYYMMDD`，加减复用 hetu-aether `utils/util_datetime.py`（禁止 shell 手写日期算术）；退出码：0 成功（含空跑）/ 1 同步失败 / 2 参数非法。
 
 ### 2.2 Python 直接调用
 
@@ -239,6 +254,9 @@ scripts/
 ├── sync_llmcorpus_data.sh                           # 按日期区间同步
 └── sync_major_news.sh                               # major_news 单独同步（2025起）
 src/batch/sql/greatsql/大模型语料专题数据.sql          # GreatSQL 建表语句（8张表）
+# ⚠️ 20260802 任务2 登记：该 DDL 8 表均无 UNIQUE KEY（仅普通 KEY + 自增主键），
+#    与实库不符（实库 8 表均有 uk_* 唯一键，见第十节）——DDL 文件已过期，
+#    是否修订由需求方决策，修订前以实库 SHOW CREATE TABLE 为准。
 unit_test/
 ├── test_sync_llmcorpus_data_bydate.py               # 41个单元测试
 └── test/
@@ -277,6 +295,7 @@ unit_test/
 | author 列超长 | `Data too long for column 'author'` | VARCHAR(100) → VARCHAR(500) |
 | 非默认列缺失 | url/content_html/channels/rec_time 恒为 NULL | fetch 调用添加 `fields` 参数指定全列 |
 | 旧表结构不匹配 | 4张表列名与 DDL 完全不一致 | 删除旧表，按 DDL 重建 8 张表 |
+| 周末数据漏同步（缺陷 B） | 按最近交易日（`get_latest_trade_day`）同步单日，周六/周日运行时仍取周五，周末产生的 news/major_news/cctv_news 永不同步进 GreatSQL | 20260802 任务2：改为状态文件驱动的自然日区间（last+1 ~ 今天，含周末），并支持手动 1/2 参补数 |
 
 
 ## 十、数据质量（2026-05-18 探查）
@@ -300,7 +319,7 @@ unit_test/
 |--------|------|
 | 数据连续性 | ✓ 8 张表全部有数据，时间轴 2020~2026 连续 |
 | API 截断 | ✓ 分片策略已验证（3h/8段、3天×report_type、逐股、半月） |
-| 数据重复 | 未发现大面积重复（未加唯一索引，语料数据允许同源同时间多条） |
+| 数据重复 | 8 表均含 `uk_*` 唯一键（20260802 任务2 实库 SHOW CREATE TABLE 核实：`uk_news(datetime,title(100),channels)`、`uk_major_news(pub_time,title(100),src)`、`uk_date_title(date,title)`、`uk_irm_qa_sh(ts_code,pub_time,q(100))`、`uk_ts_td_q(ts_code,trade_date,q(200))`、`uk_anns_d(ann_date,ts_code,title(100))`、`uk_npr(pubtime,title(100))`、`uk_ts_td_title(ts_code,trade_date,title)`）；重复同步由「INSERT IGNORE + 唯一键」幂等去重（原「未加唯一索引」记载与实库不符，已修订） |
 | 字段 NULL | 非默认字段已通过 `fields` 参数修复 |
 | 日期格式 | ✓ DATE/DATETIME 两种格式统一正确 |
 | 同一日期 | ✓ 无异常 |

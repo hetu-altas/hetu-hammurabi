@@ -24,7 +24,7 @@ permission:
 | 依赖 | `requirements.txt` 变更是否必要、兼容 |
 | 测试覆盖 | 单测是否覆盖正常/反例/边界，Mock 是否隔离外部依赖 |
 
-3. 在 `opencode_schedule/<YYYYMMDD>/` 下产出 `评审报告.md`：
+3. 在任务目录（`opencode_schedule/<YYYYMMDD>/<日期>任务N<名称>/`，由编排者传入）下产出 `评审报告.md`：
    - 结论：**APPROVE**（通过）或 **REVISE**（需修改）
    - 问题清单（表格：位置 | 严重度(高/中/低) | 问题 | 修改建议）
    - 合规自查结论

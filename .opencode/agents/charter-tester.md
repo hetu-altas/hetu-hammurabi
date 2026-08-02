@@ -15,7 +15,7 @@ permission:
 1. 使用 skill 工具加载 `charter-testing` 技能，阅读其中引用的单测宪章文件。
 2. 编写 `unit_test/test_<模块名>.py`，必须覆盖正常案例 / 反案例 / 边界条件，带中文 docstring，外部依赖用 `@patch` / `MagicMock` 隔离。
 3. 运行测试（优先共享 venv `/mnt/d/workspace/hetu-altas/venv-hetu/bin/python`），并将结果写入 `unit_test/test/test_<模块名>_result.txt`。
-4. **写入门禁文件**：在 `opencode_schedule/<YYYYMMDD>/` 下生成 `.gate.json`：
+4. **写入门禁文件**：在任务目录（`opencode_schedule/<YYYYMMDD>/<日期>任务N<名称>/`，由编排者传入）下生成 `.gate.json`：
    ```json
    {"test_passed": true, "total": N, "passed": N, "updated_at": "YYYY-MM-DD HH:MM:SS"}
    ```

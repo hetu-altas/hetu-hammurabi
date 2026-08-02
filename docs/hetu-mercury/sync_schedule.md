@@ -237,7 +237,11 @@ scripts/
 10 19 * * 1-5 cd ~/prod/hetu-altas/hetu-mercury && bash scripts/sync_by_day/daily_forex_sync.sh
 12 19 * * 1-5 cd ~/prod/hetu-altas/hetu-mercury && bash scripts/sync_by_day/daily_hkstock_sync.sh
 14 19 * * 1-5 cd ~/prod/hetu-altas/hetu-mercury && bash scripts/sync_by_day/daily_macro_sync.sh
-16 19 * * 1-5 cd ~/prod/hetu-altas/hetu-mercury && bash scripts/sync_by_day/daily_llmcorpus_sync.sh
+
+# ========== 每日 21:40 — 大模型语料 llmcorpus（每日含周末） ==========
+# > 20260802 任务2 核对修订：原记载 `16 19 * * 1-5` 已过期；实际 `scripts/crontab` 为 `40 21 * * *`
+# > （每天运行含周末——自然日数据源依赖此形态，与每日 19:00 板块分离）
+40 21 * * * cd ~/prod/hetu-altas/hetu-mercury && bash scripts/sync_by_day/daily_llmcorpus_sync.sh
 
 # ========== 每周六 08:00 — 参考数据 + 重任务 ==========
 0 8 * * 6 cd ~/prod/hetu-altas/hetu-mercury && bash scripts/sync_by_week/weekly_reference_sync.sh

@@ -14,7 +14,8 @@
 | 日志 | [constitution/log/log.md](log/log.md) |
 | TDengine | [constitution/tdengine/tdengine.md](tdengine/tdengine.md) |
 | Milvus | [constitution/milvus/milvus.md](milvus/milvus.md) |
-| 研发流程 | 见[十二、研发流程与宪章工作流](#十二研发流程与宪章工作流) |
+| 任务拆分 | [constitution/task_split/task_split.md](task_split/task_split.md) |
+| 研发流程 | 见[十三、研发流程与宪章工作流](#十三研发流程与宪章工作流) |
 
 ---
 
@@ -112,11 +113,21 @@
 6. 连接配置统一从 `conf/milvus_conf.json` 读取，禁止硬编码
 7. 详见 [milvus.md](milvus/milvus.md)
 
-## 十二、研发流程与宪章工作流
+## 十二、任务拆分评估
+
+1. 任务书编写前必须按 `task_split/task_split.md` 评估任务粒度：以当前模型上下文窗口为约束，单节点峰值 ≤ 窗口 60%、主会话累计 ≤ 窗口 30%
+2. 任务按代码量分级：小（≤300 行）/ 中（≤1500 行）/ 大（≤4000 行）/ 超大（>4000 行，必须拆分）
+3. 拆分以"可独立验证闭环"为单位（编码+单测+评审），按依赖顺序拆分，子任务间以接口为契约
+4. 超限任务拆分为多个任务书（任务1/任务2/...），每个任务仍走完整流程
+5. 详见 [task_split.md](task_split/task_split.md)
+
+## 十三、研发流程与宪章工作流
 
 1. 研发统一通过 hetu-hammurabi 的宪章工作流执行：在业务项目内使用 `/dev <任务书路径>` 命令触发 charter-orchestrator 编排。
-2. 任务书按 hetu-hammurabi `templates/task_book.md` 模板编写，与实施计划、研发日志、流程状态一并存放于业务项目 `opencode_schedule/YYYYMMDD/` 目录下。
+2. 任务书按 hetu-hammurabi `templates/task_book.md` 模板编写，与实施计划、研发日志、流程状态一并存放于业务项目任务目录 `opencode_schedule/<YYYYMMDD>/<任务目录>/` 下（以任务书名建目录）。
 3. 流程节点严格按序执行，前序节点未完成不得进入下一节点：
+   - 节点-1 任务书生成（仅一句话需求输入时）：按模板生成任务书并匹配资源
+   - 节点0 校验：任务书/宪章/输出目录确认
    - 节点1 分析：解析任务书，产出 `实施计划.md`
    - 节点2 编码：按本宪法编码要求实现
    - 节点3 单元测试：按单测规范编写并运行，作为**门禁**，全部通过方可进入后续节点
@@ -125,8 +136,8 @@
    - 节点6 资产沉淀：将研发产出沉淀为 `docs/hetu-<项目>/` 下的文档，区分**新增**（创建并登记资源地图）与**更新**（仅追加/修订相关章节）
    - 节点7 通知：通过 hetu-aether `utils/util_dingtalk.py` 发送完成通知
 4. 需求分析必须按 hetu-hammurabi `docs/资源地图.md` 匹配接口文档、DDL、参考代码；引用资源须给出精确文件路径与行号，禁止虚构。
-5. 每个节点状态固化到 `opencode_schedule/<YYYYMMDD>/研发流程状态.md`，流程结束输出总结。
+5. 每个节点状态固化到任务目录 `opencode_schedule/<YYYYMMDD>/<任务目录>/研发流程状态.md`，流程结束输出总结。
 6. 研发日志必须包含：任务概述、创建/修改文件清单、核心设计、测试结果、遗留问题。
-7. 门禁约束：测试未通过禁止进入日志、资产沉淀与通知节点；修复重试不超过 3 轮，仍失败则停止并通知用户。测试节点须将结果写入 `opencode_schedule/<YYYYMMDD>/.gate.json`，由 charter-gate 插件硬性拦截未过门禁的日志/通知操作。评审 `REVISE` 回退编码修复，重试不超过 2 轮。
+7. 门禁约束：测试未通过禁止进入日志、资产沉淀与通知节点；修复重试不超过 3 轮，仍失败则停止并通知用户。测试节点须将结果写入任务目录 `opencode_schedule/<YYYYMMDD>/<任务目录>/.gate.json`，由 charter-gate 插件硬性拦截未过门禁的日志/通知操作。评审 `REVISE` 回退编码修复，重试不超过 2 轮。
 8. 资产沉淀必须遵守 `docs/资源地图.md` 的登记机制：新增文档/参考实现须登记，更新文档不得破坏原有内容。
 9. 流程编排与节点代理定义见 hetu-hammurabi 的 `.opencode/` 目录。

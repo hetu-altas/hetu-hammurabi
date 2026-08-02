@@ -13,7 +13,7 @@ permission:
 
 ## 任务
 1. 使用 skill 工具加载 `charter-logging` 技能。
-2. 参考本项目已有的历史日志格式，在 `opencode_schedule/<YYYYMMDD>/` 下撰写 `任务N研发日志.md`：
+2. 参考本项目已有的历史日志格式，在任务目录（`opencode_schedule/<YYYYMMDD>/<日期>任务N<名称>/`，由编排者传入）下撰写 `任务N研发日志.md`：
    - 任务概述
    - 创建/修改文件清单（表格：文件 / 说明）
    - 核心设计（关键方案、格式、流程）

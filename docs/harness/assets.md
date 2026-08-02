@@ -28,7 +28,8 @@ constitution/
 ├── log/log.md             # 运行时日志细则
 ├── project/project.md     # 项目结构细则
 ├── tdengine/tdengine.md   # TDengine 细则
-└── milvus/milvus.md       # Milvus 细则（统一 aether util_milvus）
+├── milvus/milvus.md       # Milvus 细则（统一 aether util_milvus）
+└── task_split/task_split.md # 任务拆分评估（上下文预算与粒度分级）
 ```
 
 ### 1.2 宪章如何约束模型

@@ -36,9 +36,9 @@ opencode debug config          # plugin 列表应含 charter-gate.ts
 
 ```bash
 # 1. 按 templates/task_book.md 编写任务书
-# 2. 放入业务项目 opencode_schedule/<YYYYMMDD>/
+# 2. 放入业务项目 opencode_schedule/<YYYYMMDD>/<任务目录>/（任务目录以任务书名命名）
 # 3. 业务项目目录内启动 opencode
-/dev opencode_schedule/20260801/20260801任务1xxx.md
+/dev opencode_schedule/20260801/20260801任务1xxx/20260801任务1xxx.md
 ```
 
 ### 2.2 无人工干预的运行前提

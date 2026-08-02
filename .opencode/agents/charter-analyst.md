@@ -15,7 +15,7 @@ permission:
 1. 使用 skill 工具加载 `charter-analysis` 技能，按其中定义的资源匹配流程执行。
 2. 读取任务书全文。
 3. 阅读 `../hetu-hammurabi/docs/资源地图.md` 定位资源。
-4. 在 `opencode_schedule/<YYYYMMDD>/` 下产出 `实施计划.md`，包含：
+4. 在任务目录（`opencode_schedule/<YYYYMMDD>/<日期>任务N<名称>/`，由编排者传入）下产出 `实施计划.md`，包含：
    - 任务概述与验收标准
    - 涉及文件清单（新建/修改，含路径）
    - 技术方案要点（拆分策略、接口/格式、Shell 脚本）

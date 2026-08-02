@@ -22,15 +22,17 @@
 
 ### 2.1 测试门禁（核心）
 
-- **事实来源**：`opencode_schedule/<YYYYMMDD>/.gate.json`
+- **事实来源**：任务目录下的 `.gate.json`（`opencode_schedule/<YYYYMMDD>/<任务目录>/.gate.json`，插件递归扫描取最新）
   ```json
   {"test_passed": true, "total": 41, "passed": 41, "updated_at": "2026-08-01 10:00:00"}
   ```
 - **写入方**：charter-tester 运行完测试后写入（true=全过 / false=有失败）
-- **拦截规则**：`.gate.json` 缺失或 `test_passed != true` 时，以下操作一律 `throw` 阻断：
-  - 写入 `*研发日志.md`、`*研发流程状态.md`
+- **拦截规则**（仅拦截写入，不误伤读取）：`.gate.json` 缺失或 `test_passed != true` 时，以下操作一律 `throw` 阻断：
+  - `write`/`edit`/`apply_patch` 写入 `*研发日志.md`、`*研发流程状态.md`
+  - bash 中通过重定向（`>`/`>>`/`tee`）写入上述文件
   - bash 中调用钉钉通知（`util_dingtalk` / `send_markdown` / `send_text`）
-- **验证结果**：门禁关闭时写入被拒；打开后放行（真实环境双向验证通过）
+- **读取不受限**：`cat`/`tail`/`grep`/`read` 等读操作正常放行
+- **验证结果**：门禁关闭时写入被拒、读取放行；打开后写入放行（bun 单测 + 真实环境双向验证通过）
 
 ### 2.2 数据安全
 

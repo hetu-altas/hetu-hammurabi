@@ -50,7 +50,7 @@
 
 ## 八、研发日志
 
-记录在 `opencode_schedule/YYYYMMDD/` 下。
+记录在任务目录 `opencode_schedule/<YYYYMMDD>/<日期>任务N<名称>/` 下。
 
 ## 九、资产沉淀
 

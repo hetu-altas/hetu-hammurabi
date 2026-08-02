@@ -37,12 +37,47 @@ milvus = get_milvus()
 | `insert(data, name)` | 插入数据（list[dict]） |
 | `search(vectors, top_k, filter_expr, output_fields, name)` | 向量搜索 |
 | `query(filter_expr, output_fields, limit, name)` | 标量查询 |
+| `recall(vectors, top_k, metadata_filter, output_fields, pk_field, metadata_limit, name)` | 两级召回：元数据过滤 + 候选集内向量检索 |
 | `delete(filter_expr, name)` | 按表达式删除 |
 | `get_stats(name)` | 获取 Collection 统计 |
 
 所有 `name` 参数可省略，默认使用配置文件中的 `collection_name`。
 
-### 2.3 配置文件
+### 2.3 两级召回 recall
+
+大库场景的标准检索模式：**先按元数据缩小范围，再在范围内做向量匹配**，避免全库向量检索。
+
+```python
+from utils.util_milvus import get_milvus
+
+milvus = get_milvus()
+milvus.load_collection()
+
+result = milvus.recall(
+    vectors=[[0.12, 0.34, ...]],          # 查询向量
+    top_k=10,                              # 最终返回条数
+    metadata_filter='source == "industry_report" and publish_date >= "2025-01-01"',
+    output_fields=["title", "publish_date", "institution"],
+    pk_field="id",                         # 主键字段名
+    metadata_limit=1000,                   # 一级候选集上限
+)
+# result: {"candidates": N, "results": [...]}
+#   candidates: None=未过滤(全库) | 0=无候选 | N=候选集大小
+```
+
+两级流程：
+
+1. **一级（元数据召回）**：`metadata_filter` 非空时先标量查询取候选主键
+2. **空候选早退**：无候选直接返回空结果，不执行二级检索
+3. **二级（向量检索）**：`id in [...]` 限定候选集后做向量检索
+
+注意事项：
+- 候选集过大时 `id in [...]` 表达式可能超 Milvus 限制，按业务设置合理 `metadata_limit`，或改用 Partition 分区
+- 无 `metadata_filter` 时退化为纯向量检索（兼容旧行为）
+
+> 20260801 任务1 更新：新增 `recall` 两级召回方法。
+
+### 2.4 配置文件
 
 `conf/milvus_conf.json` 结构：
 

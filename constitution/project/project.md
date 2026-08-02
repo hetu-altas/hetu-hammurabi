@@ -131,8 +131,14 @@ constitution/
 新增规范类型时，在 `constitution/` 下新建小写+下划线命名的子目录。
 
 ### 4.4 开发日志目录
-`opencode_schedule/` — 按日期 `YYYYMMDD/` 归档开发日志：
-- 任务定义：`<日期>任务<N>.md`
+`opencode_schedule/` — 按日期 `YYYYMMDD/` 归档，同日多任务以**任务目录**隔离：
+```
+opencode_schedule/<YYYYMMDD>/
+└── <YYYYMMDD>任务<N>_<名称>/   # 任务目录（以任务书名去掉 .md 命名）
+    ├── <YYYYMMDD>任务<N>_<名称>.md   # 任务定义
+    └── 实施计划/评审报告/研发日志/流程状态等中间产物
+```
+- 任务定义：`<日期>任务<N>.md`（位于任务目录内）
 - 会话记录：`<日期>_session.md`
 
 ---
@@ -155,7 +161,7 @@ constitution/
 ### 5.3 文档文件
 - 规范文档：`<规范名>.md`，存放于 `constitution/<类别>/` 下
 - 项目文档：`<描述>.md`，存放于 `docs/` 下
-- 开发日志：`<日期>_<描述>.md`，存放于 `opencode_schedule/<YYYYMMDD>/` 下
+- 开发日志：`<日期>_<描述>.md`，存放于任务目录 `opencode_schedule/<YYYYMMDD>/<任务目录>/` 下
 
 ---
 
@@ -210,7 +216,7 @@ hetu-XXX/src/  ──→  hetu-aether/conf/   （配置）
 | 项目结构规范 | `constitution/project/project.md` | 目录结构与命名规则 |
 | 顶层约束 | `constitution/constitution.md` | 项目级安全与编码底线 |
 | 业务文档 | `docs/` | 按业务类别组织的说明文档 |
-| 开发日志 | `opencode_schedule/<YYYYMMDD>/` | 按日期归档的开发过程记录 |
+| 开发日志 | `opencode_schedule/<YYYYMMDD>/<任务目录>/` | 按日期+任务目录归档的开发过程记录 |
 
 ### 8.2 文档语言
 - 项目说明、技术文档、规范文档使用中文
