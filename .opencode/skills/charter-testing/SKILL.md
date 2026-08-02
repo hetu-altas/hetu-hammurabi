@@ -15,5 +15,5 @@ description: 遵循 hetu 系列单元测试宪章编写并运行测试，结果�
    - 测试结果写入 `unit_test/test/test_<模块名>_result.txt`
    - 权限受限的外部接口用 try/except + skipTest 处理
 3. 运行方式（项目目录下）：
-   - 优先使用共享 venv：`/mnt/d/workspace/hetu-altas/venv-hetu/bin/python -m unittest unit_test.test_xxx -v`
+   - 优先使用共享 venv：`../venv-hetu/bin/python -m unittest unit_test.test_xxx -v`
    - 或直接运行 `python test_xxx.py`，确保结果文件已生成

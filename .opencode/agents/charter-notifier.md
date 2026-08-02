@@ -17,10 +17,10 @@ permission:
    - 正文：任务概述、改动文件、测试结果（通过数/总数）、产出位置
 2. 调用 hetu-aether 的钉钉工具发送：
    - 工作目录切到 `../hetu-aether`，使用共享 venv：
-     `/mnt/d/workspace/hetu-altas/venv-hetu/bin/python`
+     `../venv-hetu/bin/python`
    - 示例命令（通过 bash 执行）：
      ```
-     cd ../hetu-aether && /mnt/d/workspace/hetu-altas/venv-hetu/bin/python -c "from utils.util_dingtalk import send_markdown; send_markdown('$TITLE', '''$BODY''')"
+     cd ../hetu-aether && ../venv-hetu/bin/python -c "from utils.util_dingtalk import send_markdown; send_markdown('$TITLE', '''$BODY''')"
      ```
    - 若钉钉配置缺失或发送失败，返回失败原因并提示用户手动发送。
 3. 返回：发送结果（成功/失败 + 返回码）。

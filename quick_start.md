@@ -69,6 +69,7 @@ opencode_schedule/<YYYYMMDD>/<YYYYMMDD>任务N<名称>/
 | "Test gate not passed" error | Expected behavior: the gate opens automatically once the tester node runs tests and writes `.gate.json`; writing dev logs or notifying before that is hard-blocked by design |
 | `/dev` unavailable after switching machines | Re-run step 1 (symlinks use absolute paths) |
 | "Path not found" | Make sure `hetu-hammurabi` and the business project are siblings under the same parent directory |
+| Paths don't match my environment | The repo uses relative-path conventions (`../venv-hetu/`, `../logs/`, `../hetu-aether/`); adapt them to your layout — see the "Open-Source Adaptation" section in the README |
 | Can I skip a node? | No — the pipeline is fixed by the charter; adjust task granularity instead of nodes |
 
 ## 5. Next steps

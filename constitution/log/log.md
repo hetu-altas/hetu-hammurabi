@@ -3,10 +3,10 @@
 ## 一、日志目录
 
 ### 1.1 目录结构
-所有项目日志统一输出到 `/mnt/e/logs/hetu-altas/` 下，按项目划分子目录：
+所有项目日志统一输出到 `../logs/hetu-altas/` 下，按项目划分子目录：
 
 ```
-/mnt/e/logs/hetu-altas/
+../logs/hetu-altas/
 ├── hetu-aether/          # 公共项目日志
 │   └── hetu-aether.log
 ├── hetu-mercury/         # 业务项目日志
@@ -160,7 +160,7 @@ logger.debug(
 
 ```json
 {
-    "log_dir": "/mnt/e/logs/hetu-altas",
+    "log_dir": "../logs/hetu-altas",
     "project_name": "hetu-aether",
     "file_prefix": "hetu-aether",
     "rotation": {

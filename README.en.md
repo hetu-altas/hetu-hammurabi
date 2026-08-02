@@ -48,6 +48,19 @@
 
 ---
 
+## Open-Source Adaptation (read before deploying)
+
+All paths in this repository follow **relative-path conventions** — adjust them to your own layout when deploying:
+
+| Item to adapt | Current convention | Notes |
+|---------------|-------------------|-------|
+| Shared venv | `../venv-hetu/bin/python` | Convention: the shared venv lives in the same parent dir as the projects; replace references in `.opencode/` and `constitution/` for other layouts |
+| Log root | `../logs/hetu-altas/` | Convention: log root is a sibling of the projects (see `constitution/log/log.md`) |
+| Shared-utils project | `../hetu-aether/` (example name) | Coding/testing/notification nodes reference the shared-utils project; update `.opencode/` references if renamed |
+| Business project names | `hetu-mercury` / `hetu-thoth` (example names) | Replace with your own projects in the resource map (`docs/资源地图.md`) and charters |
+
+> Note: `hetu-aether/mercury/thoth` are the example naming of the hetu ecosystem — keep them or replace with your own naming.
+
 ## Directory Layout
 
 ```

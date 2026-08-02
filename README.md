@@ -48,6 +48,19 @@ hetu 系列「宪章编程」harness 模块。通过 opencode 的 Commands / Age
 
 ---
 
+## 开源适配（部署前必读）
+
+仓库内所有路径均为**相对路径约定**，部署时按你的实际目录布局调整：
+
+| 需自行调整的项 | 当前约定 | 说明 |
+|---------------|---------|------|
+| 共享 venv | `../venv-hetu/bin/python` | 约定共享 venv 与各项目同父目录；不同布局请替换 `.opencode/` 与 `constitution/` 中的引用 |
+| 日志根目录 | `../logs/hetu-altas/` | 约定日志根与各项目同父目录（见 `constitution/log/log.md`） |
+| 公共工具项目 | `../hetu-aether/`（示例名） | 编码/测试/通知节点引用公共工具项目，改名请同步替换 `.opencode/` 中的引用 |
+| 业务项目名 | `hetu-mercury` / `hetu-thoth`（示例名） | 资源地图（`docs/资源地图.md`）与宪章中的示例项目名，按实际替换 |
+
+> 提示：`hetu-aether/mercury/thoth` 为河图体系的示例命名，可整体保留或替换为你自己的项目命名。
+
 ## 目录结构
 
 ```
