@@ -30,7 +30,7 @@
 > **Legislate first, code later.**
 > Constrain with the charter, not with prompt patches — fix a class of bugs, not one bug; eliminate a class of violations, not one violation.
 
-> — Excerpts from the [Charter Programming Manifesto](manifesto.md)
+> — Excerpts from the [Constitution Coding Manifest](manifesto.md)
 
 > The vibe programmer asks: "AI, what can you do?"
 > The charter programmer says: "AI, within my rules, this is all you may do."
@@ -95,7 +95,7 @@ All paths in this repository follow **relative-path conventions** — adjust the
 │   └── install_harness.sh             # Symlink the harness into sibling hetu-* projects
 ├── templates/
 │   └── task_book.md                   # Task book template
-├── 宪章编程宣言.md                    # Charter Programming Manifesto (Chinese) — see manifesto.md
+├── 宪章编程宣言.md                    # Constitution Coding Manifest (Chinese) — see manifesto.md
 └── 快速上手指南.md                    # Quickstart (Chinese) — see quick_start.md
 ```
 

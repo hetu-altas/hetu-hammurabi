@@ -1,4 +1,4 @@
-# The Charter Programming Manifesto
+# The Constitution Coding Manifest
 ## — A Declaration of Order for Software Engineering in the Age of AI
 
 ---
@@ -147,4 +147,4 @@ We are the legislators of the AI age.
 
 In the hetu ecosystem, the legislator has taken his seat — and his name is Hammurabi.
 
-— The Charter Programming Manifesto, 2026 · hetu-hammurabi edition
+— The Constitution Coding Manifest, 2026 · hetu-hammurabi edition
