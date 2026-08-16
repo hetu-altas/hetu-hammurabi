@@ -1,0 +1,14 @@
+=== 看板验收证据 2026-08-14 23:01:29 ===
+
+--- /api/health ---
+{"ok":true,"events":155}
+--- /api/stats/overview ---
+{"total_tasks":7,"total_node_runs":77,"success_rate":0.9853,"gate_block_rate":0.1111,"gate_block_count":1,"gate_pass_count":8,"period":"all","period_start":"20260804","period_end":"20260814"}
+--- /api/stats/nodes ---
+{"nodes":[{"node":"-1","node_name":"任务书生成","runs":8,"success":8,"fail":0,"success_rate":1.0,"avg_round":1.0},{"node":"0","node_name":"校验","runs":16,"success":8,"fail":0,"success_rate":1.0,"avg_round":1.0},{"node":"1","node_name":"分析","runs":8,"success":8,"fail":0,"success_rate":1.0,"avg_round":1.0},{"node":"2","node_name":"编码","runs":8,"success":8,"fail":0,"success_rate":1.0,"avg_round":1.0},{"node":"3","node_name":"单元测试","runs":8,"success":8,"fail":0,"success_rate":1.0,"avg_round":1.0},{"node":"4","node_name":"代码评审","runs":8,"success":6,"fail":1,"success_rate":0.8571,"avg_round":1.0},{"node":"5","node_name":"研发日志","runs":7,"success":7,"fail":0,"success_rate":1.0,"avg_round":1.0},{"node":"6","node_name":"资产沉淀","runs":7,"success":7,"fail":0,"success_rate":1.0,"avg_round":1.0},{"node":"7","node_name":"通知","runs":7,"success":7,"fail":0,"success_rate":1.0,"avg_round":1.0}]}
+--- /api/stats/gates ---
+{"rate":0.1111,"count":1,"pass_count":8,"events":[{"event_id":"9db531fb-e9f5-43e9-9347-ea692ea43080","ts":"2026-08-14T22:57:02","run_id":"20260814任务1宪章体系DSH重构与运行看板","project":"hetu-hammurabi","node":"3","node_name":"单元测试","event_type":"gate_block","status":"blocked","round":1,"detail":{"msg":"冒烟验证：门禁未开时写日志/curl 直发钉钉被拦截（D1-D4 生效）"},"extra":{},"source":"live"}]}
+--- /api/tasks ---
+{"tasks":[{"run_id":"20260814任务1宪章体系DSH重构与运行看板","project":"hetu-hammurabi","date":"20260814","status":"pass","node_count":9,"last_ts":"2026-08-14T23:00:15","source":"live"},{"run_id":"20260809任务1harness体系泛化","project":"hetu-hammurabi","date":"20260809","status":"pass","node_count":9,"last_ts":"2026-08-09T09:21:00","source":"history"},{"run_id":"20260804任务1河图Logo设计","project":"hetu-hammurabi","date":"20260804","status":"pass","node_count":9,"last_ts":"2026-08-04T09:21:00","source":"history"},{"run_id":"20260804任务2河图Logo水墨优化","project":"hetu-hammurabi","date":"20260804","status":"pass","node_count":9,"last_ts":"2026-08-04T09:21:00","source":"history"},{"run_id":"20260804任务3河图Logo文生图提示词","project":"hetu-hammurabi","date":"20260804","status":"pass","node_count":9,"last_ts":"2026-08-04T09:21:00","source":"history"},{"run_id":"20260804任务4河图Logo万相提示词","project":"hetu-hammurabi","date":"20260804","status":"pass","node_count":9,"last_ts":"2026-08-04T09:21:00","source":"history"},{"run_id":"20260804任务5河图Logo万相提示词极简优化","project":"hetu-hammurabi","date":"20260804","status":"pass","node_count":9,"last_ts":"2026-08-04T09:21:00","source":"history"}]}
+--- 首页/静态资源 ---
+index:200 app.js:200 style.css:200

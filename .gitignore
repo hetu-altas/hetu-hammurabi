@@ -2,7 +2,6 @@
 conf/gate_secret
 runlog/
 logs/
-opencode_schedule/
 __pycache__/
 *.pyc
 node_modules/
@@ -18,3 +17,10 @@ docs/资源地图.md
 
 # 测试运行产物
 unit_test/test/*_result.txt
+
+# opencode_schedule：仅开源 harness 体系开发任务（20260804 品牌设计等其余保留本地）
+opencode_schedule/*
+!opencode_schedule/20260809/
+!opencode_schedule/20260814/
+!opencode_schedule/20260815/
+**/.gate.json
