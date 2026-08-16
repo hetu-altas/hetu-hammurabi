@@ -4,23 +4,27 @@ description: 任务书生成流程：根据一句话需求自动编写符合模�
 ---
 # 任务书生成流程
 
+## 路径解析约定（harness 运行时拓扑）
+- 本项目已安装 harness 时，**先读取当前项目 `.opencode/.harness-env`**（由 install_harness.sh 生成，字段：PROJECT_NAME / PROJECT_DIR / WORKSPACE_DIR / HARNESS_DIR / AETHER_DIR / VENV_BIN，均为绝对路径），用其中的变量替换下述 `<HARNESS_DIR>`、`<AETHER_DIR>`、`<VENV_BIN>` 占位符。
+- **回退规则**（.harness-env 缺失或字段缺失时动态查找）：① 同父目录（WORKSPACE_DIR）下同时含 `constitution/constitution.md` + `.opencode/agents/` + `docs/资源地图.md` 的 `hetu-*` 目录为 harness 宿主 → HARNESS_DIR；② 同父目录下 `hetu-aether` 为公共工具项目 → AETHER_DIR；③ 同父目录下 `venv-hetu/bin/python` 为共享环境 → VENV_BIN；④ 当前工作目录 basename 为 PROJECT_NAME。
+
 ## 第一步：解析需求
 从一句话需求中抽取五要素：
 - **目标功能**：要做什么（新增/修改/查询）
 - **数据类别/领域**：股票行情、研报、Milvus 检索等
-- **目标项目**：hetu-aether / hetu-mercury / hetu-thoth（默认当前项目）
+- **目标项目**：同父目录下任一 hetu-* 平级项目（默认当前项目）
 - **产出物**：源码/脚本/文档
 - **约束**：性能、权限、兼容性要求
 
 ## 第二步：资源匹配（必须）
-读取 `../hetu-hammurabi/docs/资源地图.md`，为任务定位：
-- 接口文档：`docs/hetu-mercury/tushare_interface/<板块>/**`
-- DDL：`hetu-mercury/src/batch/sql/greatsql|tdengine/<专题>.sql`
-- 参考代码：`hetu-mercury/src/**`、`hetu-thoth/src/**`、`hetu-aether/utils/**`
-- 宪章约束：`constitution/` 对应规范
+读取 `<HARNESS_DIR>/docs/资源地图.md`（解析见上），为任务定位资源，**匹配顺序：先当前项目 `src/`、`docs/` → 再扫同父目录平级业务项目的 `src/`、`docs/`**：
+- 接口文档：`<业务项目>/docs/<接口文档目录>/**`
+- DDL：`<业务项目>/src/batch/sql/greatsql|tdengine/<专题>.sql`
+- 参考代码：`<业务项目>/src/**`、`<AETHER_DIR>/utils/**`
+- 宪章约束：`<HARNESS_DIR>/constitution/` 对应规范
 
 ## 第三步：按模板生成任务书
-- 模板：`../hetu-hammurabi/templates/task_book.md`
+- 模板：`<HARNESS_DIR>/templates/task_book.md`
 - 必须包含模板全部章节：任务要求 / 拆分策略(如涉及) / 文件与目录 / 接口与数据格式 / Shell脚本(如涉及) / 产出 / 单元测试 / 研发日志 / 资产沉淀 / 通知
 - 命名与存放：任务目录 `opencode_schedule/<YYYYMMDD>/<YYYYMMDD>任务N<名称>/`，任务书 `<YYYYMMDD>任务N<名称>.md` 置于目录内
   - YYYYMMDD 取当天日期，N 为当日任务序号（已存在任务则递增）

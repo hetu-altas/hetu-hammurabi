@@ -1,0 +1,11 @@
+{
+  "name": "hetu-hammurabi-harness",
+  "version": "2.0.0",
+  "description": "河图·汉谟拉比 宪章编程体系 DSH 适配层（profile 插件包）",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "@deepseek-ai/dsh-base": "^0.1.0-rc.6"
+  }
+}

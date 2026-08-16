@@ -4,8 +4,12 @@ description: 需求分析节点的资源匹配流程：按任务书自动定位�
 ---
 # 需求分析 · 资源匹配流程
 
+## 路径解析约定（harness 运行时拓扑）
+- 本项目已安装 harness 时，**先读取当前项目 `.opencode/.harness-env`**（由 install_harness.sh 生成，字段：PROJECT_NAME / PROJECT_DIR / WORKSPACE_DIR / HARNESS_DIR / AETHER_DIR / VENV_BIN，均为绝对路径），用其中的变量替换下述 `<HARNESS_DIR>`、`<AETHER_DIR>`、`<VENV_BIN>` 占位符。
+- **回退规则**（.harness-env 缺失或字段缺失时动态查找）：① 同父目录（WORKSPACE_DIR）下同时含 `constitution/constitution.md` + `.opencode/agents/` + `docs/资源地图.md` 的 `hetu-*` 目录为 harness 宿主 → HARNESS_DIR；② 同父目录下 `hetu-aether` 为公共工具项目 → AETHER_DIR；③ 同父目录下 `venv-hetu/bin/python` 为共享环境 → VENV_BIN；④ 当前工作目录 basename 为 PROJECT_NAME。
+
 ## 第一步：读资源地图
-先读取 `../hetu-hammurabi/docs/资源地图.md`，明确各类资源的存放位置，避免凭印象乱找。
+先读取 `<HARNESS_DIR>/docs/资源地图.md`（解析见上），明确各类资源的存放位置，避免凭印象乱找。
 
 ## 第二步：解析任务书，抽取"检索键"
 从任务书中提取用于匹配的关键信息：
@@ -15,21 +19,24 @@ description: 需求分析节点的资源匹配流程：按任务书自动定位�
 
 ## 第三步：按三类资源自动匹配
 
+> 匹配顺序统一为：**先当前项目 `src/`、`docs/` → 再扫同父目录平级业务项目的 `src/`、`docs/`**；
+> 任务书指明目标项目时以该项目的 src/docs 优先，未指明时按目录名顺序扫描全部平级 hetu-* 业务项目。
+
 ### 3.1 接口文档
-1. 由数据类别定位板块目录：`../hetu-hammurabi/docs/hetu-mercury/tushare_interface/<板块>/`
+1. 由数据类别在目标项目定位板块目录：`<业务项目>/docs/<接口文档目录>/<板块>/`（先查当前项目 docs，再扫平级业务项目 docs）
 2. 在该目录用 grep 检索接口名/表名关键词，锁定对应 `.md`
-3. 交叉验证：对照 `../hetu-mercury/src/batch/sql/greatsql/<专题>-接口列表.md` 确认接口权限与字段
+3. 交叉验证：对照 `<业务项目>/src/batch/sql/greatsql/<专题>-接口列表.md` 确认接口权限与字段
 
 ### 3.2 DDL / 表结构
-1. GreatSQL：`../hetu-mercury/src/batch/sql/greatsql/<专题>.sql`
-2. TDengine：`../hetu-mercury/src/batch/sql/tdengine/<专题>.sql`
+1. GreatSQL：`<业务项目>/src/batch/sql/greatsql/<专题>.sql`
+2. TDengine：`<业务项目>/src/batch/sql/tdengine/<专题>.sql`
 3. 在 `.sql` 内检索表名，提取建表语句与字段定义
 
 ### 3.3 参考代码
-1. 数据获取类 → `../hetu-mercury/src/fetch_tushare_data/<品种>/**`
-2. 同步/批量类 → `../hetu-mercury/src/data_sync/**`、`../hetu-mercury/src/batch/**`
-3. 文档处理类 → `../hetu-thoth/src/{convert2md,download_files,text2jsonl,embedding,indexing,ingestion}/**`
-4. 公共能力 → `../hetu-aether/utils/util_*.py`
+1. 数据获取类 → `<业务项目>/src/fetch_tushare_data/<品种>/**`
+2. 同步/批量类 → `<业务项目>/src/data_sync/**`、`<业务项目>/src/batch/**`
+3. 文档处理类 → `<业务项目>/src/{convert2md,download_files,text2jsonl,embedding,indexing,ingestion}/**`
+4. 公共能力 → `<AETHER_DIR>/utils/util_*.py`
 5. 选定最相似实现后通读其主流程，作为新代码的基线
 
 ## 第四步：核实（必须）

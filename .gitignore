@@ -1,0 +1,20 @@
+# 运行产物与敏感数据（禁止开源/提交）
+conf/gate_secret
+runlog/
+logs/
+opencode_schedule/
+__pycache__/
+*.pyc
+node_modules/
+.dsh-src/
+
+# 业务项目文档（不开源，仅本地）
+docs/hetu-sybil/
+docs/hetu-thoth/
+docs/hetu-mercury/
+docs/hetu-aether/
+docs/brand/
+docs/资源地图.md
+
+# 测试运行产物
+unit_test/test/*_result.txt

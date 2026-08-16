@@ -15,7 +15,7 @@
 
 ## 一、定位
 
-`hetu-hammurabi` 是 hetu 系列的 **harness（驭具）模块**：通过 opencode 的 Commands / Agents / Skills / Plugins 原生能力，把「宪章约束 + 研发流程节点 + 硬性门禁 + 资产沉淀」固化为可自动执行的 AI coding 流水线。
+`hetu-hammurabi`（harness 宿主）是 hetu 系列的 **harness（驭具）模块**：通过 opencode 的 Commands / Agents / Skills / Plugins 原生能力，叠加 `.harness-env` 运行时拓扑解析（宿主/公共工具/共享环境定位，见 [topology.md](topology.md)），把「宪章约束 + 研发流程节点 + 硬性门禁 + 资产沉淀」固化为可自动执行的 AI coding 流水线。
 
 核心主张：
 
@@ -26,7 +26,7 @@
 ```
                         ┌──────────────────────────────┐
   用户输入任务书          │   charter-orchestrator        │
-  /dev <任务书> ────────▶ │   （主编排代理，节点 -1~7 调度）     │
+  /cc <任务书> ────────▶ │   （主编排代理，节点 -1~7 调度）     │
                         └───┬──┬──┬──┬──┬──┬──┬──┬───┘
                             │  │  │  │  │  │  │  │
             ┌───────────────┘  │  │  │  │  │  │  └──────────┐
@@ -44,28 +44,30 @@
 | **宪章层（软约束）** | `constitution/` + Skills | 约束模型"怎么做"：编码、单测、日志、TDengine、Milvus 等规范 |
 | **流程层（编排）** | `charter-orchestrator` + 节点子代理 | 约束"按什么顺序做"：节点 -1~7 流水线与门禁链 |
 | **插件层（硬约束）** | `charter-gate` 插件 | 约束"不能做什么"：确定性拦截，不依赖模型自觉 |
+| **拓扑层（定位）** | `scripts/harness_topology.py` + 各项目 `.opencode/.harness-env` | 约束"资源在哪"：宿主/公共工具/共享环境运行时解析，agents/skills/插件先读 .harness-env，缺失时按回退规则动态查找（详见 [topology.md](topology.md)） |
 
 ## 三、组件清单
 
 | 组件 | 位置 | 说明 |
 |------|------|------|
-| 入口命令 | `.opencode/commands/dev.md` | `/dev <任务书>` 触发编排 |
+| 入口命令 | `.opencode/commands/cc.md` | `/cc <任务书>` 触发编排 |
 | 主编排代理 | `.opencode/agents/charter-orchestrator.md` | 节点 -1~7 调度 + 状态固化 |
 | 节点子代理 ×7 | `.opencode/agents/charter-{analyst,coder,tester,reviewer,logger,assetter,notifier}.md` | 每节点一个专职代理 |
-| 技能 ×5 | `.opencode/skills/charter-{analysis,coding,testing,logging,assets}/SKILL.md` | 宪章按节点按需加载 |
-| 硬约束插件 | `.opencode/plugin/charter-gate.ts` | 测试门禁/数据安全/密钥脱敏/资产登记 |
-| 通用宪章 | `constitution/` | 唯一权威规范（12 章顶层 + 6 子规范） |
+| 技能 ×6 | `.opencode/skills/charter-{taskbook,analysis,coding,testing,logging,assets}/SKILL.md` | 宪章按节点按需加载 |
+| 硬约束（判定核心 + 外置规则 + 插件适配） | `harness/core/gate.py` + `harness/gate_rules.yaml` + `harness/core/{seal,secret,redact,assets_check}.py` + `harness/plugins/charter-gate.ts` + `.opencode/plugin/charter-gate.ts` | 测试门禁/数据安全/密钥脱敏/资产登记/续签（20260815 任务1 三层体系，详见 [gates.md](gates.md)）；**双体系并行**（20260815 任务2）：opencode 入口（/cc）与 DSH 入口两个插件共享同一 Python 判定核心与 `gate_rules.yaml`，判定结论逐字段一致 |
+| 通用宪章 | `constitution/` | 唯一权威规范（13 章顶层 + 6 子规范） |
 | 资源地图 | `docs/资源地图.md` | 接口/DDL/代码/宪章的可寻址索引 |
-| 项目文档 | `docs/hetu-aether|mercury|thoth/` | 归集自各项目的文档资产 |
+| 项目文档 | `docs/hetu-<项目>/` | 归集自各项目的文档资产 |
 | 任务书模板 | `templates/task_book.md` | 标准化任务书输入 |
-| 安装脚本 | `scripts/install_harness.sh` | 软链分发到各业务项目 |
+| 运行时拓扑 | `scripts/harness_topology.py` + 各项目 `.opencode/.harness-env` | 宿主定位/目标发现/路径解析（.harness-env 六字段契约） |
+| 安装脚本 | `scripts/install_harness.sh` | 软链分发到各业务项目 + 生成 .harness-env |
 
 ## 四、研发流水线
 
 输入支持**任务书路径**或**一句话需求**（自动生成任务书）：
 
 ```
-输入: /dev <任务书路径 或 一句话需求>
+输入: /cc <任务书路径 或 一句话需求>
           │
           ▼
 节点-1 任务书生成 ──▶ 节点0 校验 ──▶ 节点1 分析 ──▶ 节点2 编码

@@ -1,0 +1,37 @@
+---
+name: charter-assets
+description: 资产沉淀节点流程：将研发产出沉淀为 docs 文档，并区分新增与更新。Use when documenting research outputs during the charter dev workflow.
+---
+# 资产沉淀 · 文档新增/更新流程
+
+## 路径解析约定（harness 运行时拓扑）
+- 本项目已安装 harness 时，**先读取当前项目 `.opencode/.harness-env`**（由 install_harness.sh 生成，字段：PROJECT_NAME / PROJECT_DIR / WORKSPACE_DIR / HARNESS_DIR / AETHER_DIR / VENV_BIN，均为绝对路径），用其中的变量替换下述 `<HARNESS_DIR>`、`<AETHER_DIR>`、`<VENV_BIN>` 占位符。
+- **回退规则**（.harness-env 缺失或字段缺失时动态查找）：① 同父目录（WORKSPACE_DIR）下同时含 `constitution/constitution.md` + `harness/agents/`（旧布局为 `.opencode/agents/`，兼容识别）+ `docs/资源地图.md` 的 `hetu-*` 目录为 harness 宿主 → HARNESS_DIR；② 同父目录下 `hetu-aether` 为公共工具项目 → AETHER_DIR；③ 同父目录下 `venv-hetu/bin/python` 为共享环境 → VENV_BIN；④ 当前工作目录 basename 为 PROJECT_NAME。
+
+## 第一步：识别可沉淀资产
+从实施计划、改动文件清单、研发日志中提取值得沉淀的内容：
+- 新增/变更的接口、数据结构、DDL
+- 新的工具方法、通用能力
+- 流程指引、配置说明、Shell 用法
+- 可复用的参考实现（供后续任务做相似功能时参考）
+
+## 第二步：定位目标文档
+- 目标目录：`<HARNESS_DIR>/docs/hetu-<项目>/`（与各项目 docs 结构一致，HARNESS_DIR 解析见上）
+- 先查看 `<HARNESS_DIR>/docs/资源地图.md` 与目标目录，判断目标文档是否已存在
+
+## 第三步：区分新增 vs 更新
+
+### 新增
+- 目标文档不存在时创建，遵循目标目录既有文档的命名与结构
+- 创建后在 `资源地图.md` 登记（新增一行），保证后续任务可发现
+
+### 更新
+- 目标文档已存在时更新，保持原文档结构与命名
+- 只追加/修订与本次任务相关的章节，不得重写或删除无关内容
+- 更新处标注日期与来源任务（如 `> 20260801 任务N 更新`）
+
+## 第四步：资源地图联动
+- 新增文档、新增参考实现、新增接口资产后，同步更新 `<HARNESS_DIR>/docs/资源地图.md` 对应章节
+
+## 约束
+- 引用必须真实存在，禁止虚构；更新不得破坏原文档；全程使用中文。

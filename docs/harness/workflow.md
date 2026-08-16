@@ -2,11 +2,12 @@
 
 > 本文阐述宪章研发流程的节点流水线、门禁链、回退机制与状态固化。
 > 相关实现：`.opencode/agents/charter-orchestrator.md`、`.opencode/agents/charter-*.md`。
+> 路径解析：各节点代理/技能通过当前项目 `.opencode/.harness-env`（HARNESS_DIR / AETHER_DIR / VENV_BIN，见 [topology.md](topology.md)）定位宪章、资源地图与公共工具，缺失时按回退规则动态查找。
 
 ## 一、总体流程
 
 ```
-输入: /dev <任务书路径 或 一句话需求>
+输入: /cc <任务书路径 或 一句话需求>
           │
           ▼
 ┌───── 节点 -1 · 任务书生成（仅一句话需求时）─────────────────────────┐

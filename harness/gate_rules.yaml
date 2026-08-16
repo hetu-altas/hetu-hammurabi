@@ -1,0 +1,82 @@
+# ============================================================
+# gate_rules.yaml · 宪章门禁判定规则（规则外置，20260815任务1）
+#
+# 本文件为 harness/core/gate.py 的判定规则唯一事实来源：
+#   - 加载器按文件 mtime 检测变更，修改任一模式后【不重启】即生效
+#   - 文件缺失 / YAML 解析失败 / schema 非法 → 回退内置默认并告警（fail-closed）
+#   - 正则采用 Python re 语法（yaml 双引号转义：\\ → \，\" → "）
+#   - 各模式默认大小写不敏感（与 20260814 重构版行为一致）
+#
+# 改造对照（H1/H2/H8）：
+#   freshness_seconds   ← 原 gate.py L35 GATE_DEFAULT_MAX_AGE_SECONDS=600
+#   log_file.*          ← 原 L38-39 日志模式 + L42 TASK_DIR_PATTERN + H8 放行名单
+#   audit_files         ← 原 L45
+#   notify.*            ← 原 L49-62（URL 级 + 函数级 + 唯一出口白名单）
+#   dangerous_commands  ← 原 L65-71（H2a 扩展 rm 变体 5 种 + 销毁类命令）
+#   backup.*            ← 原 L74（H2d 语义校验：剥离 echo/printf/注释后搜索）
+#   secret_patterns     ← 可选段：redact.py 脱敏模式（C 阶段，向后兼容）
+# ============================================================
+schema_version: 1
+
+# 门禁新鲜度窗口（秒）：落闸后令牌有效时长，超时判定 GATE_STALE（H4 可调阈值）
+freshness_seconds: 600
+
+log_file:
+  # 主模式：文件名命中即视为研发日志（任意前缀/变体）
+  main_pattern: "研发日志"
+  # 扩展模式：任务目录内 .md 文件名命中即拦截（覆盖重命名变体）
+  ext_pattern: "日志"
+  # 放行名单（H8）：精确文件名匹配，命中不拦（如正常文档「数据日志说明.md」）
+  allowlist:
+    - "数据日志说明.md"
+  # 任务目录模式：opencode_schedule/<8位日期>/<任务目录>/
+  task_dir_pattern: "opencode_schedule[/\\\\]\\d{8}[/\\\\][^/\\\\]+[/\\\\]"
+
+# 审计记录文件：放行（D3，研发流程状态.md 为审计记录可随时写）
+audit_files:
+  - "研发流程状态.md"
+
+notify:
+  # URL 级特征（覆盖 curl/requests 直发钉钉；支持字符类点/变量拼接混淆识别，H2c）
+  url_patterns:
+    - "oapi\\s*[.\\[\\]]\\s*dingtalk\\s*[.\\[\\]]\\s*com"
+    - "oapi\\s*[.\\[\\]'\"+-]*\\s*dingtalk\\s*[.\\[\\]'\"+-]*\\s*com"
+    - "robot\\s*/\\s*send"
+  # 函数级特征（util_dingtalk 等；唯一出口标记自身也视为通知操作，须过门禁）
+  func_patterns:
+    - "util_dingtalk"
+    - "send_markdown|send_text"
+    - "HARNESS_NOTIFY"
+    - "harness\\.core\\.notify"
+  # 通知唯一出口白名单：命中即视为受管控的合法通知（D4）
+  allow_patterns:
+    - "HARNESS_NOTIFY"
+    - "harness\\.core\\.notify"
+
+# 危险命令：任意位置匹配（D4），大小写不敏感（H2a/H2b 扩展）
+dangerous_commands:
+  # rm 递归删除变体 5 种：rm -rf / rm -fr / rm -r -f / rm --recursive --force / /bin/rm -rf / \rm -rf
+  rm_recursive: "(?:\\brm|/bin/rm|\\\\rm)\\s+(?:-[a-zA-Z]*r[a-zA-Z]*f[a-zA-Z]*|-r\\s+-f|--recursive\\s+--force|-fr|-rf)\\b"
+  # 销毁类命令：shred / unlink / rmdir -r / mv 到回收站
+  shred: "\\bshred\\b"
+  unlink: "\\bunlink\\b"
+  rmdir_recursive: "\\brmdir\\s+-[a-zA-Z]*r"
+  mv_trash: "\\bmv\\b.*(?:回收站|trash)"
+  # 数据库/向量库销毁（保留 20260814 语义）
+  drop_table: "\\bDROP\\s+(TABLE|STABLE)\\b"
+  delete_from: "\\bDELETE\\s+FROM\\b"
+  truncate: "\\bTRUNCATE\\b"
+  drop_collection: "\\bdrop_collection\\b"
+
+backup:
+  # 备份声明模式（剥离 echo/printf 文本与注释后搜索，防假声明，H2d）
+  pattern: "backup|备份"
+  # 语义校验：enforce = 备份声明须为真实动作（非纯 echo 文本/注释），
+  # 且销毁判定仍用原始 cmd（防「把 rm 写进 echo 文本就绕过」）
+  semantic: enforce
+
+# 脱敏模式（可选段，C 阶段 redact.py 使用；缺省时用内置三类模式）
+secret_patterns:
+  - "sk-[a-zA-Z0-9]{16,}"
+  - "Bearer\\s+[a-zA-Z0-9._~+/=-]+"
+  - "(?:password|passwd|pwd|secret|token|api[_-]?key|access[_-]?key|access_token)\\s*[=:]\\s*['\"]?[^\\s'\"]{8,}"

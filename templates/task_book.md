@@ -1,8 +1,8 @@
 # YYYYMMDD任务N 任务名称
 
 ## 重要提示
-通用宪章规范统一存放在与本项目目录同级的 hetu-hammurabi 项目的 constitution 目录中，以 `constitution/constitution.md` 为顶层约束，任务执行前请务必仔细阅读并严格遵守。
-宪章编程的流程编排与各节点规范见 hetu-hammurabi 的 `.opencode` 与 `templates` 目录。
+通用宪章规范统一存放在 harness 宿主项目（运行期由当前项目 `.opencode/.harness-env` 的 HARNESS_DIR 定位，缺失时按回退规则查找：同父目录下同时含 `constitution/constitution.md` + `.opencode/agents/` + `docs/资源地图.md` 的 hetu-* 目录即宿主）的 constitution 目录中，以 `constitution/constitution.md` 为顶层约束，任务执行前请务必仔细阅读并严格遵守。
+宪章编程的流程编排与各节点规范见 harness 宿主的 `.opencode` 与 `templates` 目录。
 
 ---
 
@@ -54,11 +54,11 @@
 
 ## 九、资产沉淀
 
-本次研发需沉淀/更新的 docs 文档（存于 hetu-hammurabi `docs/hetu-<项目>/`）：
+本次研发需沉淀/更新的 docs 文档（存于 harness 宿主 `<HARNESS_DIR>/docs/hetu-<项目>/`，HARNESS_DIR 由当前项目 `.opencode/.harness-env` 解析）：
 
 - 新增：`docs/hetu-<项目>/xxx.md`
 - 更新：`docs/hetu-<项目>/yyy.md`（说明变更内容）
 
 ## 十、通知
 
-使用 hetu-aether `utils.util_dingtalk.send_markdown` 发送完成通知。
+使用公共工具项目（`<AETHER_DIR>`，由当前项目 `.opencode/.harness-env` 解析）`utils.util_dingtalk.send_markdown` 发送完成通知。

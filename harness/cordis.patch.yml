@@ -1,0 +1,16 @@
+# 河图·汉谟拉比 宪章编程 · DSH 用户配置 patch 层
+# 由 scripts/install_dsh.sh 生成/更新；手工修改后需重启 dsh 生效。
+#
+# 配置树叠加顺序：dsh.profile.bundles 组合包 patch → 本文件 → $DSH_HOME/cordis.patch.yml
+
+# 门禁密钥路径（install 脚本生成，gitignore）
+gate:
+  secret_file: "${HARNESS_DIR}/conf/gate_secret"
+
+# 运行事件库根目录（宿主 runlog）
+runlog:
+  root: "${HARNESS_DIR}/runlog"
+
+# 流程定义（外置，D5）
+workflow:
+  path: "${HARNESS_DIR}/harness/workflow.yaml"
