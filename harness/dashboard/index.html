@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>宪章体系运行看板 · hetu-hammurabi</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">河图·汉谟拉比</span>
+    <span class="subtitle">宪章体系运行看板</span>
+  </div>
+  <div class="controls">
+    <span class="period-label">统计周期</span>
+    <div class="period-switch" id="periodSwitch">
+      <button data-period="all" class="active">全部</button>
+      <button data-period="day">今天</button>
+      <button data-period="week">本周</button>
+      <button data-period="month">本月</button>
+    </div>
+    <button id="refreshBtn" class="refresh-btn" title="刷新数据">⟳ 刷新</button>
+    <span class="updated" id="updatedAt"></span>
+  </div>
+</header>
+
+<main>
+  <!-- 总览卡片 -->
+  <section class="cards" id="overviewCards">
+    <div class="card">
+      <div class="card-label">任务总数</div>
+      <div class="card-value" id="ovTasks">–</div>
+      <div class="card-foot" id="ovTasksFoot"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">节点运行次数</div>
+      <div class="card-value" id="ovRuns">–</div>
+      <div class="card-foot" id="ovRunsFoot"></div>
+    </div>
+    <div class="card">
+      <div class="card-label">节点成功率</div>
+      <div class="card-value" id="ovSuccess">–</div>
+      <div class="card-gauge"><div class="gauge-fill" id="ovSuccessBar"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-label">门禁拦截率</div>
+      <div class="card-value warn" id="ovGate">–</div>
+      <div class="card-gauge"><div class="gauge-fill warn" id="ovGateBar"></div></div>
+    </div>
+  </section>
+
+  <!-- 引擎性能对比 -->
+  <section class="panel bench-panel">
+    <div class="panel-title">引擎性能对比 · 宪章流程平均耗时</div>
+    <div id="benchmarkBox"><div class="empty-hint">加载中…</div></div>
+  </section>
+
+  <!-- 主体两栏 -->
+  <section class="grid">
+    <!-- 左栏：节点统计 + 门禁拦截 -->
+    <div class="col">
+      <div class="panel">
+        <div class="panel-title">节点运行统计</div>
+        <table class="tbl" id="nodesTable">
+          <thead>
+            <tr>
+              <th>节点</th><th>名称</th><th>运行次数</th>
+              <th>成功</th><th>失败</th><th>成功率</th><th>平均轮次</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="panel">
+        <div class="panel-title">门禁拦截记录 <span class="badge" id="gateCount"></span></div>
+        <table class="tbl" id="gatesTable">
+          <thead>
+            <tr><th>时间</th><th>任务</th><th>节点</th><th>原因</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 右栏：任务列表 + 详情 -->
+    <div class="col">
+      <div class="panel">
+        <div class="panel-title">任务列表 <span class="badge" id="taskCount"></span></div>
+        <table class="tbl" id="tasksTable">
+          <thead>
+            <tr><th>任务（run_id）</th><th>项目</th><th>日期</th><th>状态</th><th>节点</th><th>来源</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="panel" id="detailPanel">
+        <div class="panel-title">任务详情 <span id="detailRunId"></span>
+          <button id="closeDetail" class="close-btn">×</button>
+        </div>
+        <div id="detailBody" class="detail-body">
+          <div class="empty-hint">点击上方任务行查看详情</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footbar">
+  宪章体系 DSH 重构 · 数据来源：runlog 实时事件（live）+ 存量任务静态解析（history）· 指标口径见
+  <a href="/dashboard.md" target="_blank">dashboard.md</a>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

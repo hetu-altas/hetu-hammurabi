@@ -1,0 +1,28 @@
+# 运行产物与敏感数据（禁止开源/提交）
+conf/gate_secret
+runlog/
+logs/
+__pycache__/
+*.pyc
+node_modules/
+.dsh-src/
+
+# 业务项目文档（不开源，仅本地）
+docs/hetu-sybil/
+docs/hetu-thoth/
+docs/hetu-mercury/
+docs/hetu-aether/
+docs/brand/
+docs/资源地图.md
+
+# 测试运行产物
+unit_test/test/*_result.txt
+
+# opencode_schedule：仅开源 harness 体系开发任务（20260804 品牌设计等其余保留本地）
+opencode_schedule/*
+!opencode_schedule/20260809/
+!opencode_schedule/20260814/
+!opencode_schedule/20260815/
+**/.gate.json
+!opencode_schedule/20260816/
+!opencode_schedule/20260816/**

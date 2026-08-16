@@ -1,0 +1,3 @@
+- insert:
+    - id: hetu-dashboard
+      name: '@hetu/dsh-dashboard-panel'

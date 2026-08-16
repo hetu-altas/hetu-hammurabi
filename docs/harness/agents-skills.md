@@ -26,7 +26,7 @@
 
 ## 二、编排器（charter-orchestrator）
 
-- **输入**：任务书路径（来自 `/dev` 命令 `$ARGUMENTS`）
+- **输入**：任务书路径（来自 `/cc` 命令 `$ARGUMENTS`）
 - **职责**：校验 → 按序调用节点子代理 → 执行回退规则 → 维护 `研发流程状态.md`
 - **回退闭环**：
 
@@ -57,7 +57,7 @@ Skill 是"宪章的可加载封装"：模型只在对应节点调用 `skill` 工
 
 ## 四、Commands：入口
 
-`.opencode/commands/dev.md`：
+`.opencode/commands/cc.md`：
 
 ```markdown
 ---
@@ -76,7 +76,7 @@ agent: charter-orchestrator
 
 | 传参 | 来源 | 消费方 |
 |------|------|--------|
-| 任务书路径 | /dev 输入 | analyst |
+| 任务书路径 | /cc 输入 | analyst |
 | 实施计划路径 | analyst 产出 | coder |
 | 改动文件清单 | coder 返回 | tester / reviewer |
 | 测试结果 + .gate.json | tester 产出 | 编排器（门禁判定） |

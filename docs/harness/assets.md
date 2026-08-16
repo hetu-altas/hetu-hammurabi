@@ -10,9 +10,9 @@
 
 ```
 constitution/
-├── constitution.md        # 顶层宪法（12 章）
+├── constitution.md        # 顶层宪法（13 章）
 │   ├── 一 安全底线         # root/密钥/备份/凭据
-│   ├── 二 项目体系         # aether=代码资产, hammurabi=宪章
+│   ├── 二 项目体系         # aether=代码资产, 宿主=宪章
 │   ├── 三 Python 环境      # venv-hetu / requirements.txt
 │   ├── 四 编码要求
 │   ├── 五 数据库与连接      # 连接池 / 参数化查询
@@ -22,7 +22,8 @@ constitution/
 │   ├── 九 文件与目录
 │   ├── 十 TDengine 规范
 │   ├── 十一 Milvus 规范
-│   └── 十二 研发流程与宪章工作流
+│   ├── 十二 任务拆分评估
+│   └── 十三 研发流程与宪章工作流
 ├── coding/coding.md       # Python 编码细则
 ├── unit_test/unit_test.md # 单测细则
 ├── log/log.md             # 运行时日志细则
@@ -31,6 +32,8 @@ constitution/
 ├── milvus/milvus.md       # Milvus 细则（统一 aether util_milvus）
 └── task_split/task_split.md # 任务拆分评估（上下文预算与粒度分级）
 ```
+
+> 20260809 任务1（harness 体系泛化）更新：顶层宪法目录树补齐「十二 任务拆分评估」分支（评审遗留 #3 补漏）。
 
 ### 1.2 宪章如何约束模型
 
@@ -43,7 +46,7 @@ constitution/
 
 - 只改 `constitution/`，不同步回子项目（子项目副本已停更）
 - 新增领域规范：在 `constitution/` 加子目录 + 顶层宪法加章节与索引行
-- 涉及流程/门禁变更：同步更新顶层宪法第十二章
+- 涉及流程/门禁变更：同步更新顶层宪法第十三章
 
 ## 二、资源地图（可寻址资产索引）
 
@@ -51,12 +54,14 @@ constitution/
 
 | 章节 | 内容 | 路径示例 |
 |------|------|---------|
-| 一、宪章 | 各规范文件位置 | `../hetu-hammurabi/constitution/coding/coding.md` |
-| 二、接口文档 | 各板块接口文档/清单 | `docs/hetu-mercury/tushare_interface/<专题>/**` |
-| 三、DDL | GreatSQL/TDengine 建表 | `hetu-mercury/src/batch/sql/greatsql/<专题>.sql` |
-| 四、公共工具 | aether utils 职责 | `util_db`/`util_dingtalk`/`util_milvus` 等 |
-| 五、参考实现 | 相似代码入口 | mercury fetch/batch、thoth 文档全链路 |
-| 六、其他 | 模板/venv/归档目录 | `templates/`、`venv-hetu` |
+| 一、宪章 | 各规范文件位置 | `<HARNESS_DIR>/constitution/coding/coding.md` |
+| 二、接口文档 | 各板块接口文档/清单 | `<业务项目>/docs/<接口文档目录>/<专题>/**` |
+| 三、DDL | GreatSQL/TDengine 建表 | `<业务项目>/src/batch/sql/greatsql/<专题>.sql` |
+| 四、公共工具 | aether utils 职责 | `<AETHER_DIR>/utils/util_db`/`util_dingtalk`/`util_milvus` 等 |
+| 五、参考实现 | 相似代码入口 | `<业务项目>/src/` 对应模块 |
+| 六、其他 | 模板/venv/归档目录 | `<HARNESS_DIR>/templates/`、`<WORKSPACE_DIR>/venv-hetu` |
+
+> 表中 `<HARNESS_DIR>` / `<AETHER_DIR>` / `<VENV_BIN>` 由当前项目 `.opencode/.harness-env` 解析（详见 [topology.md](topology.md)）。
 
 分析节点必须：读地图 → 提取检索键 → 三类资源自动匹配 → **给出精确路径+行号并核实** → 写入实施计划的「资源匹配清单」。
 
@@ -94,10 +99,10 @@ constitution/
 
 ## 五、文档资产（归集层）
 
-`docs/hetu-aether|mercury|thoth/` 归集各项目的文档快照：
+`docs/hetu-<项目>/` 归集各项目的文档快照：
 
-- 接口文档：`docs/hetu-mercury/tushare_interface/`（约 200 篇，按板块分目录）
-- 同步指引：`docs/hetu-mercury/sync_data/`
-- thoth 指南：`docs/hetu-thoth/`（convert2md / download_files / indexing / text2jsonl 等）
+- 接口文档：`docs/hetu-<项目>/<接口文档目录>/`（按板块分目录）
+- 同步指引：`docs/hetu-<项目>/sync_data/`
+- 文档处理链路：`docs/hetu-<项目>/`（convert2md / download_files / indexing / text2jsonl 等）
 
 > 演进建议：文档量 < 500 篇时资源地图 + 关键词检索足够；超过或出现跨域模糊检索需求时，可复用 thoth 的 Milvus 链路做语义检索，届时需解决"索引与源同步"的新鲜度问题。

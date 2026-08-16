@@ -1,7 +1,7 @@
 # 任务拆分评估规范
 
 > 通用规范。用于任务书编写前评估：以当前模型上下文窗口为约束，判断单任务是否适合单 session 跑完整研发流程，以及需要拆分到多细的粒度。
-> 相关实现：`../hetu-hammurabi/.opencode/`、`../hetu-hammurabi/templates/task_book.md`。
+> 相关实现：`<HARNESS_DIR>/.opencode/`、`<HARNESS_DIR>/templates/task_book.md`（`<HARNESS_DIR>` 为 harness 宿主项目绝对路径，由当前项目 `.opencode/.harness-env` 的 HARNESS_DIR 字段解析，缺失时按回退规则查找宿主）。
 
 ## 一、上下文预算模型
 
