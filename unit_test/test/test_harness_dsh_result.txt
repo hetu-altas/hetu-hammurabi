@@ -1,0 +1,447 @@
+test_business_projects_cc_consistent (test_cc_command.TestBusinessProjectsCcConsistent.test_business_projects_cc_consistent)
+正常案例：4 项目 .opencode/commands/cc.md 内容与宿主完全一致（软链同步） ... ok
+test_cc_usage_documented (test_cc_command.TestCcUsageDocumented.test_cc_usage_documented)
+正常案例：README.md、快速上手指南.md 含 /cc 引用与「constitution coding」含义说明 ... ok
+test_constitution_updated (test_cc_command.TestConstitutionUpdated.test_constitution_updated)
+正常案例：L128 含「/cc <任务书路径」与 constitution coding；全文无 /dev 残留；其余行无命令引用 ... ok
+test_detector_positive (test_cc_command.TestDetectorPositive.test_detector_positive)
+边界条件：构造含「/dev <」「commands/dev.md」「/dev`」「（/dev」的模拟文件，检测函数能识别 ... ok
+test_dev_md_removed (test_cc_command.TestDevMdRemoved.test_dev_md_removed)
+正常案例：5 路径下 .opencode/commands/dev.md 均不存在 ... ok
+test_plugin_command_name_lowercase (test_cc_command.TestDshPluginCommandNameLowercase.test_plugin_command_name_lowercase)
+正常案例：命令名定义为小写 cc 且匹配 /^[a-z][a-z0-9_-]*$/u，无大写 CC 命令名形态（20260815 任务4） ... ok
+test_host_cc_exists_and_content (test_cc_command.TestHostCcExistsAndContent.test_host_cc_exists_and_content)
+正常案例：cc.md 存在；含 constitution coding 含义；含 /cc 用法（$ARGUMENTS 三模式）；无遗留 /dev 引用 ... ok
+test_no_cc_ref_in_dsh_and_docs_domain (test_cc_command.TestNoCcRefInDshAndDocsDomain.test_no_cc_ref_in_dsh_and_docs_domain)
+反案例：4 文件扫描「/CC」「"CC"」「命令名：CC」零命中（本次无历史修订记录行，白名单为空集） ... ok
+test_no_dev_ref_in_config_domain (test_cc_command.TestNoDevRefInConfigDomain.test_no_dev_ref_in_config_domain)
+反案例：配置域文件 grep「/dev <」「/dev`」「（/dev」零命中（>/dev/null 设备语义不在断言范围） ... ok
+test_no_dev_ref_in_docs_domain (test_cc_command.TestNoDevRefInDocsDomain.test_no_dev_ref_in_docs_domain)
+反案例：文档域 grep 零命中；白名单放行：架构 L732、研发计划 L661、设备路径行 ... ok
+test_dashboard_index (test_dashboard_api.TestDashboardAPI.test_dashboard_index)
+看板前端首页可访问（存在 dashboard 目录时）。 ... ok
+test_gates_endpoint (test_dashboard_api.TestDashboardAPI.test_gates_endpoint) ... ok
+test_health (test_dashboard_api.TestDashboardAPI.test_health) ... ok
+test_nodes_endpoint (test_dashboard_api.TestDashboardAPI.test_nodes_endpoint) ... ok
+test_overview_endpoint (test_dashboard_api.TestDashboardAPI.test_overview_endpoint) ... ok
+test_overview_period_param (test_dashboard_api.TestDashboardAPI.test_overview_period_param) ... ok
+test_task_detail_404 (test_dashboard_api.TestDashboardAPI.test_task_detail_404) ... ok
+test_task_detail_endpoint (test_dashboard_api.TestDashboardAPI.test_task_detail_endpoint) ... ok
+test_tasks_endpoint (test_dashboard_api.TestDashboardAPI.test_tasks_endpoint) ... ok
+test_gates_stats (test_dashboard_api.TestStatsCore.test_gates_stats)
+门禁拦截统计：拦截事件含原因明细。 ... ok
+test_gates_verification_flag (test_dashboard_api.TestStatsCore.test_gates_verification_flag)
+验证性拦截标记：冒烟验证拦截 verification=true，其余为 false。 ... ok
+test_history_running_status_mapped (test_dashboard_api.TestStatsCore.test_history_running_status_mapped)
+状态文件「进行中」→ 只产出 node_start，不产出 node_end（未完成节点）。 ... ok
+test_is_charter_task_dir (test_dashboard_api.TestStatsCore.test_is_charter_task_dir)
+任务目录判定：状态文件/同名任务书/gate 任一命中即真任务。 ... ok
+test_nodes_stats (test_dashboard_api.TestStatsCore.test_nodes_stats)
+按节点统计：单元测试节点 2 次运行（live+history）2 次成功。 ... ok
+test_overview_metrics (test_dashboard_api.TestStatsCore.test_overview_metrics)
+总览口径：任务数/运行次数/成功率/门禁拦截率。 ... ok
+test_period_filter_day (test_dashboard_api.TestStatsCore.test_period_filter_day)
+周期过滤 day：只留最近一天（live 20260814），历史 20260804 被过滤。 ... ok
+test_scan_all_filters_non_task_dirs (test_dashboard_api.TestStatsCore.test_scan_all_filters_non_task_dirs)
+空日期目录/备份目录（无任务书/状态文件/gate）不产生假任务。 ... ok
+test_scan_all_schedule_multi_project (test_dashboard_api.TestStatsCore.test_scan_all_schedule_multi_project)
+全项目扫描：同父目录多个 hetu-* 项目各自统计（project 区分）。 ... ok
+test_task_detail (test_dashboard_api.TestStatsCore.test_task_detail)
+任务详情：时间线含门禁链、事件升序。 ... ok
+test_task_detail_missing (test_dashboard_api.TestStatsCore.test_task_detail_missing)
+不存在的任务 → None。 ... ok
+test_tasks_stats (test_dashboard_api.TestStatsCore.test_tasks_stats)
+任务列表：live 与 history 并存且标注来源。 ... ok
+test_basename_match_only (test_gate_assets.TestCheckRegistered.test_basename_match_only)
+边界：同名文件不同目录已登记 → 通过（旧版 includes(basename) 语义）。 ... ok
+test_map_missing_warns (test_gate_assets.TestCheckRegistered.test_map_missing_warns)
+反案例：资源地图不存在 → 未登记告警。 ... ok
+test_non_hetu_docs_skipped (test_gate_assets.TestCheckRegistered.test_non_hetu_docs_skipped)
+边界：非 docs/hetu-*/ 路径 → 跳过检查（ok=True）。 ... ok
+test_registered_silent (test_gate_assets.TestCheckRegistered.test_registered_silent)
+正常案例：docs/hetu-*/ 下已登记 → 静默（ok=True）。 ... ok
+test_unregistered_warns (test_gate_assets.TestCheckRegistered.test_unregistered_warns)
+反案例：docs/hetu-*/ 下未登记 → 告警（ok=False）。 ... ok
+test_host_map_missing_fallback (test_gate_assets.TestCliAssetsCheck.test_host_map_missing_fallback)
+边界：HARNESS_DIR 指向无资源地图的宿主 → map_path 回退当前项目资源地图。 ... ok
+test_registered_silent (test_gate_assets.TestCliAssetsCheck.test_registered_silent)
+正常案例：资源地图已含 basename → ok=true、退出码 0。 ... ok
+test_unregistered_warns (test_gate_assets.TestCliAssetsCheck.test_unregistered_warns)
+反案例：docs/hetu-*/ 未登记 → stdout JSON {ok,reason,map_path}， ... ok
+test_env_harness_dir_field_missing_fallback (test_gate_assets.TestResolveResourceMapPath.test_env_harness_dir_field_missing_fallback)
+反案例：.harness-env 存在但无 HARNESS_DIR 字段 → 回退当前项目。 ... ok
+test_env_missing_fallback_to_project (test_gate_assets.TestResolveResourceMapPath.test_env_missing_fallback_to_project)
+边界：.harness-env 缺失 → 回退当前项目 docs/资源地图.md。 ... ok
+test_host_map_missing_fallback (test_gate_assets.TestResolveResourceMapPath.test_host_map_missing_fallback)
+反案例：HARNESS_DIR 指向宿主但宿主资源地图不存在 → 回退当前项目。 ... ok
+test_host_map_used_when_present (test_gate_assets.TestResolveResourceMapPath.test_host_map_used_when_present)
+正常案例：HARNESS_DIR 指向宿主且宿主资源地图存在 → 用宿主地图。 ... ok
+test_curl_direct_blocked (test_gate_bypass.TestCliDecide.test_curl_direct_blocked)
+反案例：curl 直发钉钉（无 HARNESS_NOTIFY 出口标记）→ 拦截（D4）。 ... ok
+test_forged_gate_token_invalid (test_gate_bypass.TestCliDecide.test_forged_gate_token_invalid)
+反案例：伪造 .gate.json（token 被篡改）→ 不开闸（D2）。 ... ok
+test_gate_missing_blocked_four_fields (test_gate_bypass.TestCliDecide.test_gate_missing_blocked_four_fields)
+正常案例（未落闸）：写研发日志 → stdout 纯 JSON 四字段齐全、blocked=true、退出码 1。 ... ok
+test_gate_open_allowed_exit_zero (test_gate_bypass.TestCliDecide.test_gate_open_allowed_exit_zero)
+正常案例（已落闸）：合法 v2 闸 + 写研发日志 → blocked=false、退出码 0。 ... ok
+test_run_id_mismatch_blocked (test_gate_bypass.TestCliDecide.test_run_id_mismatch_blocked)
+反案例：合法闸 + run-id 与任务目录不一致 → 拦截（D1）。 ... ok
+test_destructive_in_echo_text_still_blocked (test_gate_bypass.TestGateBypassVariants.test_destructive_in_echo_text_still_blocked)
+把 rm 写进 echo 文本 → 销毁判定仍用原始 cmd 命中（H2d 防绕过）。 ... ok
+test_rm_variants_all_blocked (test_gate_bypass.TestGateBypassVariants.test_rm_variants_all_blocked)
+rm 递归删除变体 5 种全拦（H2a）。 ... ok
+test_shred_unlink_rmdir_trash_blocked (test_gate_bypass.TestGateBypassVariants.test_shred_unlink_rmdir_trash_blocked)
+销毁类命令（shred/unlink/rmdir -r/mv 回收站）全拦（H2b）。 ... ok
+test_url_char_class_obfuscation_blocked (test_gate_bypass.TestGateBypassVariants.test_url_char_class_obfuscation_blocked)
+URL 字符类点混淆 oapi[.]dingtalk[.]com → 识别为通知外呼（H2c）。 ... ok
+test_url_string_concat_obfuscation_blocked (test_gate_bypass.TestGateBypassVariants.test_url_string_concat_obfuscation_blocked)
+变量拼接混淆 "oapi."+"dingtalk.com" → 识别为通知外呼（H2c）。 ... ok
+test_direct_notify_blocked_even_with_gate (test_gate_bypass.TestGateDecide.test_direct_notify_blocked_even_with_gate)
+门禁开启但绕过唯一出口：curl 直发钉钉 → 拦截（D4）。 ... ok
+test_log_write_allowed_after_gate (test_gate_bypass.TestGateDecide.test_log_write_allowed_after_gate)
+门禁开启：写研发日志 → 放行。 ... ok
+test_log_write_blocked_before_gate (test_gate_bypass.TestGateDecide.test_log_write_blocked_before_gate)
+门禁未开：写研发日志 → 拦截。 ... ok
+test_read_operations_never_blocked (test_gate_bypass.TestGateDecide.test_read_operations_never_blocked)
+读取操作不误伤（门禁关闭时 cat/grep 放行）。 ... ok
+test_status_file_writable_before_gate (test_gate_bypass.TestGateDecide.test_status_file_writable_before_gate)
+门禁未开：写研发流程状态.md（D3 审计记录）→ 放行。 ... ok
+test_unique_exit_notify_requires_gate (test_gate_bypass.TestGateDecide.test_unique_exit_notify_requires_gate)
+唯一出口通知：门禁未开 → 拦截；开闸 → 放行。 ... ok
+test_backup_declaration_allows (test_gate_bypass.TestGateDestructiveRules.test_backup_declaration_allows)
+显式 backup/备份 声明（真实备份动作，非注释/echo 文本）→ 放行。 ... ok
+test_drop_delete_truncate_blocked (test_gate_bypass.TestGateDestructiveRules.test_drop_delete_truncate_blocked)
+DROP/DELETE FROM/TRUNCATE/drop_collection → 拦截。 ... ok
+test_fake_backup_comment_blocked (test_gate_bypass.TestGateDestructiveRules.test_fake_backup_comment_blocked)
+注释中的 backup 字样不再是备份声明（H2d 语义校验）→ 拦截。 ... ok
+test_grep_containing_ddl_is_blocked (test_gate_bypass.TestGateDestructiveRules.test_grep_containing_ddl_is_blocked)
+含 DDL 字样的命令按 fail-closed 口径拦截（固化决策，防绕过）。 ... ok
+test_rm_rf_leading_blocked (test_gate_bypass.TestGateDestructiveRules.test_rm_rf_leading_blocked)
+行首 rm -rf → 拦截。 ... ok
+test_rm_rf_mid_command_blocked (test_gate_bypass.TestGateDestructiveRules.test_rm_rf_mid_command_blocked)
+拼接命令中间位置 rm -rf（旧版绕过）→ 拦截。 ... ok
+test_safe_command_allowed (test_gate_bypass.TestGateDestructiveRules.test_safe_command_allowed)
+普通命令 → 放行。 ... ok
+test_data_log_doc_not_blocked (test_gate_bypass.TestGateLogAllowlist.test_data_log_doc_not_blocked)
+配置放行名单后「数据日志说明.md」（正常文档）不误伤（H8）。 ... ok
+test_outside_task_dir_log_doc_allowed (test_gate_bypass.TestGateLogAllowlist.test_outside_task_dir_log_doc_allowed)
+任务目录之外的「日志」文档不误伤（非任务目录模式）。 ... ok
+test_research_log_still_blocked (test_gate_bypass.TestGateLogAllowlist.test_research_log_still_blocked)
+「研发日志*.md」仍拦（放行名单只放行精确文件名）。 ... ok
+test_status_file_still_allowed (test_gate_bypass.TestGateLogAllowlist.test_status_file_still_allowed)
+「研发流程状态.md」仍放行（审计记录，D3）。 ... ok
+test_non_log_md_in_task_dir_allowed (test_gate_bypass.TestGateLogRules.test_non_log_md_in_task_dir_allowed)
+任务目录下非日志 md（实施计划/评审报告）→ 放行。 ... ok
+test_outside_task_dir_log_allowed (test_gate_bypass.TestGateLogRules.test_outside_task_dir_log_allowed)
+任务目录之外的普通「日志」文件名 → 不误伤（如 docs 下的日志文档）。 ... ok
+test_standard_log_name_blocked (test_gate_bypass.TestGateLogRules.test_standard_log_name_blocked)
+标准研发日志命名 → 拦截。 ... ok
+test_status_file_allowed (test_gate_bypass.TestGateLogRules.test_status_file_allowed)
+研发流程状态.md 为审计记录（D3）→ 放行。 ... ok
+test_variant_log_name_blocked (test_gate_bypass.TestGateLogRules.test_variant_log_name_blocked)
+重命名/变体日志命名（D4）→ 拦截。 ... ok
+test_curl_direct_blocked (test_gate_bypass.TestGateNotifyRules.test_curl_direct_blocked)
+curl 直发钉钉 webhook → 识别为通知外呼。 ... ok
+test_requests_direct_blocked (test_gate_bypass.TestGateNotifyRules.test_requests_direct_blocked)
+requests.post 直发钉钉 → 识别为通知外呼。 ... ok
+test_unique_exit_allowed (test_gate_bypass.TestGateNotifyRules.test_unique_exit_allowed)
+唯一出口 harness.core.notify / HARNESS_NOTIFY → 放行判定。 ... ok
+test_util_dingtalk_blocked (test_gate_bypass.TestGateNotifyRules.test_util_dingtalk_blocked)
+直接调用 util_dingtalk.send_markdown → 拦截（须走唯一出口）。 ... ok
+test_corrupted_gate_rejected_in_lock (test_gate_concurrency.TestGateConcurrency.test_corrupted_gate_rejected_in_lock)
+反案例：锁内重读发现文件损坏（非法 JSON）→ 拒绝。 ... ok
+test_gate_file_valid_after_concurrency (test_gate_concurrency.TestGateConcurrency.test_gate_file_valid_after_concurrency)
+正常案例：并发落盘后 .gate.json 完整合法（JSON + token 校验）。 ... ok
+test_parallel_seal_serialized (test_gate_concurrency.TestGateConcurrency.test_parallel_seal_serialized)
+正常案例：双进程并发 seal 同一任务目录 → 串行化或后写者报并发更新。 ... ok
+test_load_secret_enforce_600_fixes (test_gate_concurrency.TestSecretPermission.test_load_secret_enforce_600_fixes)
+正常案例：enforce_600=True 时权限非 600 自动修正并重读。 ... ok
+test_mode_600_ok (test_gate_concurrency.TestSecretPermission.test_mode_600_ok)
+正常案例：权限 600 → check_permission 通过。 ... ok
+test_mode_777_warn (test_gate_concurrency.TestSecretPermission.test_mode_777_warn)
+反案例：权限 777（历史缺陷）→ check_permission 告警。 ... ok
+test_rotate_force_writes_and_chmod (test_gate_concurrency.TestSecretPermission.test_rotate_force_writes_and_chmod)
+正常案例：rotate-secret（force）→ 新密钥写入、权限 600、无临时文件残留。 ... ok
+test_rotate_old_token_invalidated (test_gate_concurrency.TestSecretPermission.test_rotate_old_token_invalidated)
+正常案例：rotate 后旧密钥签的 token 校验失败（旧闸自然失效）。 ... ok
+test_rotate_requires_600 (test_gate_concurrency.TestSecretPermission.test_rotate_requires_600)
+反案例：rotate-secret 权限非 600 且未 force → 拒绝。 ... ok
+test_reseal_event_written_to_runlog (test_gate_lease.TestGateLease.test_reseal_event_written_to_runlog)
+正常案例：re_seal 审计事件落盘（runlog JSONL，event_type=re_seal）。 ... ok
+test_reseal_keeps_fields_unchanged (test_gate_lease.TestGateLease.test_reseal_keeps_fields_unchanged)
+正常案例：re-seal 不改 run_id/result_files/total/passed/test_passed。 ... ok
+test_reseal_no_gate_rejected (test_gate_lease.TestGateLease.test_reseal_no_gate_rejected)
+反案例：无 .gate.json → 拒绝续签（无闸可续）。 ... ok
+test_reseal_refreshes_and_allows (test_gate_lease.TestGateLease.test_reseal_refreshes_and_allows)
+正常案例：GATE_STALE → re-seal → 同一操作放行。 ... ok
+test_reseal_result_missing_rejected (test_gate_lease.TestGateLease.test_reseal_result_missing_rejected)
+反案例：result 文件缺失 → 拒绝续签。 ... ok
+test_reseal_result_modified_rejected (test_gate_lease.TestGateLease.test_reseal_result_modified_rejected)
+反案例：re-seal 前重读核对——result 被改（数字不符）→ 拒绝。 ... ok
+test_reseal_schema_v1_rejected (test_gate_lease.TestGateLease.test_reseal_schema_v1_rejected)
+反案例：schema_version=1 旧闸 → 拒绝续签。 ... ok
+test_reseal_wrong_run_id_rejected (test_gate_lease.TestGateLease.test_reseal_wrong_run_id_rejected)
+反案例：run_id 不一致（跨任务续签）→ 拒绝。 ... ok
+test_stale_after_11_minutes (test_gate_lease.TestGateLease.test_stale_after_11_minutes)
+正常案例：落闸后模拟 11 分钟 → GATE_STALE。 ... ok
+test_write_locked_concurrent_detection (test_gate_lease.TestGateLease.test_write_locked_concurrent_detection)
+反案例：锁内重读比对——updated_at 与期望不符 → 拒绝（并发检测单元）。 ... ok
+test_json_stdout_pure (test_gate_redact.TestCliRedact.test_json_stdout_pure)
+边界：--json 模式 stdout 仅一行 JSON（无 stderr 混杂）。 ... ok
+test_normal_text_zero_hit (test_gate_redact.TestCliRedact.test_normal_text_zero_hit)
+反案例：正常文本（URL/中文）→ hits=0，text 原样返回。 ... ok
+test_output_structure_and_redaction (test_gate_redact.TestCliRedact.test_output_structure_and_redaction)
+正常案例：sk-/Bearer/password 三类样本 → stdout 纯 JSON {text,hits}， ... ok
+test_bearer_token_redacted (test_gate_redact.TestRedactSecrets.test_bearer_token_redacted)
+正常案例：Bearer <token> → 替换为 [REDACTED]。 ... ok
+test_custom_patterns_override_default (test_gate_redact.TestRedactSecrets.test_custom_patterns_override_default)
+边界：自定义 patterns 覆盖默认（仅脱敏自定义模式）。 ... ok
+test_multi_hits_counted (test_gate_redact.TestRedactSecrets.test_multi_hits_counted)
+边界：多条凭据 → hits 为全部命中之和。 ... ok
+test_normal_text_zero_hit (test_gate_redact.TestRedactSecrets.test_normal_text_zero_hit)
+反案例：正常文本零误伤（URL/中文/普通句子/短词）。 ... ok
+test_password_kv_redacted (test_gate_redact.TestRedactSecrets.test_password_kv_redacted)
+正常案例：password=xxx / passwd / pwd → 脱敏（忽略大小写）。 ... ok
+test_secret_token_key_redacted (test_gate_redact.TestRedactSecrets.test_secret_token_key_redacted)
+正常案例：secret / token / api_key / access_key / access_token → 脱敏。 ... ok
+test_short_value_not_redacted (test_gate_redact.TestRedactSecrets.test_short_value_not_redacted)
+边界：值 <8 位不脱敏（防误伤短文本）。 ... ok
+test_sk_key_redacted (test_gate_redact.TestRedactSecrets.test_sk_key_redacted)
+正常案例：sk-<16+ 位字母数字> 密钥 → 替换为 [REDACTED]。 ... ok
+test_rules_kv_pattern_ignored_case (test_gate_redact.TestRulesSecretPatterns.test_rules_kv_pattern_ignored_case)
+正常案例：yaml 键值对类模式自动补 IGNORECASE（大写键名也脱敏）。 ... /mnt/d/workspace/hetu-altas/hetu-hammurabi/unit_test/test_gate_redact.py:134: ResourceWarning: unclosed file <_io.TextIOWrapper name='/mnt/d/workspace/hetu-altas/hetu-hammurabi/harness/gate_rules.yaml' mode='r' encoding='utf-8'>
+  data = yaml.safe_load(open(Path(__file__).resolve().parent.parent / "harness" / "gate_rules.yaml", encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_rules_secret_patterns_absent_uses_default (test_gate_redact.TestRulesSecretPatterns.test_rules_secret_patterns_absent_uses_default)
+边界：yaml 无 secret_patterns 段 → 用内置默认（行为不变）。 ... /mnt/d/workspace/hetu-altas/hetu-hammurabi/unit_test/test_gate_redact.py:169: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmpl5ashlba/gate_rules.yaml' mode='r' encoding='utf-8'>
+  data = yaml.safe_load(open(self.rules_file, encoding="utf-8"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_rules_secret_patterns_effective (test_gate_redact.TestRulesSecretPatterns.test_rules_secret_patterns_effective)
+正常案例：yaml 配置的 secret_patterns 生效（覆盖内置默认）。 ... ok
+test_allowlist_custom_reload (test_gate_rules.TestDefaultRulesBehavior.test_allowlist_custom_reload)
+边界：自定义 allowlist 清空后「数据日志说明.md」恢复拦截。 ... ok
+test_allowlist_lets_data_log_through (test_gate_rules.TestDefaultRulesBehavior.test_allowlist_lets_data_log_through)
+正常案例（H8）：配置 allowlist 后「数据日志说明.md」不再误伤。 ... ok
+test_defaults_match_legacy_behavior (test_gate_rules.TestDefaultRulesBehavior.test_defaults_match_legacy_behavior)
+正常案例：默认文件加载后的判定与内置默认一致（复现现状判定）。 ... ok
+test_destructive_legacy_samples (test_gate_rules.TestDefaultRulesBehavior.test_destructive_legacy_samples)
+正常案例：复现现状判定——rm -rf / DROP / DELETE / TRUNCATE 全拦。 ... ok
+test_log_legacy_samples (test_gate_rules.TestDefaultRulesBehavior.test_log_legacy_samples)
+正常案例：复现现状判定——研发日志拦、研发流程状态.md 放行。 ... ok
+test_notify_legacy_samples (test_gate_rules.TestDefaultRulesBehavior.test_notify_legacy_samples)
+正常案例：复现现状判定——oapi.dingtalk.com 直发被识别为通知。 ... ok
+test_backup_pattern_missing_rejected (test_gate_rules.TestLoadRules.test_backup_pattern_missing_rejected)
+反案例（REVISE 修复）：缺 backup.pattern → 回退默认，不抛 KeyError。 ... ok
+test_backup_section_missing_rejected (test_gate_rules.TestLoadRules.test_backup_section_missing_rejected)
+反案例（REVISE 修复）：缺 backup 段 → 回退默认，不抛 KeyError。 ... ok
+test_invalid_regex_rejected (test_gate_rules.TestLoadRules.test_invalid_regex_rejected)
+反案例：非法正则 → 拒绝（fail-closed，防崩溃）。 ... ok
+test_invalid_yaml_fallback (test_gate_rules.TestLoadRules.test_invalid_yaml_fallback)
+反案例：非法 yaml → 回退内置默认并告警（fail-closed）。 ... ok
+test_load_valid_yaml (test_gate_rules.TestLoadRules.test_load_valid_yaml)
+正常案例：合法 yaml 正常加载，字段完整。 ... ok
+test_missing_rules_file_fallback (test_gate_rules.TestLoadRules.test_missing_rules_file_fallback)
+反案例：规则文件缺失 → 回退内置默认（fail-closed）。 ... ok
+test_root_not_mapping_rejected (test_gate_rules.TestLoadRules.test_root_not_mapping_rejected)
+反案例：根节点非 mapping（list）→ 回退默认。 ... ok
+test_schema_missing_field_rejected (test_gate_rules.TestLoadRules.test_schema_missing_field_rejected)
+反案例：schema 缺必需字段（dangerous_commands）→ 回退默认。 ... ok
+test_schema_wrong_type_rejected (test_gate_rules.TestLoadRules.test_schema_wrong_type_rejected)
+反案例：schema 类型错（freshness_seconds 为字符串）→ 回退默认。 ... ok
+test_change_freshness_takes_effect (test_gate_rules.TestRulesReload.test_change_freshness_takes_effect)
+正常案例：修改 freshness_seconds 后 decide 生效新窗口。 ... ok
+test_change_main_pattern_takes_effect (test_gate_rules.TestRulesReload.test_change_main_pattern_takes_effect)
+正常案例：修改 main_pattern 后判定立即变化（mtime 重载）。 ... ok
+test_corrupted_rules_fallback_default (test_gate_rules.TestRulesReload.test_corrupted_rules_fallback_default)
+反案例：运行期规则文件被写坏 → 回退内置默认（判定不崩溃）。 ... ok
+test_real_mtime_reload_without_reset (test_gate_rules.TestRulesReload.test_real_mtime_reload_without_reset)
+正常案例（REVISE 修复）：改文件 mtime 后不调 reset，get_effective_rules 直接重载。 ... ok
+test_find_gate_only_scans_own_task_dir (test_gate_task_isolation.TestGateTaskIsolation.test_find_gate_only_scans_own_task_dir)
+find_gate_file 只查任务目录自身，不递归、不跨任务。 ... ok
+test_legacy_v1_gate_ignored (test_gate_task_isolation.TestGateTaskIsolation.test_legacy_v1_gate_ignored)
+旧版 .gate.json v1（无 schema_version/token）不再被信任。 ... ok
+test_missing_gate_fail_closed (test_gate_task_isolation.TestGateTaskIsolation.test_missing_gate_fail_closed)
+无任何 gate 文件 → fail-closed。 ... ok
+test_run_id_mismatch_rejected (test_gate_task_isolation.TestGateTaskIsolation.test_run_id_mismatch_rejected)
+run_id 与任务目录不一致（串用他人 gate 文件）→ 拒绝。 ... ok
+test_task_b_fail_closed_while_task_a_open (test_gate_task_isolation.TestGateTaskIsolation.test_task_b_fail_closed_while_task_a_open)
+旧版 bug 回归：A 已开闸，B 无 .gate.json 仍 fail-closed。 ... ok
+test_task_b_open_requires_own_gate (test_gate_task_isolation.TestGateTaskIsolation.test_task_b_open_requires_own_gate)
+B 必须有自己的合法 .gate.json 才能开闸。 ... ok
+test_build_gate_v2_empty_results_raises (test_gate_token.TestGateToken.test_build_gate_v2_empty_results_raises)
+编排器零证据落闸 → build_gate_v2 直接拒绝。 ... ok
+test_empty_result_files_rejected (test_gate_token.TestGateToken.test_empty_result_files_rejected)
+空 result_files（独立评审补测：零证据放行）→ 拒绝。 ... ok
+test_failed_gate_legit_rejected (test_gate_token.TestGateToken.test_failed_gate_legit_rejected)
+合法失败落闸（test_passed=false）→ GATE_NOT_PASSED。 ... ok
+test_forged_token_rejected (test_gate_token.TestGateToken.test_forged_token_rejected)
+伪造 token（无密钥）→ 校验失败。 ... ok
+test_future_timestamp_rejected (test_gate_token.TestGateToken.test_future_timestamp_rejected)
+未来时间戳（独立评审补测）→ 拒绝（GATE_STALE）。 ... ok
+test_legit_gate_opens (test_gate_token.TestGateToken.test_legit_gate_opens)
+合法落闸（编排器 build_gate_v2）→ 开闸。 ... ok
+test_not_passed_rejected (test_gate_token.TestGateToken.test_not_passed_rejected)
+test_passed=false（测试失败落闸）→ 拒绝。 ... ok
+test_result_file_modified_after_gate_invalidates (test_gate_token.TestGateToken.test_result_file_modified_after_gate_invalidates)
+落闸后篡改 result 文件内容 → 摘要变化 → token 校验失败。 ... ok
+test_schema_v1_rejected (test_gate_token.TestGateToken.test_schema_v1_rejected)
+schema_version=1 的旧文件 → 拒绝。 ... ok
+test_stale_gate_rejected (test_gate_token.TestGateToken.test_stale_gate_rejected)
+陈旧时间戳（超过新鲜度窗口）→ 拒绝。 ... ok
+test_tamper_passed_count_rejected (test_gate_token.TestGateToken.test_tamper_passed_count_rejected)
+篡改 passed 计数 → token 校验失败。 ... ok
+test_tamper_test_passed_fake_pass_rejected (test_gate_token.TestGateToken.test_tamper_test_passed_fake_pass_rejected)
+伪造通过：合法失败落闸改 test_passed=false→true → token 校验失败。 ... ok
+test_tamper_total_rejected (test_gate_token.TestGateToken.test_tamper_total_rejected)
+篡改 total 计数（独立评审补测）→ token 校验失败。 ... ok
+test_tamper_updated_at_rejected (test_gate_token.TestGateToken.test_tamper_updated_at_rejected)
+篡改 updated_at 续命（独立评审漏洞：陈旧门禁改时间戳绕过新鲜度） ... ok
+test_tester_self_written_no_token_rejected (test_gate_token.TestGateToken.test_tester_self_written_no_token_rejected)
+tester 自写（无 token 或 token 空）不被信任。 ... ok
+test_wrong_secret_rejected (test_gate_token.TestGateToken.test_wrong_secret_rejected)
+使用错误宿主密钥校验 → 失败。 ... ok
+test_build_env_content_full (test_harness_topology.TestBuildAndParseEnv.test_build_env_content_full)
+正常案例：生成文本含六字段、绝对路径、PROJECT_NAME=basename、头注释 ... ok
+test_build_env_missing_aether_venv (test_harness_topology.TestBuildAndParseEnv.test_build_env_missing_aether_venv)
+边界条件：工作区无 hetu-aether / venv-hetu → 对应字段写空值并附缺失注释 ... ok
+test_parse_env_comments_blank_duplicate (test_harness_topology.TestBuildAndParseEnv.test_parse_env_comments_blank_duplicate)
+边界条件：空行/# 注释/重复键 → 空行注释跳过、重复键后者覆盖 ... ok
+test_parse_env_content_roundtrip (test_harness_topology.TestBuildAndParseEnv.test_parse_env_content_roundtrip)
+正常案例：build_env_content 输出 → parse_env_content 回读，六字段值一致 ... ok
+test_parse_env_line_without_equal_skipped (test_harness_topology.TestBuildAndParseEnv.test_parse_env_line_without_equal_skipped)
+边界条件：无等号的行（非注释非空）被跳过，不影响其他字段解析 ... ok
+test_workspace_dir_with_space (test_harness_topology.TestBuildAndParseEnv.test_workspace_dir_with_space)
+边界条件：父目录含空格 → 值带引号包裹，解析后路径正确（引号剥离） ... ok
+test_detect_host_empty_workspace (test_harness_topology.TestDetectHost.test_detect_host_empty_workspace)
+边界条件：工作区无任何 hetu-* 候选 → 抛出 ValueError 且消息含「候选目录: 无」 ... ok
+test_detect_host_hit (test_harness_topology.TestDetectHost.test_detect_host_hit)
+正常案例：三要件齐全的宿主目录被命中 ... ok
+test_detect_host_multi_candidates (test_harness_topology.TestDetectHost.test_detect_host_multi_candidates)
+边界条件：多候选时取要件更完整者；要件同级按目录名升序取第一个 ... ok
+test_detect_host_no_agents_dir (test_harness_topology.TestDetectHost.test_detect_host_no_agents_dir)
+反案例：缺少 .opencode/agents 目录的候选不能作为宿主，抛出 ValueError ... ok
+test_detect_host_no_constitution (test_harness_topology.TestDetectHost.test_detect_host_no_constitution)
+反案例：缺少 constitution/ 的目录不能作为宿主，抛出 ValueError ... ok
+test_detect_host_no_resource_map (test_harness_topology.TestDetectHost.test_detect_host_no_resource_map)
+反案例：缺少 docs/资源地图.md 的目录不能作为宿主，抛出 ValueError ... ok
+test_extra_nonexistent_skipped (test_harness_topology.TestListTargetProjects.test_extra_nonexistent_skipped)
+反案例：extra 指定不存在的项目 → 不进 targets、记入 skipped ... ok
+test_hetu_prefix_file_not_dir_skipped (test_harness_topology.TestListTargetProjects.test_hetu_prefix_file_not_dir_skipped)
+边界条件：hetu-* 命中但为文件（非目录）→ 跳过 ... ok
+test_host_not_dir_skipped (test_harness_topology.TestListTargetProjects.test_host_not_dir_skipped)
+边界条件：host_dir 传入文件路径等异常输入 → 不崩溃，正常返回目标列表 ... ok
+test_list_target_projects_excludes_host (test_harness_topology.TestListTargetProjects.test_list_target_projects_excludes_host)
+正常案例：返回除宿主外的全部 hetu-* 目录，按名称排序 ... ok
+test_list_target_projects_extra (test_harness_topology.TestListTargetProjects.test_list_target_projects_extra)
+正常案例：extra 追加非 hetu-* 前缀项目（目录存在） ... ok
+test_aether_missing_returns_none (test_harness_topology.TestResolvePaths.test_aether_missing_returns_none)
+反案例：workspace 无 hetu-aether → 返回 None（触发调用方回退） ... ok
+test_resolve_aether_and_venv (test_harness_topology.TestResolvePaths.test_resolve_aether_and_venv)
+正常案例：resolve_aether_dir 与 resolve_venv_bin 返回正确绝对路径 ... ok
+test_venv_missing_returns_none (test_harness_topology.TestResolvePaths.test_venv_missing_returns_none)
+反案例：workspace 无 venv-hetu → 返回 None（触发调用方回退） ... ok
+test_agent_call_shape (test_notify.TestNotifyExit.test_agent_call_shape)
+调用形态：DingTalkAgent(config).send_markdown(title, text)。 ... ok
+test_config_missing_degraded (test_notify.TestNotifyExit.test_config_missing_degraded)
+配置缺失 → 降级为 ok=False + 明确 msg，不抛异常。 ... ok
+test_errcode_nonzero_reported (test_notify.TestNotifyExit.test_errcode_nonzero_reported)
+钉钉返回非 0 errcode → ok=False 且透传。 ... ok
+test_send_markdown_success (test_notify.TestNotifyExit.test_send_markdown_success)
+成功路径：errcode=0 → ok=True。 ... ok
+test_util_missing_raises (test_notify.TestNotifyExit.test_util_missing_raises)
+util_dingtalk 定位失败 → RuntimeError。 ... ok
+test_append_not_overwrite (test_recorder.TestRecorder.test_append_not_overwrite)
+追加写不覆盖：同文件两次写入 → 两行。 ... ok
+test_daily_dir_and_run_file (test_recorder.TestRecorder.test_daily_dir_and_run_file)
+按日落盘、按 run_id 分文件。 ... ok
+test_detail_and_extra_preserved (test_recorder.TestRecorder.test_detail_and_extra_preserved)
+detail/extra 字段原样保留。 ... ok
+test_events_for_run_filters (test_recorder.TestRecorder.test_events_for_run_filters)
+events_for_run 按 run_id 过滤且按时间升序。 ... ok
+test_invalid_event_type_rejected (test_recorder.TestRecorder.test_invalid_event_type_rejected)
+非法 event_type → ValueError。 ... ok
+test_invalid_status_rejected (test_recorder.TestRecorder.test_invalid_status_rejected)
+非法 status → ValueError。 ... ok
+test_record_event_schema (test_recorder.TestRecorder.test_record_event_schema)
+事件字段齐全且符合 schema。 ... ok
+test_parse_arbitrary_text_none (test_seal_gate.TestParseFormats.test_parse_arbitrary_text_none)
+反案例：任意文本 → 两种格式均无法解析。 ... ok
+test_parse_eight_format_fail_detail (test_seal_gate.TestParseFormats.test_parse_eight_format_fail_detail)
+反案例：八格式含失败 → detail 可见失败数。 ... ok
+test_parse_eight_format_missing_number (test_seal_gate.TestParseFormats.test_parse_eight_format_missing_number)
+反案例：八格式缺「错误」行 → 无法解析（None）。 ... ok
+test_parse_eight_format_pass (test_seal_gate.TestParseFormats.test_parse_eight_format_pass)
+正常案例：八格式全过 → (total, passed)。 ... ok
+test_parse_native_format_failed (test_seal_gate.TestParseFormats.test_parse_native_format_failed)
+反案例：原生格式 FAILED → 简版返回 None（拒绝）。 ... ok
+test_parse_native_format_pass (test_seal_gate.TestParseFormats.test_parse_native_format_pass)
+正常案例：原生格式 OK → (total, total)。 ... ok
+test_parse_native_missing_ran (test_seal_gate.TestParseFormats.test_parse_native_missing_ran)
+边界：有 OK 但无 Ran 行 → 不识别为原生格式。 ... ok
+test_dual_format_body_contains_failed_word (test_seal_gate.TestParseResultFile.test_dual_format_body_contains_failed_word)
+边界：正文含 FAILED 字样但汇总 OK → 不应误判拒绝（H3 回归）。 ... ok
+test_dual_format_conflict_rejected (test_seal_gate.TestParseResultFile.test_dual_format_conflict_rejected)
+反案例：双格式交叉核对不一致（八格式 20 vs 原生 99）→ 拒绝。 ... ok
+test_dual_format_consistent (test_seal_gate.TestParseResultFile.test_dual_format_consistent)
+正常案例：同一文件同时含八格式与原生格式且一致 → 通过（八格式优先）。 ... ok
+test_eight_format_file (test_seal_gate.TestParseResultFile.test_eight_format_file)
+正常案例：八格式文件 → (total, passed, 八格式)。 ... ok
+test_eight_format_with_failures_rejected (test_seal_gate.TestParseResultFile.test_eight_format_with_failures_rejected)
+反案例：八格式声明含失败 → 拒绝（声明与内容不符）。 ... ok
+test_missing_file_rejected (test_seal_gate.TestParseResultFile.test_missing_file_rejected)
+反案例：result 文件缺失 → 拒绝。 ... ok
+test_native_failed_rejected (test_seal_gate.TestParseResultFile.test_native_failed_rejected)
+反案例：原生 FAILED → 拒绝。 ... ok
+test_native_format_file (test_seal_gate.TestParseResultFile.test_native_format_file)
+正常案例：原生格式文件 → (total, total, 原生)。 ... ok
+test_unrecognized_rejected (test_seal_gate.TestParseResultFile.test_unrecognized_rejected)
+反案例：任意文本 → 拒绝（格式无法识别，fail-closed）。 ... ok
+test_seal_eight_format (test_seal_gate.TestSealGate.test_seal_eight_format)
+正常案例：八格式 result 落闸，total/passed 与 result 一致。 ... ok
+test_seal_failed_result_rejected_no_gate_written (test_seal_gate.TestSealGate.test_seal_failed_result_rejected_no_gate_written)
+反案例：任一 result 含失败 → 整体拒绝，且不落闸。 ... ok
+test_seal_missing_result_rejected (test_seal_gate.TestSealGate.test_seal_missing_result_rejected)
+反案例：result 文件缺失 → 拒绝。 ... ok
+test_seal_multiple_files_sum (test_seal_gate.TestSealGate.test_seal_multiple_files_sum)
+正常案例：多 result 文件 → total/passed 合计。 ... ok
+test_seal_no_results_rejected (test_seal_gate.TestSealGate.test_seal_no_results_rejected)
+反案例：未提供任何 result → 拒绝。 ... ok
+test_seal_real_dual_format_sample (test_seal_gate.TestSealGate.test_seal_real_dual_format_sample)
+正常案例：真实样例（test_harness_topology_result.txt 八格式+原生共存）→ 20/20。 ... ok
+test_seal_unrecognized_rejected (test_seal_gate.TestSealGate.test_seal_unrecognized_rejected)
+反案例：无法解析的 result → 拒绝（fail-closed）。 ... ok
+test_first_node_is_minus_one (test_workflow_parser.TestWorkflowAdvance.test_first_node_is_minus_one)
+初始可执行节点为 -1（任务书生成）。 ... ok
+test_gate_chain (test_workflow_parser.TestWorkflowAdvance.test_gate_chain)
+节点 3/4 通过后 5/6/7 才可执行（requires 门禁链）。 ... ok
+test_requires_not_met (test_workflow_parser.TestWorkflowAdvance.test_requires_not_met)
+requires 未满足时不可执行（单测未过不能写日志）。 ... ok
+test_retry_definition (test_workflow_parser.TestWorkflowAdvance.test_retry_definition)
+单测节点 retry 回退编码、最多 3 轮（外置定义）。 ... ok
+test_sequential_advance (test_workflow_parser.TestWorkflowAdvance.test_sequential_advance)
+无 requires 节点按 id 升序推进。 ... ok
+test_bad_yaml_raises (test_workflow_parser.TestWorkflowParser.test_bad_yaml_raises)
+非法 YAML → ValueError。 ... ok
+test_duplicate_id_rejected (test_workflow_parser.TestWorkflowParser.test_duplicate_id_rejected)
+重复节点 id → 报错。 ... ok
+test_invalid_agent_rejected (test_workflow_parser.TestWorkflowParser.test_invalid_agent_rejected)
+非法 agent 名 → 报错。 ... ok
+test_invalid_gate_rejected (test_workflow_parser.TestWorkflowParser.test_invalid_gate_rejected)
+非法 gate 类型 → 报错。 ... ok
+test_load_real_workflow (test_workflow_parser.TestWorkflowParser.test_load_real_workflow)
+加载真实 workflow.yaml 且校验通过。 ... ok
+test_missing_file_raises (test_workflow_parser.TestWorkflowParser.test_missing_file_raises)
+文件不存在 → ValueError。 ... ok
+test_node_ids_present (test_workflow_parser.TestWorkflowParser.test_node_ids_present)
+节点 -1~7 齐全。 ... ok
+test_requires_hanging_rejected (test_workflow_parser.TestWorkflowParser.test_requires_hanging_rejected)
+requires 指向不存在的节点 → 报错。 ... ok
+test_retry_hanging_rejected (test_workflow_parser.TestWorkflowParser.test_retry_hanging_rejected)
+retry.to 指向不存在的节点 → 报错。 ... ok
+
+----------------------------------------------------------------------
+Ran 222 tests in 5.301s
+
+OK

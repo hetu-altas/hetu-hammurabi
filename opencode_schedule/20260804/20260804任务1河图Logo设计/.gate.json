@@ -1,0 +1,10 @@
+{
+  "test_passed": true,
+  "test_file": "unit_test/test_logo_svg.py",
+  "result_file": "unit_test/test/test_logo_svg_result.txt",
+  "passed": 10,
+  "failed": 0,
+  "total": 10,
+  "timestamp": "2026-08-04 22:33:58",
+  "updated_at": "2026-08-04 22:33:58"
+}

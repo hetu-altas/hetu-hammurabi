@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- hetu_logo_05.svg 方案5：对称双卷轴 + 中央画幅内嵌回测经纬网格 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%" role="img" aria-label="河图">
+  <defs>
+    <!-- 中心点鎏金光晕渐变：鎏金→米白 淡出 -->
+    <linearGradient id="grad-glow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#C0A062"/>
+      <stop offset="100%" stop-color="#F6F1E5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 宣纸米白底 -->
+  <rect id="bg-paper" x="0" y="0" width="500" height="500" fill="#F6F1E5"/>
+
+  <!-- 左右镜像双卷杆：墨黑圆角杆 + 鎏金轴头（上下两端） -->
+  <g id="scroll-roll">
+    <rect x="136" y="130" width="12" height="240" rx="6" fill="#1C1C22"/>
+    <circle cx="142" cy="126" r="4.5" fill="#C0A062"/>
+    <circle cx="142" cy="374" r="4.5" fill="#C0A062"/>
+    <rect x="352" y="130" width="12" height="240" rx="6" fill="#1C1C22"/>
+    <circle cx="358" cy="126" r="4.5" fill="#C0A062"/>
+    <circle cx="358" cy="374" r="4.5" fill="#C0A062"/>
+  </g>
+
+  <!-- 中央展开画幅：墨黑描边，严格轴对称 -->
+  <g id="scroll-body">
+    <rect x="150" y="140" width="200" height="220" fill="#F6F1E5" stroke="#1C1C22" stroke-width="3"/>
+  </g>
+
+  <!-- 量化要素：回测经纬网格（主网格 40px 玄青 + 细分 20px 玄灰弱网格） -->
+  <g id="quant-grid">
+    <g stroke="#9AA0A6" stroke-width="1.5" opacity="0.5">
+      <line x1="190" y1="170" x2="190" y2="330"/>
+      <line x1="230" y1="170" x2="230" y2="330"/>
+      <line x1="270" y1="170" x2="270" y2="330"/>
+      <line x1="310" y1="170" x2="310" y2="330"/>
+      <line x1="170" y1="190" x2="330" y2="190"/>
+      <line x1="170" y1="230" x2="330" y2="230"/>
+      <line x1="170" y1="270" x2="330" y2="270"/>
+      <line x1="170" y1="310" x2="330" y2="310"/>
+    </g>
+    <g stroke="#264653" stroke-width="1.5">
+      <line x1="170" y1="170" x2="170" y2="330"/>
+      <line x1="210" y1="170" x2="210" y2="330"/>
+      <line x1="250" y1="170" x2="250" y2="330"/>
+      <line x1="290" y1="170" x2="290" y2="330"/>
+      <line x1="330" y1="170" x2="330" y2="330"/>
+      <line x1="170" y1="170" x2="330" y2="170"/>
+      <line x1="170" y1="210" x2="330" y2="210"/>
+      <line x1="170" y1="250" x2="330" y2="250"/>
+      <line x1="170" y1="290" x2="330" y2="290"/>
+      <line x1="170" y1="330" x2="330" y2="330"/>
+    </g>
+  </g>
+
+  <!-- 周期刻度点：画幅底部 5 个刻度圆点（与主网格列对齐） -->
+  <g id="quant-scale">
+    <g fill="#9AA0A6" opacity="0.8">
+      <circle cx="170" cy="352" r="2.5"/>
+      <circle cx="210" cy="352" r="2.5"/>
+      <circle cx="250" cy="352" r="2.5"/>
+      <circle cx="290" cy="352" r="2.5"/>
+      <circle cx="330" cy="352" r="2.5"/>
+    </g>
+  </g>
+
+  <!-- 朱砂中心点 + 鎏金光晕（规则中枢点睛） -->
+  <g id="accent">
+    <circle cx="250" cy="250" r="14" fill="none" stroke="url(#grad-glow)" stroke-width="3" opacity="0.7"/>
+    <circle cx="250" cy="250" r="8" fill="#B33A2E"/>
+  </g>
+</svg>

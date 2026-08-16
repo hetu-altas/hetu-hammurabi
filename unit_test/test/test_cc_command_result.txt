@@ -1,0 +1,39 @@
+test_host_cc_exists_and_content (__main__.TestHostCcExistsAndContent.test_host_cc_exists_and_content)
+正常案例：cc.md 存在；含 constitution coding 含义；含 /cc 用法（$ARGUMENTS 三模式）；无遗留 /dev 引用 ... ok
+test_business_projects_cc_consistent (__main__.TestBusinessProjectsCcConsistent.test_business_projects_cc_consistent)
+正常案例：4 项目 .opencode/commands/cc.md 内容与宿主完全一致（软链同步） ... ok
+test_dev_md_removed (__main__.TestDevMdRemoved.test_dev_md_removed)
+正常案例：5 路径下 .opencode/commands/dev.md 均不存在 ... ok
+test_no_dev_ref_in_config_domain (__main__.TestNoDevRefInConfigDomain.test_no_dev_ref_in_config_domain)
+反案例：配置域文件 grep「/dev <」「/dev`」「（/dev」零命中（>/dev/null 设备语义不在断言范围） ... ok
+test_no_dev_ref_in_docs_domain (__main__.TestNoDevRefInDocsDomain.test_no_dev_ref_in_docs_domain)
+反案例：文档域 grep 零命中；白名单放行：架构 L732、研发计划 L661、设备路径行 ... ok
+test_constitution_updated (__main__.TestConstitutionUpdated.test_constitution_updated)
+正常案例：L128 含「/cc <任务书路径」与 constitution coding；全文无 /dev 残留；其余行无命令引用 ... ok
+test_cc_usage_documented (__main__.TestCcUsageDocumented.test_cc_usage_documented)
+正常案例：README.md、快速上手指南.md 含 /cc 引用与「constitution coding」含义说明 ... ok
+test_detector_positive (__main__.TestDetectorPositive.test_detector_positive)
+边界条件：构造含「/dev <」「commands/dev.md」「/dev`」「（/dev」的模拟文件，检测函数能识别 ... ok
+test_plugin_command_name_lowercase (__main__.TestDshPluginCommandNameLowercase.test_plugin_command_name_lowercase)
+正常案例：命令名定义为小写 cc 且匹配 /^[a-z][a-z0-9_-]*$/u，无大写 CC 命令名形态（20260815 任务4） ... ok
+test_no_cc_ref_in_dsh_and_docs_domain (__main__.TestNoCcRefInDshAndDocsDomain.test_no_cc_ref_in_dsh_and_docs_domain)
+反案例：4 文件扫描「/CC」「"CC"」「命令名：CC」零命中（本次无历史修订记录行，白名单为空集） ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.097s
+
+OK
+
+============================================================
+cc 命令更名（/dev → /cc）单元测试结果
+============================================================
+
+测试总数: 10
+成功: 10
+失败: 0
+错误: 0
+
+
+============================================================
+测试结果: 全部通过
+============================================================

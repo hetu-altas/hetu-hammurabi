@@ -15,6 +15,7 @@
 | TDengine | [constitution/tdengine/tdengine.md](tdengine/tdengine.md) |
 | Milvus | [constitution/milvus/milvus.md](milvus/milvus.md) |
 | 任务拆分 | [constitution/task_split/task_split.md](task_split/task_split.md) |
+| AI 分析范式 | 见[十四、AI 分析范式](#十四ai-分析范式) |
 | 研发流程 | 见[十三、研发流程与宪章工作流](#十三研发流程与宪章工作流) |
 
 ---
@@ -29,9 +30,9 @@
 ## 二、项目体系
 
 1. `hetu-aether` 为公共项目，提供配置管理、数据库连接池、日志、工具方法等通用能力（代码资产）
-2. `hetu-hammurabi` 为宪章编程 harness 模块，宪章规范统一存放在其 `constitution/` 目录，各项目不再各自维护 constitution
-3. 其他项目统一命名为 `hetu-XXX`，通过相对路径引用 hetu-aether 的资源和工具、hetu-hammurabi 的宪章
-4. 所有项目部署在同一父目录下，共享 `venv-hetu` 虚拟环境
+2. harness 宿主项目（运行期由 `.harness-env` 拓扑解析定位，见 docs/harness/topology.md）为宪章编程 harness 模块，宪章规范统一存放在其 `constitution/` 目录，各项目不再各自维护 constitution
+3. 其他项目统一命名为 `hetu-XXX`，通过 `.harness-env` 动态解析引用 hetu-aether 的资源和工具、harness 宿主的宪章
+4. 所有项目部署在同一父目录下，共享 `venv-hetu` 虚拟环境（运行期由 `.harness-env` 的 VENV_BIN 字段解析）
 5. 详见 [project.md](project/project.md)
 
 ## 三、Python 环境
@@ -123,8 +124,8 @@
 
 ## 十三、研发流程与宪章工作流
 
-1. 研发统一通过 hetu-hammurabi 的宪章工作流执行：在业务项目内使用 `/dev <任务书路径>` 命令触发 charter-orchestrator 编排。
-2. 任务书按 hetu-hammurabi `templates/task_book.md` 模板编写，与实施计划、研发日志、流程状态一并存放于业务项目任务目录 `opencode_schedule/<YYYYMMDD>/<任务目录>/` 下（以任务书名建目录）。
+1. 研发统一通过 harness 宿主（运行期由 `.harness-env` 拓扑解析定位，见 docs/harness/topology.md）的宪章工作流执行：在业务项目内使用 `/cc <任务书路径>` 命令触发 charter-orchestrator 编排（cc = constitution coding，宪章编程）。
+2. 任务书按 harness 宿主 `templates/task_book.md` 模板编写，与实施计划、研发日志、流程状态一并存放于业务项目任务目录 `opencode_schedule/<YYYYMMDD>/<任务目录>/` 下（以任务书名建目录）。
 3. 流程节点严格按序执行，前序节点未完成不得进入下一节点：
    - 节点-1 任务书生成（仅一句话需求输入时）：按模板生成任务书并匹配资源
    - 节点0 校验：任务书/宪章/输出目录确认
@@ -135,9 +136,25 @@
    - 节点5 研发日志：撰写 `任务N研发日志.md`
    - 节点6 资产沉淀：将研发产出沉淀为 `docs/hetu-<项目>/` 下的文档，区分**新增**（创建并登记资源地图）与**更新**（仅追加/修订相关章节）
    - 节点7 通知：通过 hetu-aether `utils/util_dingtalk.py` 发送完成通知
-4. 需求分析必须按 hetu-hammurabi `docs/资源地图.md` 匹配接口文档、DDL、参考代码；引用资源须给出精确文件路径与行号，禁止虚构。
+4. 需求分析必须按 harness 宿主 `docs/资源地图.md` 匹配接口文档、DDL、参考代码；引用资源须给出精确文件路径与行号，禁止虚构。
 5. 每个节点状态固化到任务目录 `opencode_schedule/<YYYYMMDD>/<任务目录>/研发流程状态.md`，流程结束输出总结。
+
+---
+
+## 十四、AI 分析范式
+
+> 生效说明：2026-08-13 经宪章变更流程成文（源建议稿：`hetu-sybil/docs/AI分析范式宪法条款建议稿.md`，2026-08-12 用户确认）。本条款约束 hetu 体系所有**业务分析项目**；数据生产侧项目（hetu-mercury 数据同步、hetu-thoth 文档/知识处理）职责为数据采集/转换/入库，不适用本条款；其后续若新增分析判断功能则适用。
+
+1. **分析判断必须由模型能力完成，禁止脚本规则实现**：一切分析判断（基本面研判、宏观研判、新闻情绪判断、信号产出、决策聚合与综合研判等）必须由模型能力完成（经 harness 代理 + 技能 + 提示词模板执行）；**禁止在脚本/代码中实现规则打分、指标阈值判断、权重加权、评分公式、方向映射等分析判断逻辑**。脚本产出的基础统计特征（均线值、涨跌幅、资金净额等）属数据加工，供模型研判引用，不构成分析判断。
+
+2. **脚本职责限定**：业务项目脚本/代码职责限定为——**取数、数据组织（数据视图）、数据就绪校验、记录、统计加工**；分析流程中的"超时降级、证据取舍、置信度调整、方向结论"等处置必须由模型依据校验结论与证据执行，代码不预设分析结论规则。
+
+3. **分析流程以 harness 流水线模板实例承载（一分析一流水线）**：分析任务通过 harness 流水线模板实例化执行（1 条流水线 = 1 次分析任务，承载标的集合 1~N 只，内部批量处理 + 模型研判），由专属代理编排；不设脚本式"全量计算流水线"。
+
+4. **提示词模板为代码资产**：承载分析口径的提示词模板存放于业务项目**源码目录**（约定 `src/prompts/`，进 git 管理），随代码评审与单元测试校验（如模板 frontmatter/正文结构/变量绑定一致性测试）；任务发布时经项目私有技能目录引用/复制；**禁止在模板之外散落分析口径**（如硬编码在脚本、配置或文档中）。
+
+5. **评审节点合规检查**：代码评审节点须检查"AI 分析范式合规性"——分析模块内不得出现规则信号实现（参照 hetu-sybil 任务 3 `unit_test/test_no_rule_signal.py` 断言模式：源码级扫描 + 输出结构断言），违者 REVISE 回编码修复；测试节点可在单测中固化"零规则信号断言"。
 6. 研发日志必须包含：任务概述、创建/修改文件清单、核心设计、测试结果、遗留问题。
 7. 门禁约束：测试未通过禁止进入日志、资产沉淀与通知节点；修复重试不超过 3 轮，仍失败则停止并通知用户。测试节点须将结果写入任务目录 `opencode_schedule/<YYYYMMDD>/<任务目录>/.gate.json`，由 charter-gate 插件硬性拦截未过门禁的日志/通知操作。评审 `REVISE` 回退编码修复，重试不超过 2 轮。
 8. 资产沉淀必须遵守 `docs/资源地图.md` 的登记机制：新增文档/参考实现须登记，更新文档不得破坏原有内容。
-9. 流程编排与节点代理定义见 hetu-hammurabi 的 `.opencode/` 目录。
+9. 流程编排与节点代理定义见 harness 宿主的 `.opencode/` 目录（运行期由 `.harness-env` 拓扑解析定位）。

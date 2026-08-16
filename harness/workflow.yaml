@@ -1,0 +1,42 @@
+# 宪章研发流程定义（DSH 重构版）
+# 缺陷修复对照（20260814任务1）：
+# - D5 流程定义外置：节点顺序、回退轮次、门禁挂载点、前置依赖全部在此定义，
+#   编排器读取执行；新增/调整节点只改本文件，不碰插件代码。
+schema_version: 1
+
+nodes:
+  - id: -1
+    agent: charter-taskwriter
+    when: input_is_requirement      # 仅一句话需求输入时执行
+
+  - id: 0
+    agent: builtin_validate         # 内建校验：任务书/宪章/输出目录
+
+  - id: 1
+    agent: charter-analyst
+    outputs: ["实施计划.md"]
+
+  - id: 2
+    agent: charter-coder
+
+  - id: 3
+    agent: charter-tester
+    gate: unit_test                 # 硬门禁：.gate.json v2（run_id + token）
+    retry: {to: 2, max_rounds: 3}   # 失败回编码修复，最多 3 轮
+
+  - id: 4
+    agent: charter-reviewer
+    gate: review                    # 评审结论 APPROVE 才放行
+    retry: {to: 2, max_rounds: 2}   # REVISE 回编码，最多 2 轮
+
+  - id: 5
+    agent: charter-logger
+    requires: [3, 4]
+
+  - id: 6
+    agent: charter-assetter
+    requires: [3, 4]
+
+  - id: 7
+    agent: charter-notifier
+    requires: [3, 4]

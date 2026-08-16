@@ -1,0 +1,18 @@
+# ConstitutionCoding-Plugin 配置层：/cc 命令 + 硬门禁 + 数据通道 + client 半区
+- insert:
+    # node 入口（空 apply）：激活包名 entry，使 client 半区被 modules 扫描加载
+    - id: constitution-coding
+      name: '@hetu-altas/ConstitutionCoding-Plugin'
+    # /cc 命令（宪章编程 GUI 钩子）
+    - id: charter-command
+      name: '@hetu-altas/ConstitutionCoding-Plugin/src/command.js'
+    # 硬门禁（tools/pre-execute：危险命令/通知出口/日志门禁）
+    - id: charter-gate
+      name: '@hetu-altas/ConstitutionCoding-Plugin/src/gate.js'
+    # 数据通道（/dashboard 页面代理 + /api/hetu-dashboard 看板数据）
+    - id: charter-status-api
+      name: '@hetu-altas/ConstitutionCoding-Plugin/src/status-api.js'
+      inject: [webServer]
+    # 看板服务自启（探测 8790，未运行则自动拉起）
+    - id: dashboard-launcher
+      name: '@hetu-altas/ConstitutionCoding-Plugin/src/dashboard-launcher.js'

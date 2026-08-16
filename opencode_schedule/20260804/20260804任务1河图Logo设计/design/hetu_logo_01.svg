@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- hetu_logo_01.svg 方案1：半展开横卷 + 河图五方点阵（河出图，洛出书） -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%" role="img" aria-label="河图">
+  <defs>
+    <!-- 朱砂中心点发光渐变：朱砂→米白 淡出光晕 -->
+    <linearGradient id="grad-glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#B33A2E"/>
+      <stop offset="100%" stop-color="#F6F1E5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 宣纸米白底 -->
+  <rect id="bg-paper" x="0" y="0" width="500" height="500" fill="#F6F1E5"/>
+
+  <!-- 卷轴轴杆：左右两根竖直墨黑轴杆（L3 级） -->
+  <g id="scroll-roll">
+    <rect x="104" y="125" width="10" height="250" rx="5" fill="#1C1C22"/>
+    <rect x="386" y="125" width="10" height="250" rx="5" fill="#1C1C22"/>
+  </g>
+
+  <!-- 卷面画幅：横向展开画卷，玄青描边 + 两侧卷层细线 -->
+  <g id="scroll-body">
+    <rect x="110" y="135" width="280" height="230" fill="#F6F1E5" stroke="#264653" stroke-width="3"/>
+    <line x1="122" y1="135" x2="122" y2="365" stroke="#264653" stroke-width="1.5" opacity="0.4"/>
+    <line x1="378" y1="135" x2="378" y2="365" stroke="#264653" stroke-width="1.5" opacity="0.4"/>
+  </g>
+
+  <!-- 量化要素：底纹点阵网格 + 河图五方点阵（中心1 + 四方位2/3/4/5星点） -->
+  <g id="quant-dots">
+    <!-- 底纹细点阵网格 3x3（科技感） -->
+    <g fill="#264653" opacity="0.35">
+      <circle cx="150" cy="175" r="1.5"/>
+      <circle cx="250" cy="175" r="1.5"/>
+      <circle cx="350" cy="175" r="1.5"/>
+      <circle cx="150" cy="255" r="1.5"/>
+      <circle cx="350" cy="255" r="1.5"/>
+      <circle cx="150" cy="335" r="1.5"/>
+      <circle cx="250" cy="335" r="1.5"/>
+      <circle cx="350" cy="335" r="1.5"/>
+    </g>
+    <!-- 河图五方星点：南2 / 东3 / 西4 / 北5，组内间距16px -->
+    <g fill="#264653">
+      <circle cx="250" cy="292" r="4.5"/>
+      <circle cx="250" cy="308" r="4.5"/>
+      <circle cx="300" cy="250" r="4.5"/>
+      <circle cx="316" cy="250" r="4.5"/>
+      <circle cx="308" cy="266" r="4.5"/>
+      <circle cx="200" cy="250" r="4.5"/>
+      <circle cx="184" cy="250" r="4.5"/>
+      <circle cx="192" cy="234" r="4.5"/>
+      <circle cx="192" cy="266" r="4.5"/>
+      <circle cx="250" cy="200" r="4.5"/>
+      <circle cx="250" cy="184" r="4.5"/>
+      <circle cx="250" cy="216" r="4.5"/>
+      <circle cx="234" cy="200" r="4.5"/>
+      <circle cx="266" cy="200" r="4.5"/>
+    </g>
+    <!-- 中心点睛：朱砂大点 + 渐变光晕 -->
+    <circle cx="250" cy="250" r="17" fill="none" stroke="url(#grad-glow)" stroke-width="4" opacity="0.55"/>
+    <circle cx="250" cy="250" r="9" fill="#B33A2E"/>
+  </g>
+</svg>

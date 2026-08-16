@@ -1,0 +1,22 @@
+{
+  "name": "@hetu-altas/ConstitutionCoding-Plugin",
+  "version": "0.1.0",
+  "description": "河图体系宪章编程（Constitution Coding）：/cc 命令 + 硬门禁（tools/pre-execute）+ 看板原生面板 + 流程状态栏",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./src/*": "./src/*",
+    "./client": "./client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": { "patch": "./cordis.patch.yml" },
+    "client": {
+      "inject": ["@deepseek-ai/dsh-client-runtime", "@deepseek-ai/dsh-client-ui-layout"],
+      "platform": "web"
+    }
+  },
+  "files": ["src", "client.js", "cordis.patch.yml"],
+  "license": "MIT"
+}

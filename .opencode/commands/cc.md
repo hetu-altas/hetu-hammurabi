@@ -1,8 +1,8 @@
 ---
-description: 宪章编程：输入任务书路径或一句话需求，自动执行完整研发流程
+description: 宪章编程（cc = constitution coding）：输入任务书路径或一句话需求，自动执行完整研发流程
 agent: charter-orchestrator
 ---
-启动宪章研发流程，输入：$ARGUMENTS
+启动宪章研发流程（/cc = constitution coding，宪章编程），输入：$ARGUMENTS
 
 ## 输入判别（三种模式）
 - **任务书路径**：`$ARGUMENTS` 是已存在的 `.md` 文件路径 → 直接作为任务书，从节点 0 开始执行。

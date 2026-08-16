@@ -1,0 +1,15 @@
+{
+  "schema_version": 2,
+  "run_id": "20260815任务2旧体系门禁升级双体系并行",
+  "task_dir": "/mnt/d/workspace/hetu-altas/hetu-hammurabi/opencode_schedule/20260815/20260815任务2旧体系门禁升级双体系并行",
+  "test_passed": true,
+  "total": 232,
+  "passed": 232,
+  "written_by": "charter-orchestrator",
+  "result_files": [
+    "unit_test/test/test_harness_dsh_result.txt",
+    "unit_test/test/test_harness_topology_result.txt"
+  ],
+  "updated_at": "2026-08-15T13:24:24",
+  "gate_token": "e5c7f9c51055ea2b16ed5170f7b4287abe154e1b88215d84ed20dc59b9f795da"
+}

@@ -1,0 +1,10 @@
+{
+  "test_passed": true,
+  "test_file": "unit_test/test_wanx_prompt_v2.py",
+  "result_file": "unit_test/test/test_wanx_prompt_v2_result.txt",
+  "passed": 16,
+  "failed": 0,
+  "total": 16,
+  "timestamp": "2026-08-09T16:03:28",
+  "updated_at": "2026-08-09 16:03:28"
+}

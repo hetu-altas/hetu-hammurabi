@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- hetu_logo_08.svg 水墨候选3：水纹涟漪（水月镜花，笔触最柔）——立轴挂轴 + 三道清墨波纹 + 实体底部渗墨点 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%" role="img" aria-label="河图">
+  <defs>
+    <!-- 滚筒圆柱渐变：重→淡（木色感，双 stop） -->
+    <linearGradient id="grad-roll" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#57504A"/>
+      <stop offset="100%" stop-color="#8D8578"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 淡赭纸画布底 -->
+  <rect id="bg-paper" x="0" y="0" width="500" height="500" fill="#F3E9D6"/>
+
+  <!-- 滚筒：天杆 / 地杆（T=16，T/W=8.9%，本组最小仍达标）+ 重墨轴头（无金） -->
+  <g id="scroll-roll">
+    <rect id="rod-top" x="147" y="102" width="206" height="16" rx="4" fill="url(#grad-roll)"/>
+    <rect id="rod-bottom" x="147" y="382" width="206" height="16" rx="4" fill="url(#grad-roll)"/>
+    <circle id="cap-tl" cx="147" cy="110" r="10.5" fill="#57504A"/>
+    <circle id="cap-tr" cx="353" cy="110" r="10.5" fill="#57504A"/>
+    <circle id="cap-bl" cx="147" cy="390" r="10.5" fill="#57504A"/>
+    <circle id="cap-br" cx="353" cy="390" r="10.5" fill="#57504A"/>
+  </g>
+
+  <!-- 竖向画幅（W=180，02 传承坐标） -->
+  <g id="scroll-body">
+    <rect id="panel" x="160" y="118" width="180" height="264" fill="#F3E9D6" stroke="#3B3733" stroke-width="2.5"/>
+    <!-- 水纹：三道横向波浪（清墨/淡墨，下疏上密）+ 渗墨点（烛影入水扩散） -->
+    <path id="motif-wave-1" d="M165,332 Q190,324 215,332 T265,332 T315,332" fill="none" stroke="#B7AFA2" stroke-width="1.5" opacity="0.6" stroke-linecap="round"/>
+    <path id="motif-wave-2" d="M165,348 Q190,340 215,348 T265,348 T315,348" fill="none" stroke="#B7AFA2" stroke-width="1.2" opacity="0.5" stroke-linecap="round"/>
+    <path id="motif-wave-3" d="M165,364 Q190,356 215,364 T265,364 T315,364" fill="none" stroke="#8D8578" stroke-width="1.0" opacity="0.4" stroke-linecap="round"/>
+    <ellipse id="smudge-1" cx="268" cy="279" rx="7.5" ry="5" fill="#8D8578" opacity="0.4"/>
+    <ellipse id="smudge-2" cx="292" cy="255" rx="6.5" ry="4.5" fill="#8D8578" opacity="0.4"/>
+    <ellipse id="smudge-3" cx="316" cy="255" rx="6.5" ry="4.5" fill="#8D8578" opacity="0.4"/>
+  </g>
+
+  <!-- 量化要素：K 线蜡烛图（7 根、波动上行、柔渗笔触：2 段影线 1.8/0.6 + 柔化实体 8.5/6） -->
+  <g id="quant-kline">
+    <g id="kl-1">
+      <path id="kl-1-up-1" d="M172,289 L172,281.8" fill="none" stroke="#A96B5F" stroke-width="1.8" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-1-up-2" d="M172,281.8 L172,277" fill="none" stroke="#A96B5F" stroke-width="0.6" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-1-down-1" d="M172,319 L172,326.2" fill="none" stroke="#A96B5F" stroke-width="1.8" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-1-down-2" d="M172,326.2 L172,331" fill="none" stroke="#A96B5F" stroke-width="0.6" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-1-body" d="M167.75,289 Q168.35,304 169,319 L175,319 Q175.65,304 176.25,289 Z" fill="#A96B5F"/>
+    </g>
+    <g id="kl-2">
+      <path id="kl-2-up-1" d="M196,269 L196,261.8" fill="none" stroke="#4E5D66" stroke-width="1.8" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-2-up-2" d="M196,261.8 L196,257" fill="none" stroke="#4E5D66" stroke-width="0.6" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-2-down-1" d="M196,299 L196,306.2" fill="none" stroke="#4E5D66" stroke-width="1.8" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-2-down-2" d="M196,306.2 L196,311" fill="none" stroke="#4E5D66" stroke-width="0.6" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-2-body" d="M191.75,269 Q192.35,284 193,299 L199,299 Q199.65,284 200.25,269 Z" fill="#4E5D66"/>
+    </g>
+    <g id="kl-3">
+      <path id="kl-3-up-1" d="M220,264 L220,256.8" fill="none" stroke="#A96B5F" stroke-width="1.8" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-3-up-2" d="M220,256.8 L220,252" fill="none" stroke="#A96B5F" stroke-width="0.6" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-3-down-1" d="M220,299 L220,306.2" fill="none" stroke="#A96B5F" stroke-width="1.8" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-3-down-2" d="M220,306.2 L220,311" fill="none" stroke="#A96B5F" stroke-width="0.6" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-3-body" d="M215.75,264 Q216.35,281.5 217,299 L223,299 Q223.65,281.5 224.25,264 Z" fill="#A96B5F"/>
+    </g>
+    <g id="kl-4">
+      <path id="kl-4-up-1" d="M244,239 L244,231.8" fill="none" stroke="#4E5D66" stroke-width="1.8" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-4-up-2" d="M244,231.8 L244,227" fill="none" stroke="#4E5D66" stroke-width="0.6" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-4-down-1" d="M244,274 L244,281.2" fill="none" stroke="#4E5D66" stroke-width="1.8" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-4-down-2" d="M244,281.2 L244,286" fill="none" stroke="#4E5D66" stroke-width="0.6" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-4-body" d="M239.75,239 Q240.35,256.5 241,274 L247,274 Q247.65,256.5 248.25,239 Z" fill="#4E5D66"/>
+    </g>
+    <g id="kl-5">
+      <path id="kl-5-up-1" d="M268,234 L268,226.8" fill="none" stroke="#A96B5F" stroke-width="1.8" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-5-up-2" d="M268,226.8 L268,222" fill="none" stroke="#A96B5F" stroke-width="0.6" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-5-down-1" d="M268,274 L268,281.2" fill="none" stroke="#A96B5F" stroke-width="1.8" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-5-down-2" d="M268,281.2 L268,286" fill="none" stroke="#A96B5F" stroke-width="0.6" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-5-body" d="M263.75,234 Q264.35,254 265,274 L271,274 Q271.65,254 272.25,234 Z" fill="#A96B5F"/>
+    </g>
+    <g id="kl-6">
+      <path id="kl-6-up-1" d="M292,214 L292,206.8" fill="none" stroke="#4E5D66" stroke-width="1.8" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-6-up-2" d="M292,206.8 L292,202" fill="none" stroke="#4E5D66" stroke-width="0.6" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-6-down-1" d="M292,249 L292,256.2" fill="none" stroke="#4E5D66" stroke-width="1.8" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-6-down-2" d="M292,256.2 L292,261" fill="none" stroke="#4E5D66" stroke-width="0.6" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-6-body" d="M287.75,214 Q288.35,231.5 289,249 L295,249 Q295.65,231.5 296.25,214 Z" fill="#4E5D66"/>
+    </g>
+    <g id="kl-7">
+      <path id="kl-7-up-1" d="M316,214 L316,206.8" fill="none" stroke="#A96B5F" stroke-width="1.8" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-7-up-2" d="M316,206.8 L316,202" fill="none" stroke="#A96B5F" stroke-width="0.6" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-7-down-1" d="M316,249 L316,256.2" fill="none" stroke="#A96B5F" stroke-width="1.8" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-7-down-2" d="M316,256.2 L316,261" fill="none" stroke="#A96B5F" stroke-width="0.6" opacity="0.85" stroke-linecap="round"/>
+      <path id="kl-7-body" d="M311.75,214 Q312.35,231.5 313,249 L319,249 Q319.65,231.5 320.25,214 Z" fill="#A96B5F"/>
+    </g>
+  </g>
+
+  <!-- 周期刻度：基线 + 7 根短线（02 坐标传承，全组最弱化，融入水纹层） -->
+  <g id="quant-scale">
+    <line id="baseline" x1="160" y1="366" x2="340" y2="366" stroke="#8D8578" stroke-width="1.5" opacity="0.3"/>
+    <g stroke="#8D8578" stroke-width="1.5" opacity="0.4">
+      <line id="tick-1" x1="172" y1="352" x2="172" y2="362"/>
+      <line id="tick-2" x1="196" y1="352" x2="196" y2="362"/>
+      <line id="tick-3" x1="220" y1="352" x2="220" y2="362"/>
+      <line id="tick-4" x1="244" y1="352" x2="244" y2="362"/>
+      <line id="tick-5" x1="268" y1="352" x2="268" y2="362"/>
+      <line id="tick-6" x1="292" y1="352" x2="292" y2="362"/>
+      <line id="tick-7" x1="316" y1="352" x2="316" y2="362"/>
+    </g>
+  </g>
+
+  <!-- 顶部绦带：挂环 + 挂绳 + 双分叉垂穗（本组最宽，置顶可见） -->
+  <g id="scroll-ribbon">
+    <circle id="ring" cx="250" cy="100" r="4" fill="none" stroke="#57504A" stroke-width="2.0"/>
+    <path id="cord" d="M250,104 C245,115 255,121 250,128" fill="none" stroke="#57504A" stroke-width="2.5" stroke-linecap="round"/>
+    <path id="tassel" d="M242,136 L258,136 L253,164 L250,156 L247,164 Z" fill="#57504A" opacity="0.9"/>
+  </g>
+</svg>

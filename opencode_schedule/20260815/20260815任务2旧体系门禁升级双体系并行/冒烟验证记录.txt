@@ -1,0 +1,186 @@
+# 冒烟验证记录 · 20260815任务2 旧体系门禁升级双体系并行
+
+> 节点：编码（charter-coder）｜日期：2026-08-15
+> 验证方式：CLI 实测等价验证（TS 适配层无法自动单测，Node v18.19.1 不支持
+> strip-types；以 Python 侧 CLI 契约 + 与 DSH 插件同构比对 + 本记录覆盖）。
+> 所有命令均在宿主根 `/mnt/d/workspace/hetu-altas/hetu-hammurabi` 执行，
+> Python 为 `../venv-hetu/bin/python`。
+
+---
+
+## ① 门禁未开写日志被拦（本任务目录未落闸）
+
+```bash
+../venv-hetu/bin/python -m harness.core.cli decide \
+  --task-dir opencode_schedule/20260815/20260815任务2旧体系门禁升级双体系并行 \
+  --run-id 20260815任务2旧体系门禁升级双体系并行 \
+  --file opencode_schedule/20260815/20260815任务2旧体系门禁升级双体系并行/研发日志.md \
+  --cmd "" --secret-file conf/gate_secret --json
+```
+
+```json
+{"blocked": true, "code": "LOG_WRITE_BLOCKED", "reason": "测试门禁未通过（GATE_MISSING）：禁止写入研发日志", "event_type": "gate_block"}
+```
+
+退出码 1。✅ 通过（对应插件 before 钩子委托 decide 的拦截路径：本任务未落闸，
+写研发日志被硬拦截，fail-closed）。
+
+## ② 伪造 .gate.json 不开闸（temp 目录构造伪造闸）
+
+样本 A（无 result_files、gate_token 为空）：
+
+```json
+{
+  "schema_version": 2,
+  "run_id": "20260815任务F",
+  "test_passed": true,
+  "total": 1,
+  "passed": 1,
+  "updated_at": "2026-08-15T12:00:00",
+  "gate_token": ""
+}
+```
+
+```bash
+../venv-hetu/bin/python -m harness.core.cli decide \
+  --task-dir <temp>/opencode_schedule/20260815/20260815任务F \
+  --run-id 20260815任务F --file <temp>/.../研发日志.md --cmd "" \
+  --secret-file conf/gate_secret --json
+```
+
+```json
+{"blocked": true, "code": "LOG_WRITE_BLOCKED", "reason": "测试门禁未通过（GATE_NO_RESULTS）：禁止写入研发日志", "event_type": "gate_block"}
+```
+
+样本 B（带 result_files、token 伪造为 forged-token）：
+
+```json
+{
+  "schema_version": 2,
+  "run_id": "20260815任务F",
+  "test_passed": true,
+  "total": 1, "passed": 1,
+  "result_files": ["unit_test/test/result.txt"],
+  "updated_at": "2026-08-15T12:00:00",
+  "gate_token": "forged-token-000000000000000000000000000000000000"
+}
+```
+
+```json
+{"blocked": true, "code": "LOG_WRITE_BLOCKED", "reason": "测试门禁未通过（GATE_TOKEN_INVALID）：禁止写入研发日志", "event_type": "gate_block"}
+```
+
+退出码 1。✅ 通过（校验链 GATE_NO_RESULTS / GATE_TOKEN_INVALID 依次覆盖，伪造不开闸）。
+
+## ③ curl 直发钉钉被拦
+
+```bash
+../venv-hetu/bin/python -m harness.core.cli decide \
+  --task-dir opencode_schedule/20260815/20260815任务2旧体系门禁升级双体系并行 \
+  --run-id 20260815任务2旧体系门禁升级双体系并行 \
+  --file "" --cmd 'curl -s "https://oapi.dingtalk.com/robot/send?access_token=xxx"' \
+  --secret-file conf/gate_secret --json
+```
+
+```json
+{"blocked": true, "code": "NOTIFY_BLOCKED", "reason": "通知必须通过唯一出口 harness.core.notify（HARNESS_NOTIFY），禁止直连钉钉", "event_type": "gate_block"}
+```
+
+退出码 1。✅ 通过（无 HARNESS_NOTIFY 出口标记，curl 直发被拦，D4）。
+
+## ④ 合法 v2 落闸 → 放行（复用 20260815任务1 已落闸目录）
+
+### ④-1 先对任务1 目录执行 re-seal 续签（防 GATE_STALE）
+
+```bash
+../venv-hetu/bin/python -m harness.core.cli re-seal \
+  --task-dir opencode_schedule/20260815/20260815任务1harness硬约束体系优化 \
+  --run-id 20260815任务1harness硬约束体系优化 \
+  --secret-file conf/gate_secret --json
+```
+
+```json
+{"ok": false, "msg": "result 重读与 .gate.json 数字不符（result 232/232 vs gate 221/221）：拒绝续签"}
+```
+
+退出码 1。**机制事实**：任务1 闸的 result_files 之一 `unit_test/test/test_harness_dsh_result.txt`
+已被本任务全量回归更新（Ran 201 → Ran 212，212+20=232 ≠ 221），re-seal 前置校验
+「重读 result 数字一致」拒绝续签——防篡改防线按设计生效（result 被改即拒，D2）。
+
+### ④-2 直接 decide（re-seal 未成功后的实际状态）
+
+```json
+{"blocked": true, "code": "LOG_WRITE_BLOCKED", "reason": "测试门禁未通过（GATE_TOKEN_INVALID）：禁止写入研发日志", "event_type": "gate_block"}
+```
+
+**机制事实**：token payload 含 result 内容摘要（compute_results_digest）与 updated_at，
+result 文件内容更新后旧闸 token 自然失效（写/验分离，防「改文件续命」）——与
+④-1 同源的防篡改防线。
+
+### ④-3 合法 v2 闸放行验证（实施计划认可的等价路径：temp 构造合法闸）
+
+```bash
+# temp 目录构造：result 文件（测试总数 1/成功 1）→ gate.build_gate_v2 签名落闸
+../venv-hetu/bin/python -m harness.core.cli decide \
+  --task-dir <temp>/opencode_schedule/20260815/20260815任务G \
+  --run-id 20260815任务G --file <temp>/.../研发日志.md --cmd "" \
+  --secret-file <temp>/secret --json
+```
+
+```json
+{"blocked": false, "code": "OK", "reason": "", "event_type": "gate_pass"}
+```
+
+退出码 0。✅ 通过（合法 v2 闸 → 写研发日志放行；任务1 目录因 result 更新无法续签，
+属体系防篡改设计的正确行为，如实记录如上）。
+
+## ⑤ chat 明文凭据脱敏 + 资产登记检查
+
+### ⑤-1 redact 三类样本脱敏
+
+```bash
+../venv-hetu/bin/python -m harness.core.cli redact \
+  --text "key sk-abcdefghijklmnopqrstuvwxyz123456 和 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.abc password=SuperSecret123" --json
+```
+
+```json
+{"text": "key [REDACTED] 和 Authorization: [REDACTED] [REDACTED]", "hits": 3}
+```
+
+退出码 0。✅ 通过（hits=3，原文凭据全部替换为 [REDACTED]，无明文残留）。
+
+### ⑤-2 assets-check 未登记 → ok=false 软告警
+
+```bash
+../venv-hetu/bin/python -m harness.core.cli assets-check \
+  --project-dir . --file docs/hetu-demo/未登记.md --json
+```
+
+```json
+{"ok": false, "reason": "未登记：未登记.md 未出现在资源地图", "map_path": "docs/资源地图.md"}
+```
+
+退出码 1。✅ 通过（未登记 → warn 软告警，不阻断）。
+
+### ⑤-3 assets-check 已登记/非目标路径 → ok=true
+
+```bash
+../venv-hetu/bin/python -m harness.core.cli assets-check \
+  --project-dir . --file docs/harness/gates.md --json
+```
+
+```json
+{"ok": true, "reason": "非 docs/hetu-*/ 路径，跳过登记检查", "map_path": "docs/资源地图.md"}
+```
+
+退出码 0。✅ 通过。
+
+---
+
+## 结论
+
+冒烟 5 项（含 ② 两个样本、④ 三个步骤）全部按预期完成：
+- 门禁未开拦截 / 伪造闸拦截 / curl 直发拦截 / 合法闸放行 / 脱敏与资产检查软告警均验证通过；
+- 额外验证了体系防篡改防线（re-seal 拒绝 + 旧闸 token 失效）两个机制事实，如实记录；
+- TS 插件层无法自动单测，本记录为 CLI 等价验证；插件加载验证待重启 opencode 后人工核查
+  （client.app.log 的 `charter-gate plugin initialized` 日志）。

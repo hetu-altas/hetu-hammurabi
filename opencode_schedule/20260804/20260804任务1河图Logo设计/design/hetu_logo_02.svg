@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- hetu_logo_02.svg 方案2：立轴（挂轴式）画幅内嵌 K 线蜡烛图 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%" role="img" aria-label="河图">
+  <defs>
+    <!-- 画幅描边渐变：玄青→墨黑 -->
+    <linearGradient id="grad-scroll" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#264653"/>
+      <stop offset="100%" stop-color="#1C1C22"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 宣纸米白底 -->
+  <rect id="bg-paper" x="0" y="0" width="500" height="500" fill="#F6F1E5"/>
+
+  <!-- 顶部绦带：挂环 + 挂绳 + 垂穗 -->
+  <g id="scroll-ribbon">
+    <circle cx="250" cy="55" r="4" fill="none" stroke="#1C1C22" stroke-width="1.5"/>
+    <path d="M250,59 C245,72 255,86 250,100" fill="none" stroke="#1C1C22" stroke-width="1.5"/>
+    <path d="M244,112 L256,112 L250,138 Z" fill="#1C1C22" opacity="0.85"/>
+  </g>
+
+  <!-- 天杆 / 地杆 -->
+  <g id="scroll-roll">
+    <rect x="150" y="100" width="200" height="12" rx="6" fill="#1C1C22"/>
+    <rect x="150" y="388" width="200" height="12" rx="6" fill="#1C1C22"/>
+  </g>
+
+  <!-- 竖向画幅 -->
+  <g id="scroll-body">
+    <rect x="160" y="118" width="180" height="264" fill="#F6F1E5" stroke="url(#grad-scroll)" stroke-width="3"/>
+  </g>
+
+  <!-- 量化要素：K 线蜡烛图（阳线朱砂、阴线玄青，波动上行） -->
+  <g id="quant-kline">
+    <g id="kl-1">
+      <line x1="172" y1="305" x2="172" y2="340" stroke="#B33A2E" stroke-width="1.5"/>
+      <rect x="167.5" y="290" width="9" height="30" fill="#B33A2E"/>
+    </g>
+    <g id="kl-2">
+      <line x1="196" y1="260" x2="196" y2="310" stroke="#264653" stroke-width="1.5"/>
+      <rect x="191.5" y="270" width="9" height="30" fill="#264653"/>
+    </g>
+    <g id="kl-3">
+      <line x1="220" y1="255" x2="220" y2="315" stroke="#B33A2E" stroke-width="1.5"/>
+      <rect x="215.5" y="265" width="9" height="35" fill="#B33A2E"/>
+    </g>
+    <g id="kl-4">
+      <line x1="244" y1="230" x2="244" y2="285" stroke="#264653" stroke-width="1.5"/>
+      <rect x="239.5" y="240" width="9" height="35" fill="#264653"/>
+    </g>
+    <g id="kl-5">
+      <line x1="268" y1="225" x2="268" y2="295" stroke="#B33A2E" stroke-width="1.5"/>
+      <rect x="263.5" y="235" width="9" height="40" fill="#B33A2E"/>
+    </g>
+    <g id="kl-6">
+      <line x1="292" y1="205" x2="292" y2="260" stroke="#264653" stroke-width="1.5"/>
+      <rect x="287.5" y="215" width="9" height="35" fill="#264653"/>
+    </g>
+    <g id="kl-7">
+      <line x1="316" y1="205" x2="316" y2="265" stroke="#B33A2E" stroke-width="1.5"/>
+      <rect x="311.5" y="215" width="9" height="35" fill="#B33A2E"/>
+    </g>
+  </g>
+
+  <!-- 周期刻度：画幅底部基线与 7 根刻度短线 -->
+  <g id="quant-scale">
+    <line x1="160" y1="366" x2="340" y2="366" stroke="#264653" stroke-width="1.5" opacity="0.3"/>
+    <g stroke="#264653" stroke-width="1.5" opacity="0.45">
+      <line x1="172" y1="352" x2="172" y2="362"/>
+      <line x1="196" y1="352" x2="196" y2="362"/>
+      <line x1="220" y1="352" x2="220" y2="362"/>
+      <line x1="244" y1="352" x2="244" y2="362"/>
+      <line x1="268" y1="352" x2="268" y2="362"/>
+      <line x1="292" y1="352" x2="292" y2="362"/>
+      <line x1="316" y1="352" x2="316" y2="362"/>
+    </g>
+  </g>
+</svg>

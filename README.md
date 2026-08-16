@@ -14,7 +14,11 @@
 
 ---
 
-hetu 系列「宪章编程」harness 模块。通过 opencode 的 Commands / Agents / Skills / Plugins 将研发流程固化为可自动执行的节点流水线：输入**任务书路径或一句话需求**，自动完成 任务书生成(按需) → 分析 → 编码 → 单元测试（硬门禁）→ 代码评审 → 研发日志 → 资产沉淀 → 钉钉通知。
+hetu 系列「宪章编程」harness 模块。将研发流程固化为可自动执行的节点流水线：输入**任务书路径或一句话需求**，自动完成 任务书生成(按需) → 分析 → 编码 → 单元测试（硬门禁）→ 代码评审 → 研发日志 → 资产沉淀 → 钉钉通知。
+
+**两种执行载体**：
+- **DSH（主推）**：一体化插件包 `@hetu-altas/ConstitutionCoding-Plugin`——GUI 内 `/cc` 命令、`tools/pre-execute` 硬门禁、看板原生面板、右侧流程状态栏、看板服务随 DSH 自启；`npx @deepseek-ai/dsh plugin --profile web add ./plugins/constitution-coding` 一条命令安装
+- **opencode（兼容）**：旧 `/dev` 流程保留可用
 
 ## 宪章编程 · 核心理念
 
@@ -41,7 +45,7 @@ hetu 系列「宪章编程」harness 模块。通过 opencode 的 Commands / Age
 
 > **开源 harness + 国产模型**：行政机构与执行官员均可替换，唯宪法不灭。
 
-- **执行载体**：基于开源 agent harness 构建，当前适配 [opencode](https://opencode.ai)（≥ 1.16）；**后续将适配更多国产 harness**，配置层（`.opencode/`）随目标 harness 迁移即可
+- **执行载体**：基于开源 agent harness 构建——主推 **DeepSeek Harness（DSH）**（一体化插件包 `plugins/constitution-coding/`），兼容 [opencode](https://opencode.ai)（≥ 1.16，旧流程保留）
 - **模型**：兼容国产模型（DeepSeek、Qwen、GLM、Kimi 等），通过 harness 的 provider 配置接入，无需改宪章
 - **架构解耦**：宪章（`constitution/`）与模型、harness 完全解耦——换 harness 只迁移编排层，换模型只改 provider 配置，**宪章零改动**
 - 呼应[《宪章编程宣言》](宪章编程宣言.md)信条四："工具可以换，模型可以换，宪法不灭，系统永生。"
@@ -54,7 +58,7 @@ hetu 系列「宪章编程」harness 模块。通过 opencode 的 Commands / Age
 .
 ├── .opencode/
 │   ├── commands/
-│   │   └── dev.md                     # /dev 入口命令（任务书路径 或 一句话需求）
+│   │   └── cc.md                     # /cc 入口命令（cc = constitution coding，任务书路径 或 一句话需求）
 │   ├── agents/
 │   │   ├── charter-orchestrator.md    # 主编排代理（primary，节点 -1~7 调度）
 │   │   ├── charter-taskwriter.md      # 节点-1 任务书生成（一句话需求）
@@ -82,33 +86,53 @@ hetu 系列「宪章编程」harness 模块。通过 opencode 的 Commands / Age
 │   └── install_harness.sh             # 软链 harness 到同级 hetu-* 项目
 ├── templates/
 │   └── task_book.md                   # 任务书模板
+├── plugins/
+│   └── constitution-coding/           # DSH 一体化插件包 @hetu-altas/ConstitutionCoding-Plugin
+│       ├── src/command.js             #   /cc 命令（GUI 钩子）
+│       ├── src/gate.js                #   tools/pre-execute 硬门禁
+│       ├── src/status-api.js          #   数据通道（/dashboard + /api/hetu-dashboard）
+│       ├── src/dashboard-launcher.js  #   看板服务随 DSH 自启
+│       └── client.js                  #   看板原生面板 + 右侧流程状态栏
+└── docs/dsh-docs/                     # DSH 官方开发文档离线镜像（82 页）
 ```
 
 ## 快速开始
 
-体系完整说明文档见 [docs/harness/](docs/harness/README.md)（总览 / 工作流编排 / 代理与技能 / 门禁与硬约束 / 资产体系 / 扩展维护）；新手上路先看[《快速上手指南》](快速上手指南.md)。
+体系完整说明文档见 [docs/harness/](docs/harness/README.md)；新手上路先看[《快速上手指南》](快速上手指南.md)。
 
-1. 安装 harness 到各业务项目：
+### 方式一：DSH（推荐）
+
+1. 安装一体化插件包（含 /cc 命令、硬门禁、看板面板、状态栏、看板自启）：
 
 ```bash
-bash scripts/install_harness.sh
+cd hetu-hammurabi
+npx @deepseek-ai/dsh plugin --profile web add ./plugins/constitution-coding
 ```
 
-2. 准备输入（二选一）：
-   - 按 `templates/task_book.md` 编写任务书，放入业务项目（如 `hetu-thoth`）的 `opencode_schedule/YYYYMMDD/<YYYYMMDD>任务N<名称>/` 任务目录下
-   - 或直接用一句话需求，由系统自动生成任务书（节点 -1）
+2. 启动 DSH（看板数据服务 8790 自动拉起）：
 
-3. 任务书编写前按 `constitution/task_split/task_split.md` 评估任务粒度：超限（> 4000 行）任务先按依赖拆分为多个任务书。
-
-4. 在业务项目目录启动 opencode，执行：
-
-```
-/dev <任务书路径 或 一句话需求>
+```bash
+npx @deepseek-ai/dsh web --port 3090
 ```
 
-编排代理会自动按节点执行并在任务目录 `opencode_schedule/<YYYYMMDD>/<任务目录>/研发流程状态.md` 固化每个节点的状态。
+3. 在 GUI 输入框执行：
+
+```
+/cc <任务书路径 或 一句话需求>
+```
+
+### 方式二：opencode（兼容路径）
+
+```bash
+bash scripts/install_harness.sh      # 安装旧 harness 到业务项目
+# 业务项目内启动 opencode，执行 /dev <任务书路径 或 一句话需求>
+```
+
+任务书编写前按 `constitution/task_split/task_split.md` 评估任务粒度：超限（> 4000 行）任务先按依赖拆分。编排代理会自动按节点执行并在任务目录 `opencode_schedule/<YYYYMMDD>/<任务目录>/研发流程状态.md` 固化每个节点的状态。
 
 ## 流程节点
+
+> 触发方式：DSH 下 `/cc <任务书路径 或 一句话需求>`；opencode 下 `/dev ...`。
 
 | 节点 | 代理 | 产出 | 门禁 |
 |------|------|------|------|
@@ -137,9 +161,9 @@ opencode_schedule/<YYYYMMDD>/
     └── 研发流程状态.md              # 全流程（编排器维护）
 ```
 
-## 硬约束（charter-gate 插件）
+## 硬约束（charter-gate）
 
-`.opencode/plugin/charter-gate.ts` 提供 4 项硬约束：
+DSH 下由插件包 `src/gate.js` 挂载于 `tools/pre-execute`（机器拦截）；opencode 下由 `.opencode/plugin/charter-gate.ts` 提供。4 项硬约束：
 
 1. **测试门禁**：`.gate.json` 缺失或 `test_passed=false` 时，写入（`write`/`edit`/`apply_patch` 或 bash 重定向）研发日志/流程状态、钉钉通知 bash 调用一律被阻断；**读取不受限**
 2. **数据安全**：`rm -rf` / `DROP` / `DELETE FROM` / `TRUNCATE` / `drop_collection` 必须显式带 backup/备份
@@ -149,9 +173,9 @@ opencode_schedule/<YYYYMMDD>/
 ## 维护
 
 - 宪章内容修改后，对应 Skill 直接引用 `constitution/` 下的源文件，无需改动。
-- 新增流程节点：在 `.opencode/agents/` 新增子代理并更新 `charter-orchestrator.md` 的流程定义。
-- 修改硬约束：编辑 `.opencode/plugin/charter-gate.ts`（hook 里 `throw` 即硬阻断）。
-- 配置变更（agents/skills/commands/plugin）需**退出并重启 opencode** 生效。
+- **DSH 插件**：功能拆分见 `plugins/constitution-coding/`（command/gate/status-api/dashboard-launcher/client）；修改后**重启 dsh web** 生效。
+- 新增流程节点：在 `harness/agents/` 新增子代理并更新 `harness/workflow.yaml` 流程定义。
+- 修改硬约束：DSH 下编辑 `plugins/constitution-coding/src/gate.js`（tools/pre-execute 返回 deny）；opencode 下编辑 `.opencode/plugin/charter-gate.ts`。
 
 ## 开源协议
 

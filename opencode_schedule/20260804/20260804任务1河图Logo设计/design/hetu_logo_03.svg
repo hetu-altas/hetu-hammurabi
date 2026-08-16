@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- hetu_logo_03.svg 方案3：完全展开横幅 + 数据轨迹线（自左下至右上）+ 上升箭头 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%" role="img" aria-label="河图">
+  <defs>
+    <!-- 轨迹描边渐变：玄青→墨黑 -->
+    <linearGradient id="grad-trend" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#264653"/>
+      <stop offset="100%" stop-color="#1C1C22"/>
+    </linearGradient>
+    <!-- 底部光晕渐变：鎏金→米白 淡出 -->
+    <linearGradient id="grad-glow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#C0A062"/>
+      <stop offset="100%" stop-color="#F6F1E5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 宣纸米白底 -->
+  <rect id="bg-paper" x="0" y="0" width="500" height="500" fill="#F6F1E5"/>
+
+  <!-- 横幅画幅：完全展开，墨黑边框 + 两侧卷层细线 -->
+  <g id="scroll-body">
+    <rect x="110" y="140" width="280" height="180" fill="#F6F1E5" stroke="#1C1C22" stroke-width="3"/>
+    <line x1="120" y1="140" x2="120" y2="320" stroke="#264653" stroke-width="1.5" opacity="0.4"/>
+    <line x1="380" y1="140" x2="380" y2="320" stroke="#264653" stroke-width="1.5" opacity="0.4"/>
+  </g>
+
+  <!-- 卷曲轴杆：左右圆角卷杆 + 鎏金轴头（上下两端） -->
+  <g id="scroll-roll">
+    <rect x="100" y="135" width="16" height="190" rx="8" fill="#1C1C22"/>
+    <circle cx="108" cy="132" r="4.5" fill="#C0A062"/>
+    <circle cx="108" cy="328" r="4.5" fill="#C0A062"/>
+    <rect x="384" y="135" width="16" height="190" rx="8" fill="#1C1C22"/>
+    <circle cx="392" cy="132" r="4.5" fill="#C0A062"/>
+    <circle cx="392" cy="328" r="4.5" fill="#C0A062"/>
+  </g>
+
+  <!-- 量化要素：趋势轨迹曲线（渐变描边、带两次小回调） -->
+  <g id="quant-trend">
+    <path d="M132,296 C180,302 200,262 240,256 C270,251 272,282 300,252 C322,228 340,198 366,168"
+          fill="none" stroke="url(#grad-trend)" stroke-width="3"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- 朱砂上升箭头点睛 -->
+  <g id="accent">
+    <polygon points="364,176 372,156 380,176" fill="#B33A2E"/>
+  </g>
+
+  <!-- 底部鎏金光晕（发光科技感） -->
+  <g id="glow-base">
+    <line x1="140" y1="338" x2="360" y2="338" stroke="url(#grad-glow)" stroke-width="4" opacity="0.6" stroke-linecap="round"/>
+    <line x1="180" y1="346" x2="320" y2="346" stroke="url(#grad-glow)" stroke-width="2.5" opacity="0.4" stroke-linecap="round"/>
+  </g>
+</svg>

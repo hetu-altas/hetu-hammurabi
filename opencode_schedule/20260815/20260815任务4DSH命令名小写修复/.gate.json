@@ -1,0 +1,15 @@
+{
+  "schema_version": 2,
+  "run_id": "20260815任务4DSH命令名小写修复",
+  "task_dir": "/mnt/d/workspace/hetu-altas/hetu-hammurabi/opencode_schedule/20260815/20260815任务4DSH命令名小写修复",
+  "test_passed": true,
+  "total": 242,
+  "passed": 242,
+  "written_by": "charter-orchestrator",
+  "result_files": [
+    "unit_test/test/test_harness_dsh_result.txt",
+    "unit_test/test/test_harness_topology_result.txt"
+  ],
+  "updated_at": "2026-08-15T16:23:41",
+  "gate_token": "45aab44947adffd5624a496585eb6352821820a6767605f8c5190f07b418b387"
+}

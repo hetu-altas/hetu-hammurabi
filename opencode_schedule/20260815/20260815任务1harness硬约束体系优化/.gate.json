@@ -1,0 +1,15 @@
+{
+  "schema_version": 2,
+  "run_id": "20260815任务1harness硬约束体系优化",
+  "task_dir": "/mnt/d/workspace/hetu-altas/hetu-hammurabi/opencode_schedule/20260815/20260815任务1harness硬约束体系优化",
+  "test_passed": true,
+  "total": 221,
+  "passed": 221,
+  "written_by": "charter-orchestrator",
+  "result_files": [
+    "unit_test/test/test_harness_dsh_result.txt",
+    "unit_test/test/test_harness_topology_result.txt"
+  ],
+  "updated_at": "2026-08-15T12:48:56",
+  "gate_token": "ef0647ebc87ff654d70da648d1ca0b1ea4e1dee410232ba7673ba7d93c2a82e3"
+}

@@ -14,7 +14,11 @@
 
 ---
 
-**hetu-hammurabi** is the harness module of the hetu series "Charter Programming" (宪章编程) paradigm. Built on opencode's Commands / Agents / Skills / Plugins, it turns the R&D workflow into an executable pipeline: feed it a **task book path or a one-line requirement**, and it automatically runs task-book generation (optional) → analysis → coding → unit tests (hard gate) → code review → dev log → asset accumulation → DingTalk notification.
+**hetu-hammurabi** is the harness module of the hetu series "Charter Programming" (宪章编程) paradigm. It turns the R&D workflow into an executable pipeline: feed it a **task book path or a one-line requirement**, and it automatically runs task-book generation (optional) → analysis → coding → unit tests (hard gate) → code review → dev log → asset accumulation → DingTalk notification.
+
+**Two execution carriers**:
+- **DSH (primary)**: all-in-one plugin package `@hetu-altas/ConstitutionCoding-Plugin` — `/cc` command in the GUI, hard gate on `tools/pre-execute`, native dashboard panel, right-side status dock, and auto-launch of the dashboard service; install with a single `npx @deepseek-ai/dsh plugin --profile web add ./plugins/constitution-coding`
+- **opencode (compatibility)**: the legacy `/dev` flow remains available
 
 ## Charter Programming · Core Tenets
 
@@ -41,7 +45,7 @@
 
 > **Open-source harness + domestic LLMs**: both the administrative arm and the executing officials are replaceable; only the constitution endures.
 
-- **Harness**: built on an open-source agent harness, currently adapted to [opencode](https://opencode.ai) (≥ 1.16); **more domestic harnesses will be supported** — migrating the config layer (`.opencode/`) is all it takes
+- **Harness**: built on open-source agent harnesses — **DeepSeek Harness (DSH)** is the primary carrier (all-in-one plugin package `plugins/constitution-coding/`), with [opencode](https://opencode.ai) (≥ 1.16) compatibility retained
 - **Models**: compatible with domestic LLMs (DeepSeek, Qwen, GLM, Kimi, ...) via the harness's provider configuration — no charter changes needed
 - **Decoupling**: the charters (`constitution/`) are fully decoupled from the model and the harness — switching harness migrates only the orchestration layer; switching models only changes provider config; **the charter stays untouched**
 - Echoing Tenet IV of the [Manifesto](宪章编程宣言.md): "Tools may change, models may change; the constitution never dies, and the system lives forever."
@@ -54,7 +58,7 @@
 .
 ├── .opencode/
 │   ├── commands/
-│   │   └── dev.md                     # /dev entry (task book path or one-line requirement)
+│   │   └── cc.md                     # /cc entry (cc = constitution coding; task book path or one-line requirement)
 │   ├── agents/
 │   │   ├── charter-orchestrator.md    # Orchestrator (primary, nodes -1~7)
 │   │   ├── charter-taskwriter.md      # Node -1: task book generation (one-line requirement)
@@ -82,33 +86,55 @@
 │   └── install_harness.sh             # Symlink the harness into sibling hetu-* projects
 ├── templates/
 │   └── task_book.md                   # Task book template
+<<<<<<< Updated upstream
 ├── 宪章编程宣言.md                    # Charter Programming Manifesto (Chinese)
+=======
+├── plugins/
+│   └── constitution-coding/           # DSH all-in-one plugin @hetu-altas/ConstitutionCoding-Plugin
+│       ├── src/command.js             #   /cc command (GUI hook)
+│       ├── src/gate.js                #   tools/pre-execute hard gate
+│       ├── src/status-api.js          #   data channel (/dashboard + /api/hetu-dashboard)
+│       ├── src/dashboard-launcher.js  #   dashboard auto-launch on DSH start
+│       └── client.js                  #   native dashboard panel + right-side status dock
+├── docs/dsh-docs/                     # DSH official dev-docs offline mirror (82 pages)
+├── 宪章编程宣言.md                    # Constitution Coding Manifest (Chinese) — see manifesto.md
+>>>>>>> Stashed changes
 └── 快速上手指南.md                    # Quickstart (Chinese) — see quick_start.md
 ```
 
 ## Quick Start
 
-Full documentation: [docs/harness/](docs/harness/README.md) (overview / workflow / agents & skills / gates / assets / extending). New to the project? Read the [Quickstart Guide](quick_start.md) first.
+Full documentation: [docs/harness/](docs/harness/README.md). New to the project? Read the [Quickstart Guide](quick_start.md) first.
 
-1. Install the harness into sibling business projects:
+### Path 1: DSH (recommended)
+
+1. Install the all-in-one plugin package (/cc command, hard gate, dashboard panel, status dock, dashboard auto-launch):
 
 ```bash
-bash scripts/install_harness.sh
+cd hetu-hammurabi
+npx @deepseek-ai/dsh plugin --profile web add ./plugins/constitution-coding
 ```
 
-2. Prepare input (pick one):
-   - Write a task book from `templates/task_book.md`, place it under `opencode_schedule/YYYYMMDD/<YYYYMMDD>任务N<名称>/` in the business project (e.g. `hetu-thoth`)
-   - Or use a one-line requirement — the system generates the task book (node -1)
+2. Start DSH (the dashboard data service on 8790 auto-launches):
 
-3. Before writing a large task book, assess granularity per `constitution/task_split/task_split.md`: tasks exceeding the limits must be split into sequenced task books.
-
-4. Launch opencode in the business project and run:
-
-```
-/dev <task book path 或 one-line requirement>
+```bash
+npx @deepseek-ai/dsh web --port 3090
 ```
 
-The orchestrator executes the nodes and records each node's status in the task directory's `研发流程状态.md`.
+3. In the GUI input box, run:
+
+```
+/cc <task book path or one-line requirement>
+```
+
+### Path 2: opencode (compatibility)
+
+```bash
+bash scripts/install_harness.sh      # install the legacy harness into business projects
+# launch opencode inside the business project and run /dev <task book path or requirement>
+```
+
+Before writing a large task book, assess granularity per `constitution/task_split/task_split.md`; the orchestrator executes the nodes and records each node's status in the task directory's `研发流程状态.md`.
 
 ## Pipeline Nodes
 
@@ -139,9 +165,9 @@ opencode_schedule/<YYYYMMDD>/
     └── 研发流程状态.md              # whole flow (maintained by orchestrator)
 ```
 
-## Hard Constraints (charter-gate plugin)
+## Hard Constraints (charter-gate)
 
-`.opencode/plugin/charter-gate.ts` enforces 4 hard constraints:
+On DSH the plugin package's `src/gate.js` hooks `tools/pre-execute` (machine-enforced); on opencode `.opencode/plugin/charter-gate.ts` applies. 4 hard constraints:
 
 1. **Test gate**: while `.gate.json` is missing or `test_passed=false`, writes to dev-log/status files (via `write`/`edit`/`apply_patch` or bash redirection) and DingTalk notification commands are blocked; **reads are never blocked**
 2. **Data safety**: `rm -rf` / `DROP` / `DELETE FROM` / `TRUNCATE` / `drop_collection` require an explicit `backup`/`备份` marker
@@ -151,9 +177,9 @@ opencode_schedule/<YYYYMMDD>/
 ## Maintenance
 
 - Charter changes: edit only `constitution/` sources — Skills reference them by path, no Skill changes needed.
-- Adding a pipeline node: create an agent under `.opencode/agents/` and update the flow definition in `charter-orchestrator.md`.
-- Changing hard constraints: edit `.opencode/plugin/charter-gate.ts` (a `throw` in a hook hard-blocks the tool call).
-- Config changes (agents/skills/commands/plugin) require **quitting and restarting opencode** to take effect.
+- **DSH plugin**: modules live in `plugins/constitution-coding/` (command/gate/status-api/dashboard-launcher/client); changes take effect after **restarting dsh web**.
+- Adding a pipeline node: create an agent under `harness/agents/` and update the flow definition in `harness/workflow.yaml`.
+- Changing hard constraints: on DSH edit `plugins/constitution-coding/src/gate.js` (return deny from `tools/pre-execute`); on opencode edit `.opencode/plugin/charter-gate.ts`.
 
 ## License
 

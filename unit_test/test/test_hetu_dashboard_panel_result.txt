@@ -1,0 +1,15 @@
+✔ stripPrefix: 页面路径 /dashboard → / (0.542408ms)
+✔ stripPrefix: 数据通道 /api/hetu-dashboard/api/... → /api/... (0.096826ms)
+✔ stripPrefix: 非前缀路径原样返回 (0.060133ms)
+✔ 集成: 数据通道转发到上游且剥离前缀（重启 dsh web 后经 3080 验证） (11.071468ms)
+✔ 数据契约: overview 字段与 harness/core/stats.py 输出对齐 (109.232962ms)
+✔ 数据契约: nodes 条目字段与 stats.py 对齐 (3.045335ms)
+✔ 数据契约: tasks 条目字段与 stats.py 对齐 (7.740251ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 265.954831

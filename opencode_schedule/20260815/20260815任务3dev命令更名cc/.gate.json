@@ -1,0 +1,16 @@
+{
+  "schema_version": 2,
+  "run_id": "20260815任务3dev命令更名cc",
+  "task_dir": "/mnt/d/workspace/hetu-altas/hetu-hammurabi/opencode_schedule/20260815/20260815任务3dev命令更名cc",
+  "test_passed": true,
+  "total": 248,
+  "passed": 248,
+  "written_by": "charter-orchestrator",
+  "result_files": [
+    "unit_test/test/test_harness_dsh_result.txt",
+    "unit_test/test/test_harness_topology_result.txt",
+    "unit_test/test/test_cc_command_result.txt"
+  ],
+  "updated_at": "2026-08-15T13:49:45",
+  "gate_token": "3f48eb8ce2fc8557e8e1c78aa8326c16db3b0dac4766df94cc967c4cf2e4d7b7"
+}
