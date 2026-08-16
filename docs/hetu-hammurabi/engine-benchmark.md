@@ -1,6 +1,7 @@
 # 引擎性能对比报告：DSH vs opencode 宪章流程耗时
 
-> 20260815 登记。对比河图体系宪章编程流程在 **DSH（/cc 命令）** 与 **opencode（/dev 命令）**
+> 20260815 登记。对比河图体系宪章编程流程在 **DSH（/cc 命令）** 与 **opencode（/dev 命令）**。
+> 注：20260815 任务3 起 opencode 命令已同步更名 /cc；本文 /dev 为历史执行引擎标注（历史任务确由 /dev 执行），统计口径不变。
 > 两种执行引擎下的任务耗时。数据来自看板运行事件库（runlog，秒级）与各任务
 > `研发流程状态.md` 时间列（分钟级）；统计逻辑固化于 `harness/core/stats.py#engine_benchmark`，
 > 看板 API `GET /api/stats/benchmark` 实时输出。

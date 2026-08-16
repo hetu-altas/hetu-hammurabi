@@ -18,7 +18,7 @@ hetu 系列「宪章编程」harness 模块。将研发流程固化为可自动�
 
 **两种执行载体**：
 - **DSH（主推）**：一体化插件包 `@hetu-altas/ConstitutionCoding-Plugin`——GUI 内 `/cc` 命令、`tools/pre-execute` 硬门禁、看板原生面板、右侧流程状态栏、看板服务随 DSH 自启；`npx @deepseek-ai/dsh plugin --profile web add ./plugins/constitution-coding` 一条命令安装
-- **opencode（兼容）**：旧 `/dev` 流程保留可用
+- **opencode（兼容）**：命令已同步更名 `/cc`，流程保留可用
 
 ## 宪章编程 · 核心理念
 
@@ -125,14 +125,14 @@ npx @deepseek-ai/dsh web --port 3090
 
 ```bash
 bash scripts/install_harness.sh      # 安装旧 harness 到业务项目
-# 业务项目内启动 opencode，执行 /dev <任务书路径 或 一句话需求>
+# 业务项目内启动 opencode，执行 /cc <任务书路径 或 一句话需求>（命令已更名，constitution coding）
 ```
 
 任务书编写前按 `constitution/task_split/task_split.md` 评估任务粒度：超限（> 4000 行）任务先按依赖拆分。编排代理会自动按节点执行并在任务目录 `opencode_schedule/<YYYYMMDD>/<任务目录>/研发流程状态.md` 固化每个节点的状态。
 
 ## 流程节点
 
-> 触发方式：DSH 下 `/cc <任务书路径 或 一句话需求>`；opencode 下 `/dev ...`。
+> 触发方式：DSH 下 `/cc <任务书路径 或 一句话需求>`；opencode 下 `/cc ...`（命令已同步更名）。
 
 | 节点 | 代理 | 产出 | 门禁 |
 |------|------|------|------|

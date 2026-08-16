@@ -18,7 +18,7 @@
 
 **Two execution carriers**:
 - **DSH (primary)**: all-in-one plugin package `@hetu-altas/ConstitutionCoding-Plugin` — `/cc` command in the GUI, hard gate on `tools/pre-execute`, native dashboard panel, right-side status dock, and auto-launch of the dashboard service; install with a single `npx @deepseek-ai/dsh plugin --profile web add ./plugins/constitution-coding`
-- **opencode (compatibility)**: the legacy `/dev` flow remains available
+- **opencode (compatibility)**: the command has been renamed to `/cc`; the flow remains available
 
 ## Charter Programming · Core Tenets
 
@@ -131,7 +131,7 @@ npx @deepseek-ai/dsh web --port 3090
 
 ```bash
 bash scripts/install_harness.sh      # install the legacy harness into business projects
-# launch opencode inside the business project and run /dev <task book path or requirement>
+# launch opencode inside the business project and run /cc <task book path or requirement> (renamed; constitution coding)
 ```
 
 Before writing a large task book, assess granularity per `constitution/task_split/task_split.md`; the orchestrator executes the nodes and records each node's status in the task directory's `研发流程状态.md`.

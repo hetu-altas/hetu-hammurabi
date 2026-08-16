@@ -25,7 +25,7 @@ npx @deepseek-ai/dsh plugin --profile web add ./plugins/constitution-coding
 ```
 
 > opencode compatibility path (optional): `bash scripts/install_harness.sh` installs the legacy
-> harness; `/dev` works inside business projects.
+> harness; `/cc` works inside business projects (renamed; constitution coding).
 
 ## 2. Start DSH (the dashboard follows automatically)
 
@@ -96,7 +96,7 @@ all hetu-* projects.
 |-------|-----|
 | Config changes have no effect | **Quit and restart opencode** (config is loaded at startup) |
 | "Test gate not passed" error | Expected behavior: the gate opens automatically once the tester node runs tests and writes `.gate.json`; writing dev logs or notifying before that is hard-blocked by design |
-| `/dev` unavailable after switching machines | Re-run step 1 (symlinks use absolute paths) |
+| `/cc` unavailable after switching machines | Re-run step 1 (symlinks use absolute paths) |
 | "Path not found" | Make sure `hetu-hammurabi` and the business project are siblings under the same parent directory |
 | Can I skip a node? | No — the pipeline is fixed by the charter; adjust task granularity instead of nodes |
 =======
